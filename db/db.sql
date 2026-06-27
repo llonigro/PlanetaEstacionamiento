@@ -1,3 +1,5 @@
+CREATE DATABASE PlanetaEstacionamiento;
+
 create table usuarios (
     id SERIAL PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
