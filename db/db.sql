@@ -8,6 +8,12 @@ create table usuarios (
     rol VARCHAR(100)
 );
 
+-- ejemplo de inserccion 
+
+INSERT INTO usuarios (nombre, email, contrasenia, rol)
+VALUES  ('santiago Quintana', 'santiago@gmail.com', '1234qwert', 'chofer');
+
+
 create table vehiculos (
     id SERIAL PRIMARY KEY,
     patente VARCHAR(100) UNIQUE NOT NULL,
@@ -16,6 +22,8 @@ create table vehiculos (
     permitir_valet BOOLEAN NOT NULL,
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
 );  
+
+
 
 create table cocheras (
     id SERIAL PRIMARY KEY,
