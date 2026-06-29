@@ -6,21 +6,25 @@ const VerUsuario = async (req, res) => {
     res.json(rows);
 };
 
-const VerUsuarios = (req, res) => {
-    console.log(req.body);
-    res.send("post suces");
+const VerUsuarios = async (req, res) => {
+    const {rows} = await pool.query(`SELECT * FROM usuarios`);
+        res.json(rows);
 };
 
-const CrearUsuario = (req, res) => {
-    console.log();
+const CrearUsuario = async (req, res) => {
+    const {nombre, email, contrasenia, rol} = req.body;
+    const { rows } = await pool.query("INSERT INTO usuarios (nombre, email, contrasenia, rol) VALUES ($1, $2, $3, $4) RETURNING *",[nombre, email, contrasenia, rol]);
+    res.json(rows[0]);
 };
 
-const ActualizarUsuario = (req, res) => {
-    console.log();
+const ActualizarUsuario = async (req, res) => {
+    const {id} = req.body;
+    const {rows} = await pool.query("DELETE FROM usuarios WHERE id = $1",[id]);
+    res.json(rows);
 };
 
-const BorrarUsuario  = (req, res) => {
-    console.log();
+const BorrarUsuario  = async (req, res) => {
+    await pool.query
 };
 
 module.exports= {

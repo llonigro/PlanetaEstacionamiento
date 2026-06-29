@@ -4,15 +4,17 @@ const {VerUsuario, VerUsuarios, CrearUsuario,ActualizarUsuario, BorrarUsuario} =
 
 const router = express.Router();
 
-
+/////////////////////////////// Tabla Usuarios //////////////////////////////////////////// 
 router.get("/usuarios", VerUsuarios);
 
-router.get("/usuario/:id", VerUsuario);
+router.get("/usuarios/:id", VerUsuario);
 
-router.post("/usuario", CrearUsuario);
+router.post("/usuarios", CrearUsuario);
 
-router.put("/usuario", ActualizarUsuario);
+router.put("/usuarios", ActualizarUsuario);
 
-router.delete("/usuario", BorrarUsuario);
+router.delete("/usuarios/:id", BorrarUsuario);
+
+///////////////////////////////////////////////////////////////////////////////////////////
 
 module.exports = router;

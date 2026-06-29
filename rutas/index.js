@@ -8,8 +8,9 @@ const PORT = 5000;
 
 const app = express()
 app.use(express.json())
-app.use(RutaUsuario);
+app.use(RutaUsuario) // ("/api/", RutaUsuario);
 app.use(IndexRuta);
+
 
 app.listen(PORT, () => {
     console.log(PORT)
