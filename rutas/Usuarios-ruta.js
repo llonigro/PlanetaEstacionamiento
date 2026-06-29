@@ -11,7 +11,7 @@ router.get("/usuarios/:id", VerUsuario);
 
 router.post("/usuarios", CrearUsuario);
 
-router.put("/usuarios", ActualizarUsuario);
+router.patch("/usuarios/:id", ActualizarUsuario); // la diferencia entre patch y put es que patch actualiza parcialmente no completo como put
 
 router.delete("/usuarios/:id", BorrarUsuario);
 
