@@ -12,7 +12,7 @@ const PORT = 5000;
 const app = express()
 app.use(express.json())
 app.use(RutaUsuario) // otro ejemplo de colocar ruta ("/api/", RutaUsuario);
-app.use(IndexRuta);
+
 
 
 // si no existe la ruta devuelve un json ej / http://localhost:5000/dhdh
