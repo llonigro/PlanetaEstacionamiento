@@ -53,7 +53,7 @@ const ActualizarUsuario = async (req, res) => {
 
 const BorrarUsuario  = async (req, res) => {
     try {
-        const {id} = req.body;
+        const {id} = req.params;
         const {rows} = await pool.query("DELETE FROM usuarios WHERE id = $1",[id]);
         res.json(rows);
     } 

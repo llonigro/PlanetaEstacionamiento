@@ -1,3 +1,3 @@
-const {config} = require("dotenv");
-config()
+//const {config} = require("dotenv");
+//config()
 
