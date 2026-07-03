@@ -24,6 +24,10 @@ create table vehiculos (
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
 );  
 
+--ejemplo de inserccion
+
+INSERT INTO vehiculos (patente, modelo, color, usuario_id, permitir_valet)
+VALUES  ('ABC123', 'Toyota Corolla', 'Rojo', 1, true);
 
 
 create table cocheras (
