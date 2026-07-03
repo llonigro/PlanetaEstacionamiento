@@ -18,6 +18,7 @@ create table vehiculos (
     id SERIAL PRIMARY KEY,
     patente VARCHAR(100) UNIQUE NOT NULL,
     modelo VARCHAR(100) NOT NULL,
+    color VARCHAR(100),
     usuario_id INT NOT NULL,
     permitir_valet BOOLEAN NOT NULL,
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
