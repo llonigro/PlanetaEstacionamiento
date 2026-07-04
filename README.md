@@ -5,6 +5,7 @@
 - npm install pg
 - npm install express
 - npm install cors
+- npm install express-validator
 
 
 
