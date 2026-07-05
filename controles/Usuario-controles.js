@@ -24,8 +24,8 @@ const VerUsuarios = async (req, res) => {
 
 const CrearUsuario = async (req, res) => {
     try { 
-        const {nombre, email, contrasenia, rol} = req.body;
-        const { rows } = await pool.query("INSERT INTO usuarios (nombre, email, contrasenia, rol) VALUES ($1, $2, $3, $4) RETURNING *",[nombre, email, contrasenia, rol]);
+        const {nombre, email, contrasenia, rol, telefono} = req.body;
+        const { rows } = await pool.query("INSERT INTO usuarios (nombre, email, contrasenia, rol, telefono) VALUES ($1, $2, $3, $4, $5) RETURNING *",[nombre, email, contrasenia, rol, telefono]);
         res.json(rows[0]);
     }
     catch(error) {
@@ -38,10 +38,10 @@ const CrearUsuario = async (req, res) => {
 const ActualizarUsuario = async (req, res) => {
     try { 
         const {id} = req.params;
-        const {nombre, email, contrasenia, rol} = req.body;
+        const {nombre, email, contrasenia, rol, telefono} = req.body;
         const { rows } = await pool.query( // COALESCE => Actualiza los campos, pero si no cambio todos los datos no los pisa el null.
-            "UPDATE usuarios SET nombre = COALESCE($1, nombre), email = COALESCE($2, email), contrasenia = COALESCE($3, contrasenia), rol = COALESCE($4, rol) WHERE id = $5 RETURNING *",
-            [nombre, email, contrasenia, rol, id]);
+            "UPDATE usuarios SET nombre = COALESCE($1, nombre), email = COALESCE($2, email), contrasenia = COALESCE($3, contrasenia), rol = COALESCE($4, rol), telefono = COALESCE($5, telefono) WHERE id = $6 RETURNING *",
+            [nombre, email, contrasenia, rol, telefono, id]);
         res.json(rows[0]);
     }
     catch(error) {
