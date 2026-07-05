@@ -1,17 +1,18 @@
 CREATE DATABASE PlanetaEstacionamiento;
 
-create table usuarios (
+CREATE TABLE usuarios (
     id SERIAL PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
     contrasenia VARCHAR(100) NOT NULL,
-    rol VARCHAR(100)
+    rol VARCHAR(100),
+    telefono VARCHAR(100),
+    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- ejemplo de inserccion 
-
-INSERT INTO usuarios (nombre, email, contrasenia, rol)
-VALUES  ('santiago Quintana', 'santiago@gmail.com', '1234qwert', 'chofer');
+-- Ejemplo de inserción
+INSERT INTO usuarios (nombre, email, contrasenia, rol, telefono)
+VALUES ('Santiago Quintana', 'santiago@gmail.com', '1234qwert', 'chofer', '123456789');
 
 
 create table vehiculos (
