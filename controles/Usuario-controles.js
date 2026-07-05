@@ -1,10 +1,11 @@
 const pool = require("../db/db.js");
+const { validationResult } = require("express-validator");
 
 const VerUsuario = async (req, res) => {
     try { 
         const {id} = req.params;
         const {rows} = await pool.query(`SELECT * FROM usuarios WHERE id = $1`, [id])
-        res.json(rows);
+        res.json(rows);        
     } 
     catch(error) {
         return res.status(500).json({ message: 'Algo salió mal en el servidor' });
@@ -24,6 +25,10 @@ const VerUsuarios = async (req, res) => {
 
 const CrearUsuario = async (req, res) => {
     try { 
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
         const {nombre, email, contrasenia, rol, telefono} = req.body;
         const { rows } = await pool.query("INSERT INTO usuarios (nombre, email, contrasenia, rol, telefono) VALUES ($1, $2, $3, $4, $5) RETURNING *",[nombre, email, contrasenia, rol, telefono]);
         res.json(rows[0]);
