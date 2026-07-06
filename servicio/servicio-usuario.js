@@ -8,6 +8,11 @@ const obtenerTodos = async () => {
     return rows;
 };
 
+// 1. GET ÚNICO
+const VerUsuario = async (id) => {
+    const { rows } = await pool.query('SELECT * FROM usuarios WHERE id = $1', [id]);
+    return rows[0]; // Retorna el usuario o undefined si no existe
+};
 
 const crear = async (datosUsuario) => {
     const { nombre, email, contrasenia, rol, telefono } = datosUsuario;
@@ -21,5 +26,6 @@ const crear = async (datosUsuario) => {
 
 module.exports = {
     obtenerTodos,
+    VerUsuario,
     crear
 };

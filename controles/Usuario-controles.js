@@ -13,6 +13,21 @@ const VerUsuarios = async (req, res) => {
     }
 };
 
+const VerUnicoUsuario = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const usuario = await usuariosService.VerUsuario(id);
+        
+        if (!usuario) {
+            return res.status(404).json({ message: "Usuario no encontrado" });
+        }
+        
+        res.json(usuario);
+    } catch (error) {
+        next(error); // 👈 ¡Le pasamos el error a Express!
+    }
+};
+
 const CrearUsuario = async (req, res) => {
     try {
         const nuevoUsuario = await usuariosService.crear(req.body);
@@ -27,4 +42,4 @@ const CrearUsuario = async (req, res) => {
     }
 };
 
-module.exports = { VerUsuarios, CrearUsuario };
+module.exports = { VerUsuarios,VerUnicoUsuario ,CrearUsuario };
