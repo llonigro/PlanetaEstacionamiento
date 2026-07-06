@@ -8,6 +8,7 @@ const obtenerTodos = async () => {
     return rows;
 };
 
+
 const crear = async (datosUsuario) => {
     const { nombre, email, contrasenia, rol, telefono } = datosUsuario;
     // Es buena práctica usar RETURNING * para devolver el usuario recién creado

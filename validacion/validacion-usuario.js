@@ -16,6 +16,10 @@ const validarCrearUsuario = [
         .escape()
         .notEmpty().withMessage('La contraseña es obligatoria')
         .isLength({ min: 6 }).withMessage('La contraseña debe tener al menos 6 caracteres'),
+    body('telefono')
+        .escape()
+        .optional({ checkFalsy: true }) // Permite que el campo sea opcional
+        .isMobilePhone().withMessage('El teléfono debe ser un número válido'), // ejemplo de numero : 123456789
     // 2. Middleware para interceptar los errores
     (req, res, next) => {
         const errors = validationResult(req);

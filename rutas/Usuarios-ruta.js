@@ -8,6 +8,9 @@ const { validarCrearUsuario } = require('../validacion/validacion-usuario.js');
 
 // Rutas limpias: Ruta -> Validación -> Controlador
 router.get('/usuarios', VerUsuarios);
+
 router.post('/usuarios', validarCrearUsuario, CrearUsuario);
+
+router.patch("/usuario")
 
 module.exports = router;
