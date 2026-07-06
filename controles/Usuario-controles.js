@@ -15,14 +15,14 @@ const VerUsuarios = async (req, res) => {
 
 const CrearUsuario = async (req, res) => {
     try {
-        // Ya no hay "validationResult" aquí. Si el código llegó hasta acá, es porque los datos son válidos.
         const nuevoUsuario = await usuariosService.crear(req.body);
-        res.status(201).json(nuevoUsuario); // 201 Created
-
-
+        res.status(201).json(nuevoUsuario);
     } catch (error) {
+        if (validarGmailUnico(error, res)) {
+            return;
+        }
+
         console.error(error);
-        validarGmailUnico(error, res);
         res.status(500).json({ message: "Algo salió mal en el servidor" });
     }
 };

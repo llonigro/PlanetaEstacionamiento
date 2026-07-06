@@ -12,7 +12,10 @@ const validarCrearUsuario = [
         .escape()
         .notEmpty().withMessage('El email es obligatorio')
         .isEmail().withMessage('El email es incorrecto'),
-    
+    body('contrasenia')
+        .escape()
+        .notEmpty().withMessage('La contraseña es obligatoria')
+        .isLength({ min: 6 }).withMessage('La contraseña debe tener al menos 6 caracteres'),
     // 2. Middleware para interceptar los errores
     (req, res, next) => {
         const errors = validationResult(req);
@@ -25,15 +28,13 @@ const validarCrearUsuario = [
     }
 ];
 
-const validarGmailUnico = (error, res) => {
-    try {
-        if (error.code === '23505' && error.constraint === 'usuarios_email_key') {
-            return res.status(400).json({ message: 'El email ya está registrado' });
-        }
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: "Algo salió mal en el servidor" });
+const validarGmailUnico = (error, res) => { // analizar 
+    if (error?.code === '23505' && error?.constraint === 'usuarios_email_key') {
+        res.status(409).json({ message: 'El email ya está registrado' });
+        return true;
     }
+
+    return false;
 };
 
 
