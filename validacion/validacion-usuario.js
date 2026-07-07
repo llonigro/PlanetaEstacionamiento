@@ -21,22 +21,28 @@ const validarId = [
     verificarErrores
 ];
 
+// validacion para POST
+
 const validarCrearUsuario = [
     // 1. Reglas de validación (lo que tenías en chequeos)
+        // verifica que el nombre sea obligatorio y contenga espacios solamente
     body('nombre')
         .trim()
         .escape()
         .notEmpty().withMessage('El nombre es obligatorio')
         .matches(/^[A-Za-zÀ-ÿ\s]+$/).withMessage('El nombre debe contener solo letras y espacios'),
+        // Verifica que email sea obligatorio y tenga formato correcto
     body('email')
         .escape()
         .notEmpty().withMessage('El email es obligatorio')
         .isEmail().withMessage('El email es incorrecto'),
+        // Verifica que la contraseña sea obligatorio y contenga 6 caracteres
     body('contrasenia')
         .escape()
         .notEmpty().withMessage('La contraseña es obligatoria')
         .isLength({ min: 6 }).withMessage('La contraseña debe tener al menos 6 caracteres'),
-    body('telefono')
+        // Verifica que el telefono tenga formato correcto
+        body('telefono')
         .escape()
         .optional({ checkFalsy: true }) // Permite que el campo sea opcional
         .isMobilePhone().withMessage('El teléfono debe ser un número válido'), // ejemplo de numero : 123456789
@@ -47,6 +53,8 @@ const validarCrearUsuario = [
 
 ///////////////////////////////////////////////////////////////////////
 
+
+// Si el usuario ingresa un gmail existente toma el error y muestra un json
 const validarGmailUnico = (error, res) => { // analizar 
     if (error?.code === '23505' && error?.constraint === 'usuarios_email_key') {
         res.status(409).json({ message: 'El email ya está registrado' });
