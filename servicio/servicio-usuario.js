@@ -49,9 +49,16 @@ const actualizarParcial = async (id, datosUsuario) => {
 };
 
 
+// 5 . DELETE
+const eliminar = async (id) => {
+    const { rows } = await pool.query('DELETE FROM usuarios WHERE id = $1 RETURNING *', [id]);
+    return rows[0]; // Retorna el usuario eliminado o undefined si no existía
+};
+
 module.exports = {
     obtenerTodos,
     VerUsuario,
     crear,
-    actualizarParcial
+    actualizarParcial,
+    eliminar
 };

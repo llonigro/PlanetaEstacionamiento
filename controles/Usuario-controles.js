@@ -17,7 +17,6 @@ const VerUnicoUsuario = async (req, res, next) => {
     try {
         const { id } = req.params;
         const usuario = await usuariosService.VerUsuario(id);
-        
         if (!usuario) {
             return res.status(404).json({ message: "Usuario no encontrado" });
         }
@@ -55,4 +54,18 @@ const ActualizarUsuario = async (req, res) => {
         res.status(500).json({ message: "Algo salió mal en el servidor" });
     }
 };
-module.exports = { VerUsuarios,VerUnicoUsuario ,CrearUsuario, ActualizarUsuario };
+
+const eliminarUsuario = async (req, res) => {
+    try {
+        const {id} = req.params;
+        const usuario = await usuariosService.eliminar(id);
+        if (!usuario) {
+            return res.status(404).json({ message: "Usuario no encontrado" });
+        }
+        res.status(204).json({ message: "Usuario eliminado correctamente" });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Algo salió mal en el servidor" });
+    }
+};
+module.exports = { VerUsuarios,VerUnicoUsuario ,CrearUsuario, ActualizarUsuario, eliminarUsuario };
