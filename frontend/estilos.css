@@ -1,0 +1,47 @@
+/* CONFIGURACIÓN DEL FONDO DE LA PÁGINA */
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background: #ccd5ae !important;
+}
+
+/* Color de fondo principal del navbar */
+.navbar-color {
+    background-color: #fefae0 !important;
+}
+
+/* Estilos para cuando se pasa el mouse por encima */
+.navbar-color .navbar-item:hover, 
+.navbar-color .navbar-link:hover {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    color: #ccd5ae !important;
+}
+
+/* Estilos para los elementos de la barra de navegación */
+.navbar-color .navbar-item, 
+.navbar-color .navbar-link {
+    color: #000000 !important;
+    background-color: transparent !important;
+}
+
+/* Estilos para el dropdown */
+.navbar-color .navbar-dropdown {
+    background-color: #fefae0 !important; 
+    border-top: none;
+}
+
+.navbar-color .navbar-dropdown .navbar-item:hover {
+    background-color: #fefae0bd !important;
+    color: #fefae0 !important;
+}
+
+.navbar-color .navbar-dropdown .navbar-item.is-selected {
+    background-color: rgba(255, 255, 255, 0.2) !important; 
+    color: #ccd5ae !important; 
+    font-weight: bold;
+}
+
+.navbar-color .navbar-dropdown .navbar-divider {
+    background-color: rgb(255, 255, 255); 
+}
