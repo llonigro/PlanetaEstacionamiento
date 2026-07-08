@@ -42,4 +42,18 @@ const CrearUsuario = async (req, res) => {
     }
 };
 
-module.exports = { VerUsuarios,VerUnicoUsuario ,CrearUsuario };
+const ActualizarUsuario = async (req, res) => {
+    console.log("👉 1. REQ.BODY EN CONTROLADOR:", req.body); // 🔴 AGREGÁ ESTO
+    try {
+        const { id } = req.params;
+        const usuarioActualizado = await usuariosService.actualizarParcial(id, req.body);
+        res.json(usuarioActualizado);
+    } catch (error) {
+        if (validarGmailUnico(error, res)) {
+            return;
+        }
+        console.error(error);
+        res.status(500).json({ message: "Algo salió mal en el servidor" });
+    }
+};
+module.exports = { VerUsuarios,VerUnicoUsuario ,CrearUsuario, ActualizarUsuario };

@@ -28,8 +28,30 @@ const crear = async (datosUsuario) => {
     return rows[0]; 
 };
 
+// 4. PATCH
+const actualizarParcial = async (id, datosUsuario) => {
+   // const {id} = datosUsuario;
+    const { nombre, email, contrasenia, rol, telefono } = datosUsuario;
+    console.log("=== DATOS QUE LLEGAN A LA QUERY ===");
+    console.log({ id, nombre, email, contrasenia, rol, telefono });
+    const { rows } = await pool.query(
+        `UPDATE usuarios SET 
+        nombre = COALESCE($1, nombre), 
+        email = COALESCE($2, email), 
+        contrasenia = COALESCE($3, contrasenia), 
+        rol = COALESCE($4, rol), 
+        telefono = COALESCE($5, telefono) 
+        WHERE id = $6 RETURNING *`,
+        [nombre || null, email || null, contrasenia || null, rol || null, telefono || null, id]
+        //[nombre, email, contrasenia, rol, telefono, id]
+    );
+    return rows[0]; 
+};
+
+
 module.exports = {
     obtenerTodos,
     VerUsuario,
-    crear
+    crear,
+    actualizarParcial
 };

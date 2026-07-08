@@ -51,6 +51,33 @@ const validarCrearUsuario = [
 ];
 
 
+// Validación para PATCH (actualización parcial)
+const validarActualizarUsuario = [
+    body('nombre')
+        .escape()
+        .optional({ checkFalsy: true }) // Si no viene, express-validator lo saltea. Si viene, aplica lo de abajo:
+        .matches(/^[A-Za-zÀ-ÿ\s]+$/).withMessage('El nombre debe contener solo letras y espacios')
+        .notEmpty().withMessage('Si envías el nombre, no puede estar vacío')
+        .isLength({ min: 3 }).withMessage('El nombre debe tener al menos 3 caracteres'),
+
+    body('email')
+        .escape()
+        .optional({ checkFalsy: true })
+        .isEmail().withMessage('El formato del email es incorrecto'),
+
+    body('contrasenia')
+        .escape()
+        .optional({ checkFalsy: true })
+        .isLength({ min: 6 }).withMessage('La contraseña debe tener al menos 6 caracteres'),
+
+    body('telefono')
+        .escape()
+        .optional({ checkFalsy: true })
+        .isMobilePhone().withMessage('El formato del teléfono no es válido'),
+
+    verificarErrores 
+]
+
 ///////////////////////////////////////////////////////////////////////
 
 
@@ -65,4 +92,4 @@ const validarGmailUnico = (error, res) => { // analizar
 };
 
 
-module.exports = { validarCrearUsuario, validarGmailUnico, validarId };
+module.exports = { validarCrearUsuario, validarGmailUnico, validarId, validarActualizarUsuario};

@@ -1,10 +1,10 @@
 // rutas/Usuarios-ruta.js
 const express = require('express');
 const router = express.Router();
-const { VerUsuarios, VerUnicoUsuario ,CrearUsuario } = require('../controles/Usuario-controles.js');
+const { VerUsuarios, VerUnicoUsuario ,CrearUsuario, ActualizarUsuario } = require('../controles/Usuario-controles.js');
 
 // Importamos nuestro middleware de validación
-const { validarCrearUsuario, validarId} = require('../validacion/validacion-usuario.js');
+const { validarCrearUsuario, validarId, validarActualizarUsuario} = require('../validacion/validacion-usuario.js');
 
 
 // Rutas limpias: Ruta -> Validación -> Controlador
@@ -14,4 +14,5 @@ router.get("/usuarios/:id", validarId , VerUnicoUsuario );
 
 router.post('/usuarios', validarCrearUsuario, CrearUsuario);
 
+router.patch('/usuarios/:id', validarId, validarActualizarUsuario, ActualizarUsuario);
 module.exports = router;
