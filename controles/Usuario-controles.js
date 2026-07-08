@@ -6,7 +6,7 @@ const VerUsuarios = async (req, res) => {
     try {
         const usuarios = await usuariosService.obtenerTodos()
         res.json(usuarios);
-        console.log(usuarios);
+        // console.log(usuarios);
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Algo salió mal en el servidor" });
