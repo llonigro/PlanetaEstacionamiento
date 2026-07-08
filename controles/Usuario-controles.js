@@ -43,7 +43,6 @@ const CrearUsuario = async (req, res) => {
 };
 
 const ActualizarUsuario = async (req, res) => {
-    console.log("👉 1. REQ.BODY EN CONTROLADOR:", req.body); // 🔴 AGREGÁ ESTO
     try {
         const { id } = req.params;
         const usuarioActualizado = await usuariosService.actualizarParcial(id, req.body);
