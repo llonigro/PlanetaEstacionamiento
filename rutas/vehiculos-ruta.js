@@ -1,12 +1,17 @@
 
 const express = require("express");
-const {VerVehiculos} = require("../controles/vehiculos-controles.js");
+const {VerVehiculos, VerUnicoVehiculo} = require("../controles/vehiculos-controles.js");
 const router = express.Router();
+
+
+// Importamos nuestro middleware de validación
+const {validarId} = require('../validacion/validacion-vehiculos.js');
+
 
 /////////////////////////////// Tabla vehiculos //////////////////////////////////////////// 
 router.get("/vehiculos", VerVehiculos);
 
-// router.get("/vehiculos/:id", VerVehiculo);
+router.get("/vehiculos/:id", validarId ,VerUnicoVehiculo);
 
 // router.post("/vehiculos", CrearVehiculo);
 

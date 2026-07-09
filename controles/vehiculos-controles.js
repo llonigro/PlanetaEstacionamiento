@@ -19,7 +19,24 @@ const VerVehiculos = async (req, res) =>  {
     }
 }
 
+// 2. GET ÚNICO
+const VerUnicoVehiculo = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const vehiculo = await VehiculosServicio.VerVehiculo(id);
+        if (!vehiculo) {
+            return res.status(404).json({ message: "Usuario no encontrado" });
+        }
+        
+        res.json(vehiculo);
+    } catch (error) {
+        return res.status(500).json({ message: 'Algo salió mal en el servidor' });
+
+    }
+};
+
 
 module.exports= { 
     VerVehiculos,
+    VerUnicoVehiculo
 }
