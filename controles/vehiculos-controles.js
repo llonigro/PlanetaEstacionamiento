@@ -1,9 +1,17 @@
 
 const pool = require("../db/db.js");
+// controles/Usuario-controles.js
+const VehiculosServicio = require('../servicio/servicio-vehiculo.js');
 
+
+
+// 1. GET COMPLETO
 const VerVehiculos = async (req, res) =>  {
     try {
-        const {rows} = await pool.query(`SELECT * FROM vehiculos`);
+        const {rows} = await VehiculosServicio.obtenerTodos(); 
+        if (!rows || rows.length === 0) {
+            return res.status(404).json({ message: 'No se encontraron vehículos' });
+        }
         res.json(rows);
     } 
     catch(error) {
