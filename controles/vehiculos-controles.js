@@ -68,7 +68,25 @@ const CrearVehiculo = async (req, res) => {
 };
 
 
-// 4. DELETE
+// 4. PATCH
+const ActualizarVehiculo = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const usuarioActualizado = await VehiculosServicio.actualizarParcial(id, req.body);
+        res.json(usuarioActualizado);
+    } catch (error) {
+        if (ValidarPatente(error, res)) {
+            return;
+        }
+        if (ValidarForeignKey(error, res)) {
+            return;
+        }
+        console.error(error);
+        res.status(500).json({ message: "Algo salió mal en el servidor" });
+    }
+};
+
+// 5. DELETE
 const eliminarVehiculo = async (req, res) => {
     try {
         const {id} = req.params;
@@ -88,5 +106,6 @@ module.exports= {
     VerVehiculos,
     VerUnicoVehiculo,
     CrearVehiculo,
-    eliminarVehiculo
+    eliminarVehiculo,
+    ActualizarVehiculo
 }

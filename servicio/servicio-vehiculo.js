@@ -22,6 +22,27 @@ const crearVehiculo = async (datosVehiculo) => {
     return rows[0]; 
 };
 
+
+// 4. PATCH
+const actualizarParcial = async (id, datosVehiculo) => {
+   // const {id} = datosUsuario;
+    const { patente, marca, modelo, color, usuario_id, permitir_valet } = datosVehiculo;
+    console.log("=== DATOS QUE LLEGAN A LA QUERY ===");
+    console.log({ id, patente, marca, modelo, color, usuario_id, permitir_valet });
+    const { rows } = await pool.query(
+        `UPDATE vehiculos SET 
+        patente = COALESCE($1, patente), 
+        marca = COALESCE($2, marca), 
+        modelo = COALESCE($3, modelo), 
+        color = COALESCE($4, color), 
+        usuario_id = COALESCE($5, usuario_id), 
+        permitir_valet = COALESCE($6, permitir_valet) 
+        WHERE id = $7 RETURNING *`,
+        [patente || null, marca || null, modelo || null, color || null, usuario_id || null, permitir_valet || null, id]
+    );
+    return rows[0]; 
+};
+
 // 5 . DELETE
 const eliminar = async (id) => {
     const { rows } = await pool.query('DELETE FROM vehiculos WHERE id = $1 RETURNING *', [id]);
@@ -34,5 +55,6 @@ module.exports = {
     obtenerTodos,
     VerVehiculo,
     crearVehiculo,
-    eliminar
+    eliminar,
+    actualizarParcial
 };
