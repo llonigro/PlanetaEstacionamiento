@@ -11,15 +11,12 @@ const { ValidarPatente, ValidarForeignKey } = require('../validacion/validacion-
 const VerVehiculos = async (req, res) =>  {
     try {
         const vehiculo = await VehiculosServicio.obtenerTodos(); 
-        if (!vehiculo || vehiculo.length === 0) {
-            return res.status(404).json({ message: 'No se encontraron vehículos' });
-        }
         res.json(vehiculo);
     } 
     catch(error) {
         return res.status(500).json({ message: 'Algo salió mal en el servidor' });
     }
-}
+};
 
 // 2. GET ÚNICO
 const VerUnicoVehiculo = async (req, res) => {
@@ -44,15 +41,25 @@ const CrearVehiculo = async (req, res) => {
         const nuevoVehiculo = await VehiculosServicio.crearVehiculo(req.body);
         return res.status(201).json(nuevoVehiculo);
     } catch(error) {
+
+        if (ValidarPatente(error, res)) {
+            return;
+        }
         // Verificamos si es un error de patente duplicada (Código de Postgres 23505)
-        if (error.code === '23505' && error.constraint === 'vehiculos_patente_key') {
-            return res.status(400).json({ message: 'La patente ya se encuentra registrada' });
+        //if (error.code === '23505' && error.constraint === 'vehiculos_patente_key') {
+        //    return res.status(400).json({ message: 'La patente ya se encuentra registrada' });
+        //}
+
+        if (ValidarForeignKey(error, res)) {
+            return;
         }
 
         // Verificamos si es un error de usuario inexistente (Código de Postgres 23503)
-        if (error.code === '23503' && error.constraint === 'vehiculos_usuario_id_fkey') {
-            return res.status(400).json({ message: 'El usuario asignado no existe en el sistema' });
-        }
+        //if (error.code === '23503' && error.constraint === 'vehiculos_usuario_id_fkey') {
+         //   return res.status(400).json({ message: 'El usuario asignado no existe en el sistema' });
+        //}
+
+
 
         // Si es cualquier otro error, lo imprimimos en consola y respondemos con 500
         console.error("Error al crear el vehículo:", error); 
