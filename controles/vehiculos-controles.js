@@ -68,8 +68,25 @@ const CrearVehiculo = async (req, res) => {
 };
 
 
+// 4. DELETE
+const eliminarVehiculo = async (req, res) => {
+    try {
+        const {id} = req.params;
+        const vehiculo = await VehiculosServicio.eliminar(id);
+        if (!vehiculo) {
+            return res.status(404).json({ message: "vehiculo no encontrado" });
+        }
+        return res.status(204).json({ message: "vehiculo eliminado correctamente" });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Algo salió mal en el servidor" });
+    }
+};
+
+
 module.exports= { 
     VerVehiculos,
     VerUnicoVehiculo,
-    CrearVehiculo
+    CrearVehiculo,
+    eliminarVehiculo
 }

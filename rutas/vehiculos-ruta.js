@@ -1,6 +1,6 @@
 
 const express = require("express");
-const {VerVehiculos, VerUnicoVehiculo, CrearVehiculo} = require("../controles/vehiculos-controles.js");
+const {VerVehiculos, VerUnicoVehiculo, CrearVehiculo, eliminarVehiculo} = require("../controles/vehiculos-controles.js");
 const router = express.Router();
 
 
@@ -17,7 +17,7 @@ router.post("/vehiculos", validarCrearVehiculo, CrearVehiculo);
 
 // router.patch("/vehiculos/:id", ActualizarVehiculo); // la diferencia entre patch y put es que patch actualiza parcialmente no completo como put
 
-// router.delete("/vehiculos/:id", BorrarVehiculo);
+router.delete("/vehiculos/:id", validarId, eliminarVehiculo);
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 

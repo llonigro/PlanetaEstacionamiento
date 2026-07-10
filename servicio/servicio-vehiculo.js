@@ -22,12 +22,17 @@ const crearVehiculo = async (datosVehiculo) => {
     return rows[0]; 
 };
 
-//
+// 5 . DELETE
+const eliminar = async (id) => {
+    const { rows } = await pool.query('DELETE FROM vehiculos WHERE id = $1 RETURNING *', [id]);
+    return rows[0]; // Retorna el vehículo eliminado o undefined si no existía
+};
 
 
 
 module.exports = {
     obtenerTodos,
     VerVehiculo,
-    crearVehiculo
+    crearVehiculo,
+    eliminar
 };
