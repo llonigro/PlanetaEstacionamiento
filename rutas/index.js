@@ -1,3 +1,4 @@
+//require('dotenv').config();
 const express = require("express");
 const {pool} = require("../db/db.js");
 const RutaUsuario = require("./Usuarios-ruta.js");

@@ -2,17 +2,19 @@
 const pool = require("../db/db.js");
 // controles/Usuario-controles.js
 const VehiculosServicio = require('../servicio/servicio-vehiculo.js');
+const { ValidarPatente, ValidarForeignKey } = require('../validacion/validacion-vehiculos.js');
+
 
 
 
 // 1. GET COMPLETO
 const VerVehiculos = async (req, res) =>  {
     try {
-        const {rows} = await VehiculosServicio.obtenerTodos(); 
-        if (!rows || rows.length === 0) {
+        const vehiculo = await VehiculosServicio.obtenerTodos(); 
+        if (!vehiculo || vehiculo.length === 0) {
             return res.status(404).json({ message: 'No se encontraron vehículos' });
         }
-        res.json(rows);
+        res.json(vehiculo);
     } 
     catch(error) {
         return res.status(500).json({ message: 'Algo salió mal en el servidor' });
@@ -25,7 +27,7 @@ const VerUnicoVehiculo = async (req, res) => {
         const { id } = req.params;
         const vehiculo = await VehiculosServicio.VerVehiculo(id);
         if (!vehiculo) {
-            return res.status(404).json({ message: "Usuario no encontrado" });
+            return res.status(404).json({ message: "Vehículo no encontrado" });
         }
         
         res.json(vehiculo);
@@ -36,7 +38,31 @@ const VerUnicoVehiculo = async (req, res) => {
 };
 
 
+// 3. POST 
+const CrearVehiculo = async (req, res) => {
+    try {
+        const nuevoVehiculo = await VehiculosServicio.crearVehiculo(req.body);
+        return res.status(201).json(nuevoVehiculo);
+    } catch(error) {
+        // Verificamos si es un error de patente duplicada (Código de Postgres 23505)
+        if (error.code === '23505' && error.constraint === 'vehiculos_patente_key') {
+            return res.status(400).json({ message: 'La patente ya se encuentra registrada' });
+        }
+
+        // Verificamos si es un error de usuario inexistente (Código de Postgres 23503)
+        if (error.code === '23503' && error.constraint === 'vehiculos_usuario_id_fkey') {
+            return res.status(400).json({ message: 'El usuario asignado no existe en el sistema' });
+        }
+
+        // Si es cualquier otro error, lo imprimimos en consola y respondemos con 500
+        console.error("Error al crear el vehículo:", error); 
+        return res.status(500).json({ message: 'Algo salió mal en el servidor' });
+    }
+};
+
+
 module.exports= { 
     VerVehiculos,
-    VerUnicoVehiculo
+    VerUnicoVehiculo,
+    CrearVehiculo
 }

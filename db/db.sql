@@ -18,6 +18,7 @@ VALUES ('Santiago Quintana', 'santiago@gmail.com', '1234qwert', 'chofer', '12345
 create table vehiculos (
     id SERIAL PRIMARY KEY,
     patente VARCHAR(100) UNIQUE NOT NULL,
+    marca VARCHAR(100) NOT NULL,
     modelo VARCHAR(100) NOT NULL,
     color VARCHAR(100),
     usuario_id INT NOT NULL,
@@ -27,8 +28,8 @@ create table vehiculos (
 
 --ejemplo de inserccion
 
-INSERT INTO vehiculos (patente, modelo, color, usuario_id, permitir_valet)
-VALUES  ('ABC123', 'Toyota Corolla', 'Rojo', 1, true);
+INSERT INTO vehiculos (patente, marca, modelo, color, usuario_id, permitir_valet)
+VALUES  ('ABC123', 'Toyota', 'Corolla', 'Rojo', 1, true);
 
 
 create table cocheras (
