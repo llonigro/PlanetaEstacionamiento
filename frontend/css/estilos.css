@@ -1,7 +1,7 @@
 :root {
     --azul-oscuro: #04284A;
-    --azul-marino: #00C6BC;
-    --turquesa: #219c96d7;
+    --azul-marino: #99d2cf;
+    --turquesa: #0bb0a7;
     --verde-militar: #334B49;
 
 }
@@ -14,11 +14,13 @@ body {
     background: #ffffff !important;
 }
 
-/* --- ESTILOS DEL LOGO EN NAVBAR --- */
+
+/* ESTILOS DEL LOGO EN NAVBAR */
 
 /*El icono del planeta */
 .logo-icono {
-    max-height: 70px !important; 
+    max-height: 70px !important;
+    margin-right: 5px;
 }
 
 /*El contenedor que apila los textos */
@@ -28,13 +30,14 @@ body {
     justify-content: center;
     line-height: 1;
     user-select: none; 
+    margin-right: 5px;
 }
 
 /*La palabra PLANETA */
 .logo-texto-principal {
     font-size: 25px;         
     font-weight: 900;           
-    color: #122b40;            
+    color: var(--azul-oscuro);            
     text-transform: uppercase;  
     letter-spacing: 2px;        
 }
@@ -43,7 +46,7 @@ body {
 .logo-texto-secundario {
     font-size: 12px;         
     font-weight: 700;          
-    color: #122b40;            
+    color: var(--azul-oscuro);            
     text-transform: uppercase;  
     letter-spacing: 1.2px;      
     margin-top: 2px;            
@@ -56,31 +59,69 @@ body {
     background-color: var(--turquesa) !important;
 }
 
+/* Estilo de los elementos del navbar */
+.navbar-color .navbar-item, 
+.navbar-color .navbar-link {
+    color: var(--azul-oscuro) !important; 
+    background-color: transparent !important;
+    font-weight: 500; 
+}
+
 /* Estilos para cuando se pasa el mouse por encima */
 .navbar-color .navbar-item:hover, 
 .navbar-color .navbar-link:hover {
-    background-color: rgba(255, 255, 255, 0.05) !important;
-    color: var(--tea-green) !important;
-}
-
-/* Estilos para los elementos de la barra de navegación */
-.navbar-color .navbar-item, 
-.navbar-color .navbar-link {
-    color: #000000 !important;
-    background-color: transparent !important;
+    background-color: rgba(255, 255, 255, 0.15) !important;
+    color: #ffffff !important;
 }
 
 /* Estilos para el dropdown */
 .navbar-color .navbar-dropdown {
-    background-color: var(--celadon) !important; 
+    background-color: var(--azul-marino) !important; 
     border-top: none;
 }
 
 .navbar-color .navbar-dropdown .navbar-item:hover {
     background-color: var(--turquesa) !important;
-    color: var(--tea-green) !important;
+    color: #ffffff !important;
 }
 
 .navbar-color .navbar-dropdown .navbar-divider {
-    background-color: rgba(255, 255, 255, 0.3); 
+    background-color: rgba(0, 0, 0, 0.1); 
+}
+
+/* CUSTOMIZACIÓN DEL MENÚ 'HAMBURGUESA'  */
+
+/* Color de las líneas del menú hamburguesa */
+.navbar-color .navbar-burger span {
+    background-color: var(--azul-oscuro) !important; 
+    height: 2px; 
+}
+
+/* Color cuando pasás el mouse por encima (Hover) */
+.navbar-color .navbar-burger:hover {
+    background-color: rgba(255, 255, 255, 0.15) !important; 
+}
+
+/* Tamaño del botón */
+.navbar-color .navbar-burger {
+    height: 4.5rem; 
+    width: 4.5rem;
+}
+
+/* Estilos para el menú desplegable cuando está activo */
+.navbar-color .navbar-menu.is-active {
+        background-color: var(--turquesa) !important;
+
+        /* Margen redondo */
+        border-bottom-left-radius: 16px;
+        border-bottom-right-radius: 16px;
+        border-top-left-radius: 16px;
+        border-top-right-radius: 16px;
+        
+        /* Un margen a los costados */
+        margin: 0 10px; 
+        
+        /* Sombra */
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    }
 }

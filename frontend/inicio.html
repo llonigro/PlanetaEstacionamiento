@@ -5,9 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Planeta Estacionamiento</title>
 
+    <!-- Agrego Font Awesome para los íconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
     <!-- Agrego Bulma CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
 
+    <!-- Agrego el archivo de estilos -->
     <link rel="stylesheet" href="css/estilos.css">
 </head>
 <body>
@@ -16,9 +20,10 @@
         <nav class="navbar navbar-color" role="navigation" aria-label="main navigation">
             <div class="container is-fluid">
 
+                <!-- Logo y nombre -->
                 <div class="navbar-brand">
                     <a class="navbar-item" href="#">
-                    <img src="img/logo.png" alt="Logo Planeta Estacionamiento" style="max-height: 70px;" class="mr-2">
+                    <img src="img/logo.png" alt="Logo Planeta Estacionamiento" style="max-height: 70px;" class="logo-icono mr-0">
             
                 <div class="logo-texto-contenedor">
                     <span class="logo-texto-principal">Planeta</span>
@@ -26,7 +31,8 @@
                 </div>
                 </a>
 
-                    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+                <!-- Botón de menú para dispositivos móviles -->
+                    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarItems">
                     <span aria-hidden="true"></span>
                     <span aria-hidden="true"></span>
                     <span aria-hidden="true"></span>
@@ -34,30 +40,36 @@
                     </a>
                 </div>
 
-                <div id="navbarBasicExample" class="navbar-menu">
+                <!-- Elementos del menú -->
+                <div id="navbarItems" class="navbar-menu">
                     <div class="navbar-start">
-                    <a class="navbar-item">
+                    <a class="navbar-item" aria-label="Inicio" href="inicio.html">
+                        <i class="fas fa-home" aria-hidden="true"></i> 
                         Inicio
                     </a>
 
-                    <a class="navbar-item">
+                    <a class="navbar-item" aria-label="Servicios" href="servicios.html">
+                        <i class="fas fa-concierge-bell" aria-hidden="true"></i>
                         Servicios
                     </a>
 
-                     <a class="navbar-item">
+                     <a class="navbar-item" aria-label="Tarifas" href="tarifas.html">
+                        <i class="fas fa-dollar-sign" aria-hidden="true"></i>
                         Tarifas
                     </a>
                    
                     <div class="navbar-item has-dropdown is-hoverable">
-                        <a class="navbar-link is-arrowless">
+                        <a class="navbar-link">
                         Más
                         </a>
 
                         <div class="navbar-dropdown is-boxed ">
-                        <a class="navbar-item">
+                        <a class="navbar-item" aria-label="Nosotros" href="nosotros.html">
+                            <i class="fas fa-users" aria-hidden="true"></i>
                             Nosotros
                         </a>
-                        <a class="navbar-item">
+                        <a class="navbar-item" aria-label="Contacto" href="contacto.html">
+                            <i class="fas fa-envelope" aria-hidden="true"></i>
                             Contacto
                         </a>
                         </div>
@@ -82,5 +94,25 @@
         <!-- Navbar termina -->
     <script src="js/index-scripts.js"></script>
 </header>
+<section class="hero is-medium navbar-color"> <!-- Podés usar tu variable de color o is-link -->
+  <div class="hero-body">
+    <div class="container has-text-centered">
+      <h1 class="title is-1 has-text-white">
+        Asegurá tu lugar desde tu casa.
+      </h1>
+      <h2 class="subtitle is-4 has-text-white-ter mt-2">
+        Encontrá y reservá tu lugar en minutos.
+      </h2>
+      <div class="buttons is-centered mt-5">
+        <a class="button is-white is-medium has-text-weight-bold">Buscar lugar</a>
+        <a class="button is-dark is-outlined is-medium" href="nosotros.html">Saber más</a>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="section">
+
+
+</section>
 </body>
 </html>
