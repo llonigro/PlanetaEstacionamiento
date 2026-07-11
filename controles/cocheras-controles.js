@@ -20,7 +20,20 @@ const VerUnicaCochera = async (req, res) => {
             return res.status(404).json({ message: "Cochera no encontrada" });
         }
         
-        res.json(cocheria);
+        res.json(cocheria).status(200);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Algo salió mal en el servidor" });
+    }
+};
+
+const CrearCochera = async (req, res) => {
+    try {
+        const nuevaCochera = await cocherasServicio.crear(req.body);
+        if (!nuevaCochera) {
+            return res.status(400).json({ message: "No se pudo crear la cochera" });
+        }
+        res.status(201).json(nuevaCochera);
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Algo salió mal en el servidor" });
@@ -29,5 +42,6 @@ const VerUnicaCochera = async (req, res) => {
 
 module.exports = {
     VerCocheras,
-    VerUnicaCochera
+    VerUnicaCochera,
+    CrearCochera
 };

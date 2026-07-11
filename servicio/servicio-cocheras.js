@@ -16,9 +16,21 @@ const VerCochera = async (id) => {
     return rows[0]; // Retorna la cochería o undefined si no existe
 };
 
+// 3. POST
+const crear = async (datosCocheras) => {
+    const { numero, tipo, estado, libre, clima } = datosCocheras;
+    // Es buena práctica usar RETURNING * para devolver el usuario recién creado
+    const { rows } = await pool.query(
+        'INSERT INTO cocheras (numero, tipo, estado, libre, clima) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+        [numero, tipo, estado, libre, clima]
+    );
+    return rows[0]; 
+};
+
 module.exports = {
     obtenerTodos,
-    VerCochera
+    VerCochera,
+    crear
 };
 
 
