@@ -45,6 +45,9 @@ const ActualizarUsuario = async (req, res) => {
     try {
         const { id } = req.params;
         const usuarioActualizado = await usuariosService.actualizarParcial(id, req.body);
+        if (!usuarioActualizado) {
+            return res.status(404).json({ message: "Usuario no encontrado" });
+        }
         res.json(usuarioActualizado);
     } catch (error) {
         if (validarGmailUnico(error, res)) {

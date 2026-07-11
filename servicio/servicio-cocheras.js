@@ -27,10 +27,28 @@ const crear = async (datosCocheras) => {
     return rows[0]; 
 };
 
+// 4. PATCH
+const actualizarParcial = async (id, datosCochera) => {
+    const { numero, tipo, estado, libre, clima } = datosCochera;
+    const { rows } = await pool.query(
+        `UPDATE cocheras SET 
+        numero = COALESCE($1, numero), 
+        tipo = COALESCE($2, tipo), 
+        estado = COALESCE($3, estado), 
+        libre = COALESCE($4, libre), 
+        clima = COALESCE($5, clima) 
+        WHERE id = $6 RETURNING *`,
+        [numero || null, tipo || null, estado || null, libre || null, clima || null, id]
+        //[numero, tipo, estado, libre, clima, id]
+    );
+    return rows[0]; 
+};
+
 module.exports = {
     obtenerTodos,
     VerCochera,
-    crear
+    crear,
+    actualizarParcial
 };
 
 
