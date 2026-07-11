@@ -97,4 +97,6 @@ const validarActualizarCochera = [
     // 2. Middleware para interceptar los errores
     verificarErrores
 ];
+
+
 module.exports = { validarId, validarCrearCochera, validarActualizarCochera };

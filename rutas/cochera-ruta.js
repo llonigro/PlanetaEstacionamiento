@@ -1,7 +1,7 @@
 // rutas/Usuarios-ruta.js
 const express = require('express');
 const router = express.Router();
-const { VerCocheras, VerUnicaCochera, CrearCochera, ActualizarCochera } = require('../controles/cocheras-controles.js');
+const { VerCocheras, VerUnicaCochera, CrearCochera, ActualizarCochera, eliminarCochera } = require('../controles/cocheras-controles.js');
 
 // Importamos nuestro middleware de validación
 const { validarId, validarCrearCochera, validarActualizarCochera} = require('../validacion/validacion-cochera.js');
@@ -15,5 +15,7 @@ router.get('/cocheras/:id', validarId ,VerUnicaCochera);
 router.post('/cocheras', validarCrearCochera, CrearCochera);
 
 router.patch('/cocheras/:id', validarId, validarActualizarCochera, ActualizarCochera);
+
+router.delete('/cocheras/:id', validarId, eliminarCochera);
 
 module.exports = router;

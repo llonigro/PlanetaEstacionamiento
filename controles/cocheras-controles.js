@@ -54,10 +54,25 @@ const ActualizarCochera = async (req, res) => {
     }
 };
 
+const eliminarCochera = async (req, res) => {
+    try {
+        const {id} = req.params;
+        const cochera = await cocherasServicio.eliminar(id);
+        if (!cochera) {
+            return res.status(404).json({ message: "Cochera no encontrada" });
+        }
+        res.status(204).json({ message: "Cochera eliminada correctamente" });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Algo salió mal en el servidor" });
+    }
+};
+
 
 module.exports = {
     VerCocheras,
     VerUnicaCochera,
     CrearCochera,
-    ActualizarCochera
+    ActualizarCochera,
+    eliminarCochera
 };

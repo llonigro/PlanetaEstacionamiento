@@ -44,12 +44,21 @@ const actualizarParcial = async (id, datosCochera) => {
     return rows[0]; 
 };
 
+
+// 5 . DELETE
+const eliminar = async (id) => {
+    const { rows } = await pool.query('DELETE FROM cocheras WHERE id = $1 RETURNING *', [id]);
+    return rows[0]; // Retorna la cocheras eliminada o undefined si no existía
+};
+
 module.exports = {
     obtenerTodos,
     VerCochera,
     crear,
-    actualizarParcial
+    actualizarParcial,
+    eliminar
 };
+
 
 
 
