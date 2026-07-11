@@ -35,6 +35,8 @@ VALUES  ('ABC123', 'Toyota', 'Corolla', 'Rojo', 1, true);
 create table cocheras (
     id SERIAL PRIMARY KEY,
     numero INT NOT NULL,
+    tipo VARCHAR(100) NOT NULL,
+    estado VARCHAR(100) NOT NULL,
     libre BOOLEAN NOT NULL,
     clima VARCHAR(100) NOT NULL
 );
