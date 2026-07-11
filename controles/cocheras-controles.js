@@ -1,4 +1,4 @@
-// controles/Usuario-controles.js
+// controles/Cocheras-controles.js
 const cocherasServicio = require('../servicio/servicio-cocheras.js');
 
 const VerCocheras = async (req, res) => {
@@ -12,6 +12,22 @@ const VerCocheras = async (req, res) => {
     }
 };
 
+const VerUnicaCochera = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const cocheria = await cocherasServicio.VerCochera(id);
+        if (!cocheria) {
+            return res.status(404).json({ message: "Cochera no encontrada" });
+        }
+        
+        res.json(cocheria);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Algo salió mal en el servidor" });
+    }
+};
+
 module.exports = {
-    VerCocheras
+    VerCocheras,
+    VerUnicaCochera
 };

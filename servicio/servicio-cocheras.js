@@ -10,8 +10,15 @@ const obtenerTodos = async () => {
     return rows;
 };
 
+// 2. GET ÚNICO
+const VerCochera = async (id) => {
+    const { rows } = await pool.query('SELECT * FROM cocheras WHERE id = $1', [id]);
+    return rows[0]; // Retorna la cochería o undefined si no existe
+};
+
 module.exports = {
-    obtenerTodos
+    obtenerTodos,
+    VerCochera
 };
 
 
