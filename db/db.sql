@@ -41,6 +41,11 @@ create table cocheras (
     clima VARCHAR(100) NOT NULL
 );
 
+---ejemplo de inserccion
+
+INSERT INTO cocheras (numero, tipo, estado, libre, clima)
+VALUES (1, 'Estándar', 'Disponible', true, 'Soleado');
+
 create table registros (
     id SERIAL PRIMARY KEY,
     cochera_id INT NOT NULL,
