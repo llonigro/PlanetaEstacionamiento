@@ -68,7 +68,7 @@ body {
 }
 
 /* Color del ícono cuando se enfoca un input */
-.input:focus + .icon {
+.input:focus ~ .icon {
     color: var(--turquesa) !important;
 }
 

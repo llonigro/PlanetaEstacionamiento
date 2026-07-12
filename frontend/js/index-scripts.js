@@ -64,4 +64,27 @@ document.addEventListener('DOMContentLoaded', () => {
       closeAllModals();
     }
   });
-});
+})
+
+/* Scripts para mostrar/ocultar contraseña */
+document.addEventListener('DOMContentLoaded', () => {
+  const contraseniaInput = document.getElementById("password");
+  const botonMostrar = document.getElementById("mostrar-contrasenia")
+  const ojoIcono = document.getElementById("ojo-icono")
+
+  if (contraseniaInput && botonMostrar && ojoIcono) {
+    botonMostrar.addEventListener('click', () => {
+      if (contraseniaInput.type == 'password') {
+        contraseniaInput.type = 'text';
+
+        ojoIcono.classList.remove('fa-eye');
+        ojoIcono.classList.add('fa-eye-slash');
+      } else {
+        contraseniaInput.type = 'password';
+
+        ojoIcono.classList.remove('fa-eye-slash');
+        ojoIcono.classList.add('fa-eye');
+      }
+    });
+  };
+})

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Planeta Estacionamiento</title>
 
+    <!-- Icono de la pestaña -->
     <link rel="icon" type="image/png" href="img/icono.png">
 
     <!-- Agrego Font Awesome para los íconos -->
@@ -45,6 +46,7 @@
                 <!-- Elementos del menú -->
                 <div id="navbarItems" class="navbar-menu">
                     <div class="navbar-start">
+
                     <a class="navbar-item" aria-label="Inicio" href="inicio.html">
                         <i class="fas fa-home" aria-hidden="true"></i> 
                         Inicio
@@ -131,11 +133,17 @@
                     <!-- Contraseña -->
                     <div class="field">   
                         <label class="label">Contraseña</label>
-                        <div class="control has-icons-left">
-                            <input class="input" type="password" placeholder="**********">
+                        <div class="control has-icons-left has-icons-right">
+                            <input class="input" id="password" type="password" placeholder="**********">
+
                             <span class="icon is-small is-left">
                                 <i class="fa-solid fa-lock"></i>
                             </span>
+
+                            <span class="icon is-small is-right is-clickable" id="mostrar-contrasenia">
+                                <i class="fa-solid fa-eye" id="ojo-icono"></i>
+                            </span>
+
                         </div>
                     </div>
 
@@ -150,11 +158,65 @@
                         </div>
                     </div>
 
+                    <div class="buttons">
+                    <button id="confirmar-registro" class="button is-success is-rounded">Confirmar</button>
+                    <button id="cancelar" class="button is-light is-rounded">Cancelar</button>
+                    </div>
+
+                </div>
+            <button class="modal-close is-large" aria-label="cerrar"></button>
+            </div>
+
+        </div>
+
+        <!-- Menu de Login -->
+        <div id="menu-login" class="modal">
+            <div class="modal-background is-transparent"></div>
+            <div class="modal-content">
+                <div class="box menu-color">
+
+                    <div class="mb-2">
+                        <h2 class="title is-4 mb-2">Iniciá sesión</h2>
+                        <hr class="linea-divisoria-registro my-3">
+                    </div>
+
+                    <!-- Email -->
+                    <div class="field">
+                        <label class="label">Email</label>
+                        <div class="control has-icons-left">
+                            <input class="input" type="email" placeholder="correo@ejemplo.com">
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-solid fa-at"></i>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Contraseña -->
+                    <div class="field">   
+                        <label class="label">Contraseña</label>
+                        <div class="control has-icons-left has-icons-right">
+                            <input class="input" id="password" type="password" placeholder="**********">
+
+                            <span class="icon is-small is-left">
+                                <i class="fa-solid fa-lock"></i>
+                            </span>
+
+                            <span class="icon is-small is-right is-clickable" id="mostrar-contrasenia">
+                                <i class="fa-solid fa-eye" id="ojo-icono"></i>
+                            </span>
+
+                        </div>
+                    </div>
+
+                    <div class="buttons">
+                    <button id="confirmar-sesion" class="button is-success is-rounded">Confirmar</button>
+                    <button id="cancelar" class="button is-light is-rounded">Cancelar</button>
+                    </div>
+
                 </div>
             <button class="modal-close is-large" aria-label="cerrar"></button>
             </div>
         </div>
-
     <script src="js/index-scripts.js"></script>
 </header>
 
