@@ -1,9 +1,8 @@
 :root {
-    --azul-oscuro: #04284A;
+    --azul-oscuro: #0A192F;
     --azul-marino: #99d2cf;
     --turquesa: #0bb0a7;
-    --verde-militar: #213635;
-
+    --azul-petroleo: #133A42;
 }
 
 /* CONFIGURACIÓN DEL FONDO DE LA PÁGINA */
@@ -53,11 +52,37 @@ body {
     display: block;
 }
 
-/* Menu Registro */
+/* MENU REGISTRO */
+
+/* Color del menú */
 .menu-color {
-    background-color: var(--verde-militar) !important;
-    --box-link-active-shadow: var(--verde-militar) !important;
+    background-color: var(--azul-petroleo) !important;
+    --box-link-active-shadow: var(--azul-petroleo) !important;
 }
+
+/* Color del resplandor cuando se enfoca un input */
+.input:focus, .textarea:focus {
+    border-color: var(--turquesa);
+
+    box-shadow: 0 0 0 0.125em rgba(11,176,167,0.25);
+}
+
+/* Color del ícono cuando se enfoca un input */
+.input:focus + .icon {
+    color: var(--turquesa) !important;
+}
+
+.color-titulo-registro {
+    color: var(--turquesa) !important; 
+    font-weight: 600;
+}
+
+.linea-divisoria-registro {
+    background-color: #ffffff;
+    height: 2px;
+}
+
+/* NAVBAR */
 
 /* Color de fondo principal del navbar */
 .navbar-color {
@@ -95,7 +120,7 @@ body {
 }
 
 .navbar-color .navbar-link::after {
-    border-color: var(--verde-militar) !important; 
+    border-color: var(--azul-petroleo) !important; 
 }
 
 .navbar-color .navbar-link:hover::after {

@@ -31,7 +31,7 @@
                 </div>
                 </a>
 
-                <!-- Botón de menú para dispositivos móviles -->
+                <!-- Botón de menú 'hamburguesa' -->
                     <a role="button" class="navbar-burger" aria-label="menu hamburguesa" aria-expanded="false" data-target="navbarItems">
                     <span aria-hidden="true"></span>
                     <span aria-hidden="true"></span>
@@ -98,16 +98,35 @@
             <div class="modal-background is-transparent"></div>
             <div class="modal-content">
                 <div class="box menu-color">
-                    <div class="title is-3 has-text-white">Registro</div>
+
+                    <div class="mb-2">
+                        <h2 class="title is-4 mb-2">Creá tu cuenta</h2>
+                        <hr class="linea-divisoria-registro my-3">
+                    </div>
+
+                    <!-- Usuario -->
+                    <div class="field">
+                        <label class="label">Usuario</label>
+                        <div class="control has-icons-left">
+                            <input class="input" type="text" placeholder="Nombre de usuario">
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-user"></i>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Email -->
                     <div class="field">
                         <label class="label">Email</label>
                         <div class="control has-icons-left">
-                            <input class="input" type="email" placeholder="Ejemplo@email.com">
+                            <input class="input" type="email" placeholder="correo@ejemplo.com">
                             <span class="icon is-small is-left">
                                 <i class="fas fa-solid fa-at"></i>
                             </span>
                         </div>
                     </div>
+
+                    <!-- Contraseña -->
                     <div class="field">   
                         <label class="label">Contraseña</label>
                         <div class="control has-icons-left">
@@ -115,16 +134,30 @@
                             <span class="icon is-small is-left">
                                 <i class="fa-solid fa-lock"></i>
                             </span>
+                        </div>
                     </div>
+
+                    <!-- Teléfono -->
+                    <div class="field">   
+                        <label class="label">Numero Telefónico</label>
+                        <div class="control has-icons-left">
+                            <input class="input" type="tel" placeholder="+54 9 11 1234-5678">
+                            <span class="icon is-small is-left">
+                                <i class="fa-solid fa-phone"></i>
+                            </span>
+                        </div>
+                    </div>
+
                 </div>
-            </div>
             <button class="modal-close is-large" aria-label="cerrar"></button>
+            </div>
         </div>
+
     <script src="js/index-scripts.js"></script>
 </header>
 
 <!-- Hero empieza -->
-<section class="hero is-medium navbar-color"> <!-- Podés usar tu variable de color o is-link -->
+<section class="hero is-medium navbar-color">
   <div class="hero-body">
     <div class="container has-text-centered">
       <h1 class="title is-1 has-text-white">
