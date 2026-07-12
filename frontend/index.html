@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planeta Estacionamiento - Disponibilidad</title>
+    <style>
+        /* Un poco de CSS básico para que no se vea feo */
+        body { font-family: Arial, sans-serif; background-color: #f4f4f4; text-align: center; }
+        #alerta-clima { background-color: #ffcc00; padding: 10px; display: none; font-weight: bold; }
+        .grilla-cocheras { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; padding: 20px; }
+        .cochera { width: 100px; height: 100px; display: flex; align-items: center; justify-content: center; border-radius: 10px; font-size: 20px; font-weight: bold; color: white; }
+        .libre { background-color: #4CAF50; } /* Verde */
+        .ocupada { background-color: #f44336; } /* Rojo */
+    </style>
+</head>
+<body>
+
+    <h1>Planeta Estacionamiento 🚗</h1>
+    
+    <div id="alerta-clima"></div>
+
+    <h2>Estado de las cocheras en tiempo real:</h2>
+    
+    <div id="grilla-cocheras" class="grilla-cocheras">
+        Cargando cocheras...
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
