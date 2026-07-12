@@ -2,7 +2,7 @@
     --azul-oscuro: #04284A;
     --azul-marino: #99d2cf;
     --turquesa: #0bb0a7;
-    --verde-militar: #334B49;
+    --verde-militar: #213635;
 
 }
 
@@ -53,6 +53,11 @@ body {
     display: block;
 }
 
+/* Menu Registro */
+.menu-color {
+    background-color: var(--verde-militar) !important;
+    --box-link-active-shadow: var(--verde-militar) !important;
+}
 
 /* Color de fondo principal del navbar */
 .navbar-color {
@@ -89,6 +94,14 @@ body {
     background-color: rgba(0, 0, 0, 0.1); 
 }
 
+.navbar-color .navbar-link::after {
+    border-color: var(--verde-militar) !important; 
+}
+
+.navbar-color .navbar-link:hover::after {
+    border-color: var(--azul-marino) !important; 
+}
+
 /* CUSTOMIZACIÓN DEL MENÚ 'HAMBURGUESA'  */
 
 /* Color de las líneas del menú hamburguesa */
@@ -110,18 +123,17 @@ body {
 
 /* Estilos para el menú desplegable cuando está activo */
 .navbar-color .navbar-menu.is-active {
-        background-color: var(--turquesa) !important;
+    background-color: var(--turquesa) !important;
 
-        /* Margen redondo */
-        border-bottom-left-radius: 16px;
-        border-bottom-right-radius: 16px;
-        border-top-left-radius: 16px;
-        border-top-right-radius: 16px;
-        
-        /* Un margen a los costados */
-        margin: 0 10px; 
-        
-        /* Sombra */
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-    }
+    /* Margen redondo */
+    border-bottom-left-radius: 16px;
+    border-bottom-right-radius: 16px;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    
+    /* Un margen a los costados */
+    margin: 0 10px; 
+    
+    /* Sombra */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
 }

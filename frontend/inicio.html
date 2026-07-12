@@ -32,7 +32,7 @@
                 </a>
 
                 <!-- Botón de menú para dispositivos móviles -->
-                    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarItems">
+                    <a role="button" class="navbar-burger" aria-label="menu hamburguesa" aria-expanded="false" data-target="navbarItems">
                     <span aria-hidden="true"></span>
                     <span aria-hidden="true"></span>
                     <span aria-hidden="true"></span>
@@ -79,10 +79,10 @@
                     <div class="navbar-end">
                     <div class="navbar-item">
                         <div class="buttons">
-                        <a class="button is-primary">
+                        <a id="registrarse" class="button is-primary js-modal-trigger" data-target="menu-registro">
                             <strong>Registrarse</strong>
                         </a>
-                        <a class="button is-light">
+                        <a id="iniciar-sesion" class="button is-light js-modal-trigger" data-target="menu-login">
                             Iniciar Sesión
                         </a>
                         </div>
@@ -92,8 +92,38 @@
             </div>
         </nav>
         <!-- Navbar termina -->
+
+        <!-- Menu de Registro -->
+        <div id="menu-registro" class="modal">
+            <div class="modal-background is-transparent"></div>
+            <div class="modal-content">
+                <div class="box menu-color">
+                    <div class="title is-3 has-text-white">Registro</div>
+                    <div class="field">
+                        <label class="label">Email</label>
+                        <div class="control has-icons-left">
+                            <input class="input" type="email" placeholder="Ejemplo@email.com">
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-solid fa-at"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="field">   
+                        <label class="label">Contraseña</label>
+                        <div class="control has-icons-left">
+                            <input class="input" type="password" placeholder="**********">
+                            <span class="icon is-small is-left">
+                                <i class="fa-solid fa-lock"></i>
+                            </span>
+                    </div>
+                </div>
+            </div>
+            <button class="modal-close is-large" aria-label="cerrar"></button>
+        </div>
     <script src="js/index-scripts.js"></script>
 </header>
+
+<!-- Hero empieza -->
 <section class="hero is-medium navbar-color"> <!-- Podés usar tu variable de color o is-link -->
   <div class="hero-body">
     <div class="container has-text-centered">
@@ -110,6 +140,7 @@
     </div>
   </div>
 </section>
+<!-- Hero termina -->
 <section class="section">
 
 
