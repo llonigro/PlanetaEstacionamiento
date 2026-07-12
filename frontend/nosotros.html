@@ -24,13 +24,20 @@
 
     </header>
     <!-- Script para cargar el navbar -->
-    <script>
-        fetch('navbar.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('navbar-placeholder').innerHTML = data;
-            });
-    </script>
     <script src="js/navbar-scripts.js"></script>
+
+    <script>
+    (async() => {
+        try {
+            const respuesta = await fetch('navbar.html');
+            const data = await respuesta.text();
+            document.getElementById('navbar-placeholder').innerHTML = data;
+
+            inicializarScriptsNavbar();
+        } catch (error) {
+            console.error('Error al cargar el navbar:', error);
+        }
+    })();
+    </script>
 </body>
 </html>
