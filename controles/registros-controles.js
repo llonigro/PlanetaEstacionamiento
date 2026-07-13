@@ -10,7 +10,6 @@ const VerRegistros = async (req, res) => {
             return res.status(404).json({ message: "No se encontraron registros" });
         }
         res.json(registros).status(200);
-        // console.log(usuarios);
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Algo salió mal en el servidor" });
