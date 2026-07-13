@@ -5,6 +5,7 @@ const {pool} = require("../db/db.js");
 const RutaUsuario = require("./Usuarios-ruta.js");
 const RutaVehiculos = require("./vehiculos-ruta.js");
 const RutaCocheras = require("./cochera-ruta.js");
+const RutaRegistros = require("./registros-ruta.js");
 
 
 
@@ -20,6 +21,7 @@ app.use(express.json({ strict: false }));
 app.use(RutaUsuario); // otro ejemplo de colocar ruta ("/api/", RutaUsuario);
 app.use(RutaVehiculos)
 app.use(RutaCocheras)
+app.use(RutaRegistros)
 
 // si no existe la ruta devuelve un json ej / http://localhost:5000/dhdh
 app.use((req, res, next) => {
