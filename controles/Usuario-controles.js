@@ -6,6 +6,10 @@ const VerUsuarios = async (req, res) => {
     try {
         const usuarios = await usuariosService.obtenerTodos()
         res.json(usuarios);
+        if (!usuarios) {
+            return res.status(404).json({ message: "No se encontraron usuarios" });
+        }
+        res.json(usuarios).status(200);
         // console.log(usuarios);
     } catch (error) {
         console.error(error);

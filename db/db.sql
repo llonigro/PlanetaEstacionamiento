@@ -50,12 +50,16 @@ create table registros (
     id SERIAL PRIMARY KEY,
     cochera_id INT NOT NULL,
     vehiculo_id INT NOT NULL,
-    fecha_ingreso DATETIME NOT NULL,
-    fecha_egreso DATETIME,
+    fecha_ingreso  TIMESTAMPTZ NOT NULL,
+    fecha_egreso TIMESTAMPTZ,
     precio_total DECIMAL NOT NULL,
     FOREIGN KEY(cochera_id) REFERENCES cocheras(id),    
     FOREIGN KEY(vehiculo_id) REFERENCES vehiculos(id)    
 );
+
+---ejemplo de inserccion
+INSERT INTO registros (cochera_id, vehiculo_id, fecha_ingreso, fecha_egreso, precio_total)
+VALUES (2, 2, '2024-06-01 08:00:00', '2024-06-01 10:00:00', 20.00);
 
 -- create table catalogo_servicios(
 --     id SERIAL PRIMARY KEY,
