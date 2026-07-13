@@ -1,17 +1,31 @@
+// validacion/registro.validator.js
+const { param, body, validationResult } = require('express-validator');
 
 
-const registroServicio = require('../servicio/servicio-registro.js');
-
-// Verificamos si el error es de "tabla no existente" (código 42P01)
-const verificarTablaNoExistente = (error, res) => {
-    if (error.code === '42P01') {
-        // console.warn("Advertencia: La tabla 'registros' no existe todavía.");
-        res.status(404).json({ message: "La tabla 'registros' no existe todavía." });
-        return true;
+// Middleware común para revisar si express-validator encontró errores
+const verificarErrores = (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
     }
-    return false;
+    next();
 };
 
-module.exports = {
-    verificarTablaNoExistente
+// Validación para rutas que requieren ID (GET único, PATCH, DELETE)
+const validarId = [
+    param('id')
+        .isInt().withMessage('El ID debe ser un número entero válido'),
+    // 2. Middleware para interceptar los errores
+    verificarErrores
+];
+
+
+module.exports = { 
+    validarId
 };
+
+
+
+
+
+

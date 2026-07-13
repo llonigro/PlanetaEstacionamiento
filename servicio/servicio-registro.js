@@ -10,6 +10,13 @@ const obtenerTodos = async () => {
     return rows;
 };
 
+// 2. GET ÚNICO
+const VerRegistro = async (id) => {
+    const { rows } = await pool.query('SELECT * FROM registros WHERE id = $1', [id]);
+    return rows[0]; 
+};
+
 module.exports = {
-    obtenerTodos
+    obtenerTodos,
+    VerRegistro
 };
