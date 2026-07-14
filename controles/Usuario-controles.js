@@ -4,16 +4,16 @@ const { validarGmailUnico } = require('../validacion/validacion-usuario.js');
 
 const VerUsuarios = async (req, res) => {
     try {
-        const usuarios = await usuariosService.obtenerTodos()
-        res.json(usuarios);
+        const usuarios = await usuariosService.obtenerTodos();
+
         if (!usuarios) {
             return res.status(404).json({ message: "No se encontraron usuarios" });
         }
-        res.json(usuarios).status(200);
-        // console.log(usuarios);
+
+        res.status(200).json(usuarios);
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: "Algo salió mal en el servidor" });
+        return res.status(500).json({ message: "Algo salió mal en el servidor" });
     }
 };
 

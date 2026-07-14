@@ -1,5 +1,14 @@
 CREATE DATABASE PlanetaEstacionamiento;
 
+-- 1. Modificación en la Base de Datos (SQL)
+
+-- Agregar columna para borrado lógico
+ALTER TABLE registros ADD COLUMN anulado BOOLEAN DEFAULT false;
+
+-- (Opcional) Actualizar los registros anteriores para que tengan valor por defecto
+UPDATE registros SET anulado = false WHERE anulado IS NULL;
+
+
 CREATE TABLE usuarios (
     id SERIAL PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,

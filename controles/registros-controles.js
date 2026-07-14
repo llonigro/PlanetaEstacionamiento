@@ -1,13 +1,15 @@
 // controles/Registros-controles.js
 const registroServicio = require('../servicio/servicio-registro.js');
 
+const { validarForaneasRegistro } = require('../validacion/validacion-registro.js');
+
 const VerRegistros = async (req, res) => {
     try {
         const registros = await registroServicio.obtenerTodos();
         if (registros.length === 0) {
             return res.status(404).json({ message: "No se encontraron registros" });
         }
-        res.json(registros).status(200);
+        return res.json(registros).status(200);
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Algo salió mal en el servidor" });
@@ -28,7 +30,52 @@ const VerUnicoRegistro = async (req, res, next) => {
     }
 };
 
+
+// POST
+const CrearIngreso = async (req, res) => {
+    try {
+        const nuevoRegistro = await registroServicio.registrarIngreso(req.body);
+        res.status(201).json({ 
+            message: 'Ingreso registrado con éxito', 
+            registro: nuevoRegistro 
+        });
+    } catch (error) {
+        // Si es un error lógico de negocio que lanzamos desde el servicio
+        if (error.status) {
+            return res.status(error.status).json({ message: error.message });
+        }
+        // Si es un error de PostgreSQL (Llaves foráneas)
+        if (validarForaneasRegistro(error, res)) return;
+
+        console.error(error);
+        res.status(500).json({ message: 'Algo salió mal en el servidor' });
+    }
+};
+
+
+// PATCH 
+const CrearEgreso = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const registroActualizado = await registroServicio.registrarEgreso(id, req.body);
+        res.status(200).json({ 
+            message: 'Egreso registrado y cochera liberada', 
+            registro: registroActualizado 
+        });
+    } catch (error) {
+        if (error.status) {
+            return res.status(error.status).json({ message: error.message });
+        }
+        console.error(error);
+        res.status(500).json({ message: 'Algo salió mal en el servidor' });
+    }
+};
+
+
+
 module.exports = {
     VerRegistros,
-    VerUnicoRegistro
+    VerUnicoRegistro,
+    CrearEgreso,
+    CrearIngreso
 };
