@@ -1,14 +1,9 @@
+-- 1. CREACIÓN DE LA BASE DE DATOS
 CREATE DATABASE PlanetaEstacionamiento;
 
--- 1. Modificación en la Base de Datos (SQL)
+-- (Asegúrate de conectarte a la base de datos PlanetaEstacionamiento antes de ejecutar lo siguiente)
 
--- Agregar columna para borrado lógico
-ALTER TABLE registros ADD COLUMN anulado BOOLEAN DEFAULT false;
-
--- (Opcional) Actualizar los registros anteriores para que tengan valor por defecto
-UPDATE registros SET anulado = false WHERE anulado IS NULL;
-
-
+-- 2. TABLA USUARIOS
 CREATE TABLE usuarios (
     id SERIAL PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
@@ -19,12 +14,8 @@ CREATE TABLE usuarios (
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Ejemplo de inserción
-INSERT INTO usuarios (nombre, email, contrasenia, rol, telefono)
-VALUES ('Santiago Quintana', 'santiago@gmail.com', '1234qwert', 'chofer', '123456789');
-
-
-create table vehiculos (
+-- 3. TABLA VEHÍCULOS
+CREATE TABLE vehiculos (
     id SERIAL PRIMARY KEY,
     patente VARCHAR(100) UNIQUE NOT NULL,
     marca VARCHAR(100) NOT NULL,
@@ -35,40 +26,47 @@ create table vehiculos (
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
 );  
 
---ejemplo de inserccion
-
-INSERT INTO vehiculos (patente, marca, modelo, color, usuario_id, permitir_valet)
-VALUES  ('ABC123', 'Toyota', 'Corolla', 'Rojo', 1, true);
-
-
-create table cocheras (
+-- 4. TABLA COCHERAS
+CREATE TABLE cocheras (
     id SERIAL PRIMARY KEY,
     numero INT NOT NULL,
     tipo VARCHAR(100) NOT NULL,
     estado VARCHAR(100) NOT NULL,
-    libre BOOLEAN NOT NULL,
+    libre BOOLEAN  DEFAULT true,
     clima VARCHAR(100) NOT NULL
 );
 
----ejemplo de inserccion
+ALTER TABLE cocheras ALTER COLUMN libre SET DEFAULT true;
 
-INSERT INTO cocheras (numero, tipo, estado, libre, clima)
-VALUES (1, 'Estándar', 'Disponible', true, 'Soleado');
-
-create table registros (
+-- 5. TABLA REGISTROS 
+CREATE TABLE registros (
     id SERIAL PRIMARY KEY,
     cochera_id INT NOT NULL,
     vehiculo_id INT NOT NULL,
-    fecha_ingreso  TIMESTAMPTZ NOT NULL,
+    fecha_ingreso TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     fecha_egreso TIMESTAMPTZ,
-    precio_total DECIMAL NOT NULL,
+    precio_total DECIMAL(10, 2) NOT NULL,
+    anulado BOOLEAN DEFAULT false,
     FOREIGN KEY(cochera_id) REFERENCES cocheras(id),    
     FOREIGN KEY(vehiculo_id) REFERENCES vehiculos(id)    
 );
 
----ejemplo de inserccion
-INSERT INTO registros (cochera_id, vehiculo_id, fecha_ingreso, fecha_egreso, precio_total)
-VALUES (2, 2, '2024-06-01 08:00:00', '2024-06-01 10:00:00', 20.00);
+-- ==========================================
+-- DATOS DE PRUEBA (INSERCIONES)
+-- ==========================================
+
+INSERT INTO usuarios (nombre, email, contrasenia, rol, telefono)
+VALUES ('Santiago Quintana', 'santiago@gmail.com', '1234qwert', 'chofer', '123456789');
+
+INSERT INTO vehiculos (patente, marca, modelo, color, usuario_id, permitir_valet)
+VALUES ('ABC123', 'Toyota', 'Corolla', 'Rojo', 1, true);
+
+INSERT INTO cocheras (numero, tipo, estado, libre, clima)
+VALUES (1, 'Estándar', 'buen estado', true, 'Soleado');
+
+INSERT INTO registros (cochera_id, vehiculo_id, fecha_ingreso, fecha_egreso, precio_total, anulado)
+VALUES (1, 1, '2024-06-01 08:00:00', '2024-06-01 10:00:00', 20.00, false);
+
 
 -- create table catalogo_servicios(
 --     id SERIAL PRIMARY KEY,

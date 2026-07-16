@@ -43,11 +43,11 @@ const validarCrearCochera = [
         .notEmpty().withMessage('El estado es obligatorio')
         .toLowerCase() // <-- Pasamos a minúsculas
         .isIn(['mal estado', 'buen estado']).withMessage('El estado debe ser "mal estado" o "buen estado"'),
-    body('libre')
-        .escape()
-        .trim()
-        .notEmpty().withMessage('Este apartado es obligatorio')
-        .isBoolean().withMessage('Debe ser true o false'),
+//    body('libre')
+//        .escape()
+//       .trim()
+//        .notEmpty().withMessage('Este apartado es obligatorio')
+//        .isBoolean().withMessage('Debe ser true o false'),
         body('clima')
         .trim()
         .escape()
@@ -82,12 +82,12 @@ const validarActualizarCochera = [
         .notEmpty().withMessage('El estado es obligatorio')
         .toLowerCase() // <-- Pasamos a minúsculas
         .isIn(['mal estado', 'buen estado']).withMessage('El estado debe ser "mal estado" o "buen estado"'),
-    body('libre')
-        .escape()
-        .optional({ checkFalsy: true })
-        .trim()
-        .notEmpty().withMessage('Este apartado es obligatorio')
-        .isBoolean().withMessage('Debe ser true o false'),
+//    body('libre')
+//        .escape()
+//        .optional({ checkFalsy: true })
+//        .trim()
+ //       .notEmpty().withMessage('Este apartado es obligatorio')
+   ///     .isBoolean().withMessage('Debe ser true o false'),
         body('clima')
         .trim()
         .escape()

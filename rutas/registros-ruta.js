@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { VerRegistros, VerUnicoRegistro,CrearIngreso, CrearEgreso } = require('../controles/registros-controles.js');
+const { VerRegistros, VerUnicoRegistro,CrearIngreso, CrearEgreso , EliminarRegistro} = require('../controles/registros-controles.js');
 
 // Importamos nuestro middleware de validación
 const {validarId, validarIngreso, validarEgreso} = require('../validacion/validacion-registro.js');
@@ -15,6 +15,9 @@ router.get('/registros/:id', validarId, VerUnicoRegistro);
 router.post('/registros/ingreso', validarIngreso, CrearIngreso);
 
 // Ruta para EGRESO (PATCH o PUT, pasándole el ID del registro)
-router.patch('/registros/:id', validarEgreso, CrearEgreso);
+router.patch('/registros/egreso/:id', validarEgreso, CrearEgreso);
+
+// Eliminar de forma lógica y segura un registro (DELETE)
+router.delete('/registros/:id', validarId, EliminarRegistro);
 
 module.exports = router;

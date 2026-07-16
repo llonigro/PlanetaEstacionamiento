@@ -11,6 +11,9 @@ const VerRegistros = async (req, res) => {
         }
         return res.json(registros).status(200);
     } catch (error) {
+        if (error.code ==='42P01') { // Código de error de PostgreSQL para tabla no encontrada
+            return res.status(500).json({ message: "Error de base de datos: Tabla 'registros' no encontrada" });
+        }
         console.error(error);
         res.status(500).json({ message: "Algo salió mal en el servidor" });
     }
@@ -25,6 +28,9 @@ const VerUnicoRegistro = async (req, res, next) => {
         }       
         res.json(registro);
     } catch (error) {
+        if (error.code ==='42P01') { // Código de error de PostgreSQL para tabla no encontrada
+            return res.status(500).json({ message: "Error de base de datos: Tabla 'registros' no encontrada" });
+        }
         console.error(error);
         res.status(500).json({ message: "Algo salió mal en el servidor" }); 
     }
@@ -72,10 +78,29 @@ const CrearEgreso = async (req, res) => {
 };
 
 
+// DELETE
+const EliminarRegistro = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const registroEliminado = await registroServicio.eliminarLogico(id);
+        res.status(200).json({
+            message: 'Registro eliminado con éxito (Anulado lógicamente)',
+            registro: registroEliminado
+        });
+    } catch (error) {
+        if (error.status) {
+            return res.status(error.status).json({ message: error.message });
+        }
+        console.error(error);
+        res.status(500).json({ message: 'Algo salió mal en el servidor al intentar eliminar el registro' });
+    }
+};
+
 
 module.exports = {
     VerRegistros,
     VerUnicoRegistro,
     CrearEgreso,
-    CrearIngreso
+    CrearIngreso,
+    EliminarRegistro
 };
