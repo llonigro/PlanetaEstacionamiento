@@ -2,10 +2,10 @@
 const express = require("express");
 const cors = require('cors');
 const {pool} = require("../db/db.js");
-const RutaUsuario = require("./Usuarios-ruta.js");
-const RutaVehiculos = require("./vehiculos-ruta.js");
-const RutaCocheras = require("./cochera-ruta.js");
-const RutaRegistros = require("./registros-ruta.js");
+const RutaUsuario = require("../rutas/Usuarios-ruta.js");
+const RutaVehiculos = require("../rutas/vehiculos-ruta.js");
+const RutaCocheras = require("../rutas/cochera-ruta.js");
+const RutaRegistros = require("../rutas/registros-ruta.js");
 
 
 
