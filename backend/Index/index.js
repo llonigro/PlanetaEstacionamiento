@@ -1,4 +1,4 @@
-//require('dotenv').config();
+const config = require('../Index/config.js');
 const express = require("express");
 const cors = require('cors');
 const {pool} = require("../db/db.js");
@@ -17,6 +17,7 @@ const PORT = 5000;
 
 const app = express();
 app.use(cors());
+//app.use(config)
 app.use(express.json({ strict: false }));
 app.use(RutaUsuario); // otro ejemplo de colocar ruta ("/api/", RutaUsuario);
 app.use(RutaVehiculos)
