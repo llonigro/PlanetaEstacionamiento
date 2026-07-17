@@ -21,4 +21,6 @@ services:
       - postgres-db
     links:
       - postgres-db
+    env_file:
+      - ./.env
 

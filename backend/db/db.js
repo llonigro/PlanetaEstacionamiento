@@ -1,5 +1,5 @@
 const { Pool } = require("pg");
-const config = require('../Index/config.js');
+const config = require('../index/config.js');
 
 const pool = new Pool({
     host: config.DB_HOST,
