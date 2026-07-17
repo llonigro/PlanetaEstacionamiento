@@ -58,11 +58,26 @@ const ActualizarCatalogo = async (req, res) => {
     }
 };
 
+const eliminarCatalogo = async (req, res) => {
+    try {
+        const {id} = req.params;
+        const catalogo = await catalogoServicio.eliminar(id);
+        if (catalogo === undefined) {
+            return res.status(404).json({ message: "catalogo no encontrado" });
+        }
+        return res.json({ message: "catalogo eliminado correctamente" });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Algo salió mal en el servidor" });
+    }
+};
+
 
 
 module.exports = {
     VerCatalogosServicios,
     VerUnicoCatalogo,
     CrearCatalogo,
-    ActualizarCatalogo
+    ActualizarCatalogo,
+    eliminarCatalogo
 };

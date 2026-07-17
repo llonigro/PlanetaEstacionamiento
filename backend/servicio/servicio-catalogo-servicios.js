@@ -41,9 +41,17 @@ const actualizarParcial = async (id, datosCatalogo) => {
 };
 
 
+// 5 . DELETE
+const eliminar = async (id) => {
+    const { rows } = await pool.query('DELETE FROM catalogo_servicios WHERE id = $1 RETURNING *', [id]);
+    return rows[0]; 
+};
+
+
 module.exports = {
     obtenerTodos,
     VerCatalogo,
     crear,
-    actualizarParcial
+    actualizarParcial,
+    eliminar
 };
