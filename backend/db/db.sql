@@ -51,6 +51,27 @@ CREATE TABLE registros (
     FOREIGN KEY(vehiculo_id) REFERENCES vehiculos(id)    
 );
 
+
+-- 5. TABLA CATÁLOGO DE SERVICIOS
+create table catalogo_servicios(
+    id SERIAL PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    descripcion TEXT,
+    precio_base DECIMAL(10, 2) NOT NULL
+);
+
+--6 TABLA SERVICIOS
+
+create table servicios(
+    id SERIAL PRIMARY KEY,
+    vehiculo_id INT NOT NULL,
+    servicio_id INT NOT NULL,
+    estado VARCHAR(100),
+    precio_final DECIMAL,
+    FOREIGN KEY(vehiculo_id) REFERENCES vehiculos(id)    
+    FOREIGN KEY(servicio_id) REFERENCES catalogo_servicios(id)
+);
+
 -- ==========================================
 -- DATOS DE PRUEBA (INSERCIONES)
 -- ==========================================
@@ -68,12 +89,6 @@ INSERT INTO registros (cochera_id, vehiculo_id, fecha_ingreso, fecha_egreso, pre
 VALUES (1, 1, '2024-06-01 08:00:00', '2024-06-01 10:00:00', 20.00, false);
 
 
--- create table catalogo_servicios(
---     id SERIAL PRIMARY KEY,
---     nombre VARCHAR(100) NOT NULL,
---     descripcion TEXT,
---     precio_base DECIMAL NOT NULL
--- );
 
 -- create table servicios(
 --     id SERIAL PRIMARY KEY,
