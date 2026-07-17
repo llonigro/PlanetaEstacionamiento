@@ -6,6 +6,7 @@ const RutaUsuario = require("../rutas/Usuarios-ruta.js");
 const RutaVehiculos = require("../rutas/vehiculos-ruta.js");
 const RutaCocheras = require("../rutas/cochera-ruta.js");
 const RutaRegistros = require("../rutas/registros-ruta.js");
+const RutaCatalogoServicios = require("../rutas/catalogo-servicio-ruta.js");
 
 
 
@@ -23,6 +24,7 @@ app.use(RutaUsuario); // otro ejemplo de colocar ruta ("/api/", RutaUsuario);
 app.use(RutaVehiculos)
 app.use(RutaCocheras)
 app.use(RutaRegistros)
+app.use(RutaCatalogoServicios)
 
 // si no existe la ruta devuelve un json ej / http://localhost:5000/dhdh
 app.use((req, res, next) => {
