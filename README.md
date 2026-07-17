@@ -1,5 +1,14 @@
 # Planeta Estacionamiento
 
+# modulos 
+- npm install dotenv
+- npm install pg
+- npm install express
+- npm install cors
+- npm install express-validator
+
+
+
 > Plataforma web que ofrece un servicio de gestión de estacionamientos diseñado para optimizar las tareas del personal administrativo y permitir a los clientes consultar disponibilidad y tarifas en tiempo real
 
 ## Características Principales

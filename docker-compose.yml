@@ -1,0 +1,24 @@
+services:
+  postgres-db:
+    image: postgres:13
+    container_name: planetaestacionamiento-postgres
+    restart: always
+    env_file: ./.env
+    environment:
+      POSTGRES_USER: $DB_USER
+      POSTGRES_PASSWORD: $DB_PASSWORD
+      POSTGRES_DB: $DB_DATABASE
+    ports:
+      - "5432:5432"
+  
+  app:
+    build: .
+    container_name: planetaestacionamiento-app
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres-db
+    links:
+      - postgres-db
+
