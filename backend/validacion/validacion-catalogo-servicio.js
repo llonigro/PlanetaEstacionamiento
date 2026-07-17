@@ -1,4 +1,4 @@
-// validacion/catlogo.validator.js
+// validacion/catalogo.validator.js
 const { param, body, validationResult } = require('express-validator');
 
 
@@ -22,6 +22,24 @@ const validarId = [
 ];
 
 
+// validacion para POST
+const validarCrearCatalogo = [
+    body("nombre")
+        .trim()
+        .escape()
+        .notEmpty().withMessage('El nombre es obligatorio')
+        .matches(/^[A-Za-zÀ-ÿ\s]+$/).withMessage('El nombre debe contener solo letras y espacios'),
+    body("precio_base")
+        .trim()
+        .escape()
+        .notEmpty().withMessage('El precio es obligatorio')
+        .isFloat({ min: 0 }).withMessage('El precio debe ser un número positivo')
+        .toFloat(),
+    verificarErrores
+]
+
+
 module.exports = {
-    validarId
+    validarId,
+    validarCrearCatalogo
 }

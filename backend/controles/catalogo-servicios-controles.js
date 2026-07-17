@@ -1,7 +1,7 @@
 // controles/catalogo-servicio-controles.js
 const catalogoServicio = require('../servicio/servicio-catalogo-servicios.js');
 
-const VerCatalogoServicio = async (req, res) => {
+const VerCatalogosServicios = async (req, res) => {
     try {
         const catalogos = await catalogoServicio.obtenerTodos();
 
@@ -31,8 +31,23 @@ const VerUnicoCatalogo = async (req, res, next) => {
     }
 };
 
+const CrearCatalogo = async (req, res) => {
+    try {
+        const nuevoCatalogo = await catalogoServicio.crear(req.body);
+        if (!nuevoCatalogo) {
+            return res.status(400).json({ message: "No se pudo crear el catalogo" });
+        }
+        res.status(201).json(nuevoCatalogo);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Algo salió mal en el servidor" });
+    }
+};
+
+
 
 module.exports = {
-    VerCatalogoServicio,
-    VerUnicoCatalogo
+    VerCatalogosServicios,
+    VerUnicoCatalogo,
+    CrearCatalogo
 };

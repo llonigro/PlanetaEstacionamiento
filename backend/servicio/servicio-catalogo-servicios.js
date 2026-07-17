@@ -15,8 +15,19 @@ const VerCatalogo = async (id) => {
     return rows[0]; // Retorna el catalogo o undefined si no existe
 };
 
+// 3. POST
+const crear = async (datosCatalogo) => {
+    const { nombre, descripcion, precio_base } = datosCatalogo;
+    const { rows } = await pool.query(
+        'INSERT INTO catalogo_servicios (nombre, descripcion, precio_base) VALUES ($1, $2, $3) RETURNING *',
+        [nombre, descripcion, precio_base]
+    );
+    return rows[0]; 
+};
+
 
 module.exports = {
     obtenerTodos,
-    VerCatalogo
+    VerCatalogo,
+    crear
 };
