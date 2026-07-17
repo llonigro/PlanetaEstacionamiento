@@ -22,7 +22,7 @@ CREATE TABLE vehiculos (
     modelo VARCHAR(100) NOT NULL,
     color VARCHAR(100),
     usuario_id INT NOT NULL,
-    permitir_valet BOOLEAN NOT NULL,
+    permitir_valet BOOLEAN NOT NULL, -- cambiar a default false 
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
 );  
 
@@ -36,7 +36,6 @@ CREATE TABLE cocheras (
     clima VARCHAR(100) NOT NULL
 );
 
-ALTER TABLE cocheras ALTER COLUMN libre SET DEFAULT true;
 
 -- 5. TABLA REGISTROS 
 CREATE TABLE registros (
@@ -62,15 +61,20 @@ create table catalogo_servicios(
 
 --6 TABLA SERVICIOS
 
-create table servicios(
+-- 6. TABLA SERVICIOS (Con control de estados y notificaciones)
+CREATE TABLE servicios(
     id SERIAL PRIMARY KEY,
     vehiculo_id INT NOT NULL,
     servicio_id INT NOT NULL,
-    estado VARCHAR(100),
-    precio_final DECIMAL,
-    FOREIGN KEY(vehiculo_id) REFERENCES vehiculos(id)    
+    -- Usamos CHECK para asegurar que solo entren los estados de tu negocio
+    estado VARCHAR(50) DEFAULT 'En Espera' CHECK (estado IN ('En Espera', 'En Proceso', 'Finalizado')),
+    precio_final DECIMAL(10, 2) NOT NULL,
+    fecha_solicitud TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    notificado_cliente BOOLEAN DEFAULT false, -- Controla el envío de alertas/mensajes
+    FOREIGN KEY(vehiculo_id) REFERENCES vehiculos(id),
     FOREIGN KEY(servicio_id) REFERENCES catalogo_servicios(id)
 );
+
 
 -- ==========================================
 -- DATOS DE PRUEBA (INSERCIONES)
