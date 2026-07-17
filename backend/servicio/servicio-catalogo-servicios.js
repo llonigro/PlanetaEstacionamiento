@@ -25,9 +25,25 @@ const crear = async (datosCatalogo) => {
     return rows[0]; 
 };
 
+// 4. PATCH
+const actualizarParcial = async (id, datosCatalogo) => {
+    const { nombre, descripcion, precio_base } = datosCatalogo;
+
+    const { rows } = await pool.query(
+        `UPDATE catalogo_servicios SET 
+        nombre = COALESCE($1, nombre), 
+        descripcion = COALESCE($2, descripcion), 
+        precio_base = COALESCE($3, precio_base)
+        WHERE id = $4 RETURNING *`,
+        [nombre || null, descripcion || null, precio_base || null, id]
+    );
+    return rows[0]; 
+};
+
 
 module.exports = {
     obtenerTodos,
     VerCatalogo,
-    crear
+    crear,
+    actualizarParcial
 };

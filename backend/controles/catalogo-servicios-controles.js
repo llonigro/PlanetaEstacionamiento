@@ -44,10 +44,25 @@ const CrearCatalogo = async (req, res) => {
     }
 };
 
+const ActualizarCatalogo = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const catalogoActualizado = await catalogoServicio.actualizarParcial(id, req.body);
+        if (catalogoActualizado === undefined) {
+            return res.status(404).json({ message: "catalogo no encontrado" });
+        }
+        res.json(catalogoActualizado);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Algo salió mal en el servidor" });
+    }
+};
+
 
 
 module.exports = {
     VerCatalogosServicios,
     VerUnicoCatalogo,
-    CrearCatalogo
+    CrearCatalogo,
+    ActualizarCatalogo
 };

@@ -36,10 +36,30 @@ const validarCrearCatalogo = [
         .isFloat({ min: 0 }).withMessage('El precio debe ser un número positivo')
         .toFloat(),
     verificarErrores
-]
+];
+
+
+// validacion para PATCH
+const validarActualizarCatalogo = [
+    body("nombre")
+    .optional({ checkFalsy: true })
+        .trim()
+        .escape()
+        .notEmpty().withMessage('El nombre es obligatorio')
+        .matches(/^[A-Za-zÀ-ÿ\s]+$/).withMessage('El nombre debe contener solo letras y espacios'),
+    body("precio_base")
+    .optional({ checkFalsy: true })
+        .trim()
+        .escape()
+        .notEmpty().withMessage('El precio es obligatorio')
+        .isFloat({ min: 0 }).withMessage('El precio debe ser un número positivo')
+        .toFloat(),
+    verificarErrores
+];
 
 
 module.exports = {
     validarId,
-    validarCrearCatalogo
+    validarCrearCatalogo,
+    validarActualizarCatalogo 
 }
