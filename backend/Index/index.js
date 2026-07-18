@@ -20,7 +20,7 @@ const app = express();
 app.use(cors());
 //app.use(config)
 app.use(express.json({ strict: false }));
-app.use(RutaUsuario); // otro ejemplo de colocar ruta ("/api/", RutaUsuario);
+app.use(RutaUsuario); 
 app.use(RutaVehiculos)
 app.use(RutaCocheras)
 app.use(RutaRegistros)
