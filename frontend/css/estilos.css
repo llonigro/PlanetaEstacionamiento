@@ -198,8 +198,6 @@ body {
 }
 
 
-
-
 /* CUSTOMIZACIÓN DEL MENÚ 'HAMBURGUESA'  */
 
 
@@ -310,10 +308,11 @@ body {
 }
 
 .linea-divisoria {
-    height: 5px;           
-    width: 60%;         
+    height: 7px;           
+    width: 65%;         
     margin: 0.25rem auto;     
-    background-color: #0bb0a74a; 
+    background-color: #0bb0a74a;
+    border-radius: 5px;
 }
 
 .section-inicio {
