@@ -23,6 +23,10 @@ body {
 
 }
 
+.navbar-spacer {
+  height: 90px;
+}
+
 .section {
     background: transparent !important;
     border-radius: 15px;
@@ -98,4 +102,11 @@ body {
 .skeleton-box.is-loaded {
     background: transparent; 
     animation: none;        
+}
+
+.texto-principal {
+    color: var(--azul-marino);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 700;
 }

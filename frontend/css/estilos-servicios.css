@@ -1,3 +1,4 @@
+
 .seccion-servicios {
     position: relative;
     padding-bottom: 50px; 
@@ -9,6 +10,7 @@
     width: 50%;              
     background-color: #0bb0a77a;
     transform: translateX(50%);
+    border-radius: 5px;
 }
 
 .imagen-servicios {
@@ -18,4 +20,35 @@
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card.card-servicios {
+    color: #ffffff !important;
+    padding: 5px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.card.titulo-tarjeta {
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+    flex-wrap: wrap;
+    line-height: 1.2;
+}
+
+.imagenes-laterales {
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    position: sticky;
+    top: 0;
+}
+
+.imagen-izquierda {
+    background-image: url('https://picsum.photos/120/400');
+}
+
+.imagen-derecha {
+    background-image: url('https://picsum.photos/120/400');
 }
