@@ -14,163 +14,169 @@
     <!-- Agrego Bulma CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
 
-    <!-- Agrego el archivo de estilos -->
+    <!-- Agrego los archivos de estilos -->
     <link rel="stylesheet" href="css/estilos.css">
+    <link rel="stylesheet" href="css/estilos-nosotros.css">
+    <link rel="stylesheet" href="css/estilos-navbar.css">
+
 </head>
 <body>
-<header class="header">
+    <header class="header">
 
-<div id="navbar-placeholder"></div>
+    <div id="navbar-placeholder"></div>
 
-</header>
+    </header>
 
-<!-- NUESTRO EQUIPO -->
-<section class="hero is-large hero-nosotros">
-    <div class="hero-body">
-        <div class="container has-text-centered">
-            <h1 class="title is-1 has-text-white">
-                Conocé nuestro equipo
-            </h1>
-            <h2 class="subtitle is-4 has-text-white-ter mt-2">
-                Detrás de Planeta Estacionamiento hay un grupo de personas apasionadas por la tecnología y la movilidad urbana.
-            </h2>
+    <!-- NUESTRO EQUIPO -->
+    <section class="hero is-large hero-nosotros">
+        <div class="hero-body">
+            <div class="container has-text-centered">
+                <h1 class="title is-1 has-text-white">
+                    Conocé más sobre nosotros 
+                </h1>
+                <h2 class="subtitle is-4 has-text-white-ter mt-2">
+                    Nuestra mision es ofrecer una plataforma de estacionamiento confiable y conveniente para los usuarios, al mismo tiempo que brindamos a los propietarios de estacionamientos una forma eficiente de administrar sus espacios.
+                </h2>
+            </div>
+
+        </div>
+    </section>
+
+
+    <div class="linea-divisoria-nosotros"></div>
+
+    <!-- QUE OFRECEMOS -->
+    <section class="section">
+        <div class="container">
+            <h2 class="title is-2 has-text-centered mb-6 texto-principal">Que ofrecemos?</h2>
+
+            <div class="columns is-multiline">
+
+                <!-- GESTIÓN DE RESERVAS -->
+                <div class="column is-one-third is-flex">
+                    <div class="card card-nosotros">
+                        <div class="card-content">
+                            <h3 class="title is-4 is-flex is-align-items-center mb-3 titulo-tarjeta">
+                                <span class="icon is-small mr-3">
+                                    <i class="fas fa-calendar-check"></i>
+                                </span>
+                                GESTIÓN DE RESERVAS</h3>
+                            <p>Ofrecemos una solución integral para la gestión de reservas de estacionamiento, permitiendo a los usuarios planificar y administrar sus espacios de manera eficiente.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MONITOREO EN VIVO -->
+                <div class="column is-one-third is-flex">
+                    <div class="card card-nosotros">
+                        <div class="card-content">
+                            <h3 class="title is-4 is-flex is-align-items-center mb-3 titulo-tarjeta">
+                                <span class="icon is-small mr-3">
+                                    <i class="fas fa-mobile-alt"></i>
+                                </span>
+                                MONITOREO EN VIVO</h3>
+                            <p>Proporcionamos información en tiempo real sobre la ubicación de los estacionamientos disponibles, lo que permite a los usuarios encontrar rápidamente un lugar cercano y conveniente.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- REPORTES FINANCIEROS -->
+                <div class="column is-one-third is-flex">
+                    <div class="card card-nosotros">
+                        <div class="card-content">
+                            <h3 class="title is-4 is-flex is-align-items-center mb-3 titulo-tarjeta">
+                                <span class="icon is-small mr-3">
+                                    <i class="fas fa-file-invoice-dollar"></i>
+                                </span>
+                                REPORTES FINANCIEROS</h3>
+                            <p>Ofrecemos informes detallados sobre la actividad de estacionamiento, incluyendo métricas de rendimiento y análisis financiero para ayudar a los administradores a tomar decisiones informadas.</p>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- REPORTE DE DAÑOS -->
+                <div class="column is-one-third is-flex">
+                    <div class="card card-nosotros">
+                        <div class="card-content">
+                            <h3 class="title is-4 is-flex is-align-items-center mb-3 titulo-tarjeta">
+                                <span class="icon is-small mr-3">
+                                    <i class="fas fa-tools"></i>
+                                </span>
+                                REPORTE DE DAÑOS</h3>
+                            <p>Proporcionamos informes detallados sobre los daños ocurridos en los estacionamientos, lo que permite a los administradores identificar problemas y tomar medidas correctivas oportunas.</p>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <!-- ALERTAS CLIMÁTICAS -->
+                <div class="column is-one-third is-flex">
+                    <div class="card card-nosotros">
+                        <div class="card-content">
+                            <h3 class="title is-4 is-flex is-align-items-center mb-3 titulo-tarjeta">
+                                <span class="icon is-small mr-3">
+                                    <i class="fas fa-cloud"></i>
+                                </span>
+                                ALERTAS CLIMÁTICAS</h3>
+                            <p>Proporcionamos información sobre condiciones climáticas que pueden afectar la experiencia de estacionamiento, como lluvia, nieve o tráfico intenso.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TABLERO DE NOTICIAS -->
+                <div class="column is-one-third is-flex">
+                    <div class="card card-nosotros">
+                        <div class="card-content">
+                            <h3 class="title is-4 is-flex is-align-items-center mb-3 titulo-tarjeta">
+                                <span class="icon is-small mr-3">
+                                    <i class="fas fa-newspaper"></i>
+                                </span>
+                                TABLERO DE NOTICIAS</h3>
+                            <p>Mantente informado sobre las últimas noticias y actualizaciones relacionadas con nuestro servicio de estacionamiento.</p>
+                        </div>
+                    </div>
+                </div>
+
         </div>
 
-    </div>
-</section>
 
-<!-- QUE OFRECEMOS -->
-<section class="section">
-    <div class="container">
-        <h2 class="title is-2 has-text-centered mb-6 texto-principal">Que ofrecemos?</h2>
+    </section>
 
-        <div class="columns is-multiline">
+    <!-- Pie de página -->
+    <footer class="footer navbar-color">
+        <div class="content has-text-centered has-text-white">
 
-            <!-- GESTIÓN DE RESERVAS -->
-            <div class="column is-one-third is-flex">
-                <div class="card card-nosotros">
-                    <div class="card-content">
-                        <h3 class="title is-4 is-flex is-align-items-center mb-3 titulo-tarjeta">
-                            <span class="icon is-small mr-3">
-                                <i class="fas fa-calendar-check"></i>
-                            </span>
-                            GESTIÓN DE RESERVAS</h3>
-                        <p>Ofrecemos una solución integral para la gestión de reservas de estacionamiento, permitiendo a los usuarios planificar y administrar sus espacios de manera eficiente.</p>
-                    </div>
-                </div>
-            </div>
+        <div class="is-flex is-align-items-center is-justify-content-center mb-3" style="gap: 10px;">
 
-            <!-- MONITOREO EN VIVO -->
-            <div class="column is-one-third is-flex">
-                <div class="card card-nosotros">
-                    <div class="card-content">
-                        <h3 class="title is-4 is-flex is-align-items-center mb-3 titulo-tarjeta">
-                            <span class="icon is-small mr-3">
-                                <i class="fas fa-mobile-alt"></i>
-                            </span>
-                            MONITOREO EN VIVO</h3>
-                        <p>Proporcionamos información en tiempo real sobre la ubicación de los estacionamientos disponibles, lo que permite a los usuarios encontrar rápidamente un lugar cercano y conveniente.</p>
-                    </div>
-                </div>
-            </div>
+            <a href="https://github.com/llonigro/PlanetaEstacionamiento" target="_blank" rel="noopener noreferrer">
+            <i class="fab fa-github fa-2x" style="color: rgb(255,255,255);"></i>
+            </a>
 
-            <!-- REPORTES FINANCIEROS -->
-            <div class="column is-one-third is-flex">
-                <div class="card card-nosotros">
-                    <div class="card-content">
-                        <h3 class="title is-4 is-flex is-align-items-center mb-3 titulo-tarjeta">
-                            <span class="icon is-small mr-3">
-                                <i class="fas fa-file-invoice-dollar"></i>
-                            </span>
-                            REPORTES FINANCIEROS</h3>
-                        <p>Ofrecemos informes detallados sobre la actividad de estacionamiento, incluyendo métricas de rendimiento y análisis financiero para ayudar a los administradores a tomar decisiones informadas.</p>
-                    </div>
-                </div>
-            </div>
+            <h4 class="mb-0">
+            <strong>Planeta Estacionamiento</strong> 
+            </h4>
+        </div>
+        <p style="margin-top: 10px;">Todos los derechos reservados.</p>
+        </div>
+    </footer>
 
 
-            <!-- REPORTE DE DAÑOS -->
-            <div class="column is-one-third is-flex">
-                <div class="card card-nosotros">
-                    <div class="card-content">
-                        <h3 class="title is-4 is-flex is-align-items-center mb-3 titulo-tarjeta">
-                            <span class="icon is-small mr-3">
-                                <i class="fas fa-tools"></i>
-                            </span>
-                            REPORTE DE DAÑOS</h3>
-                        <p>Proporcionamos informes detallados sobre los daños ocurridos en los estacionamientos, lo que permite a los administradores identificar problemas y tomar medidas correctivas oportunas.</p>
-                    </div>
-                </div>
-            </div>
+        <!-- Script para cargar el navbar -->
+        <script src="js/navbar-scripts.js"></script>
 
-            
-            <!-- ALERTAS CLIMÁTICAS -->
-            <div class="column is-one-third is-flex">
-                <div class="card card-nosotros">
-                    <div class="card-content">
-                        <h3 class="title is-4 is-flex is-align-items-center mb-3 titulo-tarjeta">
-                            <span class="icon is-small mr-3">
-                                <i class="fas fa-cloud"></i>
-                            </span>
-                            ALERTAS CLIMÁTICAS</h3>
-                        <p>Proporcionamos información sobre condiciones climáticas que pueden afectar la experiencia de estacionamiento, como lluvia, nieve o tráfico intenso.</p>
-                    </div>
-                </div>
-            </div>
+        <script>
+        (async() => {
+            try {
+                const respuesta = await fetch('navbar.html');
+                const data = await respuesta.text();
+                document.getElementById('navbar-placeholder').innerHTML = data;
 
-            <!-- TABLERO DE NOTICIAS -->
-            <div class="column is-one-third is-flex">
-                <div class="card card-nosotros">
-                    <div class="card-content">
-                        <h3 class="title is-4 is-flex is-align-items-center mb-3 titulo-tarjeta">
-                            <span class="icon is-small mr-3">
-                                <i class="fas fa-newspaper"></i>
-                            </span>
-                            TABLERO DE NOTICIAS</h3>
-                        <p>Mantente informado sobre las últimas noticias y actualizaciones relacionadas con nuestro servicio de estacionamiento.</p>
-                    </div>
-                </div>
-            </div>
-
-    </div>
-
-
-</section>
-
-  <!-- Pie de página -->
-  <footer class="footer navbar-color">
-    <div class="content has-text-centered has-text-white">
-
-      <div class="is-flex is-align-items-center is-justify-content-center mb-3" style="gap: 10px;">
-
-        <a href="https://github.com/llonigro/PlanetaEstacionamiento" target="_blank" rel="noopener noreferrer">
-          <i class="fab fa-github fa-2x" style="color: rgb(255,255,255);"></i>
-        </a>
-
-        <h4 class="mb-0">
-          <strong>Planeta Estacionamiento</strong> 
-        </h4>
-      </div>
-      <p style="margin-top: 10px;">Todos los derechos reservados.</p>
-    </div>
-  </footer>
-
-
-    <!-- Script para cargar el navbar -->
-    <script src="js/navbar-scripts.js"></script>
-
-    <script>
-    (async() => {
-        try {
-            const respuesta = await fetch('navbar.html');
-            const data = await respuesta.text();
-            document.getElementById('navbar-placeholder').innerHTML = data;
-
-            inicializarScriptsNavbar();
-        } catch (error) {
-            console.error('Error al cargar el navbar:', error);
-        }
-    })();
-    </script>
+                inicializarScriptsNavbar();
+            } catch (error) {
+                console.error('Error al cargar el navbar:', error);
+            }
+        })();
+        </script>
 </body>
 </html>

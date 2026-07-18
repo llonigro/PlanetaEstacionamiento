@@ -13,7 +13,7 @@ html {
 }
 
 body {
-    background-image: radial-gradient(#3AB397 0.5px, transparent 0.8px);
+    background-image: radial-gradient(#3AB397 0.5px, transparent 1px);
     background-size: 20px 20px; 
     background-color: #ffffff;
     min-height: 100dvh;
@@ -24,11 +24,39 @@ body {
 }
 
 .section {
-    background: white;
+    background: transparent !important;
     border-radius: 15px;
     margin: 20px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
 }
+
+.card {
+    border: 2px transparent solid;
+    background-color: var(--azul-marino);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease border-color 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    border-color: var(--turquesa);
+    border-width: 3px;
+}
+
+.footer {
+    height: 100%;
+    padding: 3.5rem 0;
+}
+
+.linea-divisoria {
+    height: 7px;           
+    width: 65%;         
+    margin: 0.25rem auto;     
+    background-color: #0bb0a74a;
+    border-radius: 5px;
+}
+
 
 /* SKELETON */
 
@@ -73,252 +101,24 @@ body {
 }
 
 
-
-
-/* ESTILOS DEL LOGO EN NAVBAR */
-
-
-/*El icono del planeta */
-.logo-icono {
-    max-height: 70px !important;
-    margin-right: 5px;
+.seccion-servicios {
+    position: relative;
+    padding-bottom: 50px; 
 }
 
-/*El contenedor que apila los textos */
-.logo-texto-contenedor {
-    display: flex;
-    flex-direction: column;
+.linea-divisoria-servicios {
     justify-content: center;
-    line-height: 1;
-    user-select: none; 
-    margin-right: 5px;
+    height: 7px;           
+    width: 50%;              
+    background-color: #0bb0a77a;
+    transform: translateX(50%);
 }
 
-/*La palabra PLANETA */
-.logo-texto-principal {
-    font-size: 25px;         
-    font-weight: 900;           
-    color: var(--azul-oscuro);            
-    text-transform: uppercase;  
-    letter-spacing: 2px;        
-}
-
-/*La palabra ESTACIONAMIENTO */
-.logo-texto-secundario {
-    font-size: 12px;         
-    font-weight: 700;          
-    color: var(--azul-oscuro);            
-    text-transform: uppercase;  
-    letter-spacing: 1.2px;      
-    margin-top: 2px;            
-    display: block;
-}
-
-
-
-
-/* MENU REGISTRO */
-
-
-/* Color del menú */
-.menu-color {
-    background-color: var(--azul-petroleo) !important;
-    --box-link-active-shadow: var(--azul-petroleo) !important;
-}
-
-/* Color del resplandor cuando se enfoca un input */
-.input:focus, .textarea:focus {
-    border-color: var(--turquesa);
-
-    box-shadow: 0 0 0 0.125em rgba(11,176,167,0.25);
-}
-
-/* Color del ícono cuando se enfoca un input */
-.input:focus ~ .icon {
-    color: var(--turquesa) !important;
-}
-
-.color-titulo-registro {
-    color: var(--turquesa) !important; 
-    font-weight: 600;
-}
-
-.linea-divisoria-registro {
-    background-color: #ffffff;
-    height: 2px;
-}
-
-
-
-
-/* NAVBAR */
-
-
-/* Color de fondo principal del navbar */
-.navbar-color {
-    background-color: var(--turquesa) !important;
-}
-
-/* Estilo de los elementos del navbar */
-.navbar-color .navbar-item, 
-.navbar-color .navbar-link {
-    color: var(--azul-oscuro) !important; 
-    background-color: transparent !important;
-    font-weight: 500; 
-}
-
-/* Estilos para cuando se pasa el mouse por encima */
-.navbar-color .navbar-item:hover, 
-.navbar-color .navbar-link:hover {
-    background-color: rgba(255, 255, 255, 0.15) !important;
-    color: #ffffff !important;
-}
-
-/* Estilos para el dropdown */
-.navbar-color .navbar-dropdown {
-    background-color: var(--azul-marino) !important; 
-    border-top: none;
-}
-
-.navbar-color .navbar-dropdown .navbar-item:hover {
-    background-color: var(--turquesa) !important;
-    color: #ffffff !important;
-}
-
-.navbar-color .navbar-dropdown .navbar-divider {
-    background-color: rgba(0, 0, 0, 0.1); 
-}
-
-.navbar-color .navbar-link::after {
-    border-color: var(--azul-petroleo) !important; 
-}
-
-.navbar-color .navbar-link:hover::after {
-    border-color: var(--azul-marino) !important; 
-}
-
-
-/* CUSTOMIZACIÓN DEL MENÚ 'HAMBURGUESA'  */
-
-
-/* Color de las líneas del menú hamburguesa */
-.navbar-color .navbar-burger span {
-    background-color: var(--azul-oscuro) !important; 
-    height: 2px; 
-}
-
-/* Color cuando pasás el mouse por encima (Hover) */
-.navbar-color .navbar-burger:hover {
-    background-color: rgba(255, 255, 255, 0.15) !important; 
-}
-
-/* Tamaño del botón */
-.navbar-color .navbar-burger {
-    height: 4.5rem; 
-    width: 4.5rem;
-}
-
-/* Estilos para el menú desplegable cuando está activo */
-.navbar-color .navbar-menu.is-active {
-    background-color: var(--turquesa) !important;
-
-    /* Margen redondo */
-    border-bottom-left-radius: 16px;
-    border-bottom-right-radius: 16px;
-    border-top-left-radius: 16px;
-    border-top-right-radius: 16px;
-    
-    /* Un margen a los costados */
-    margin: 0 10px; 
-    
-    /* Sombra */
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-}
-
-
-
-
-/* HERO DE 'NOSOTROS' */
-
-
-.hero.hero-nosotros {
-    background: linear-gradient(rgba(57, 190, 184, 0.3), rgba(57, 190, 184, 0.3)), url('../img/hero-nosotros.webp') center center;
-    background-size: cover;
-    background-repeat: no-repeat;
-}
-
-.hero.hero-nosotros .hero-body {
-    background-color: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(3px);
-}
-
-.texto-principal {
-    color: var(--azul-marino);
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    font-weight: 700;
-}
-
-.card {
-    border: 2px transparent solid;
-    background-color: var(--azul-marino);
+.imagen-servicios {
+    background-color: rgb(0, 0, 0);
+    width: 100%;
+    height: auto;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease border-color 0.3s ease;
-}
-
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-    border-color: var(--turquesa);
-    border-width: 3px;
-}
-
-.card.card-nosotros {
-    color: #ffffff !important;
-    padding: 5px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-}
-
-.card.titulo-tarjeta {
-    font-size: 1.5rem;
-    letter-spacing: 1px;
-    flex-wrap: wrap;
-    line-height: 1.2;
-}
-
-
-/* INICIO */
-
-.texto-inicio {
-    color: var(--azul-marino);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-weight: 700;
-}
-
-.parrafo-inicio {
-    color: var(--azul-oscuro);
-    font-size: 1.1rem;
-    line-height: 1.5;
-    text-align: justify;
-    font-weight: 400;
-}
-
-.linea-divisoria {
-    height: 7px;           
-    width: 65%;         
-    margin: 0.25rem auto;     
-    background-color: #0bb0a74a;
-    border-radius: 5px;
-}
-
-.section-inicio {
-    position: relative;
-    z-index: 1;
-    background-color: transparent !important; 
-    padding-top: 1rem;
-    padding-bottom: 1rem;  
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }

@@ -14,8 +14,11 @@
     <!-- Agrego Bulma CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
 
-    <!-- Agrego el archivo de estilos -->
+    <!-- Agrego los archivos de estilos -->
     <link rel="stylesheet" href="css/estilos.css">
+    <link rel="stylesheet" href="css/estilos-navbar.css">
+    <link rel="stylesheet" href="css/estilos-servicios.css">
+
 </head>
 <body>
     <header class="header">
@@ -29,8 +32,8 @@
         <div class="container">
             <h1 class="title is-1 texto-principal has-text-centered mt-6">NUESTROS SERVICIOS</h1>
             <div class="imagen-hero">
-                <figure class="image is-3by1 skeleton-box has-text-centered">
-                    <img src="https://picsum.photos/1200/400" alt="Imagen de servicios" class="fade-img">
+                <figure class="image is-inline-block skeleton-box">
+                    <img class="imagen-servicios" src="img/imagen-servicios.webp" alt="Imagen de servicios" class="fade-img">
                 </figure>
             </div>
         </div>
@@ -155,6 +158,27 @@
         <p style="margin-top: 10px;">Todos los derechos reservados.</p>
         </div>
     </footer>
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const images = document.querySelectorAll('.fade-img');
+
+            images.forEach(img => {
+                // Verificamos si la imagen ya se cargó (por caché)
+                if (img.complete) {
+                    img.classList.add('is-loaded');
+                    img.parentElement.classList.add('is-loaded');
+                } else {
+                    // Si no, esperamos al evento load
+                    img.addEventListener('load', () => {
+                        img.classList.add('is-loaded');
+                        img.parentElement.classList.add('is-loaded');
+                    });
+                }
+            });
+        });
+    </script>
 
 
         <!-- Script para cargar el navbar -->
