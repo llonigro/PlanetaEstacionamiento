@@ -47,7 +47,7 @@ const validarActualizarServicio = [
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
-// Si el usuario ingresa un cochera_id o vehiculo_id que NO existe
+// Si el usuario ingresa un servicio_id o vehiculo_id que NO existe
 const validarForaneasServicio = (error, res) => {
     if (error?.code === '23503') {        
         // Verificamos cuál de las dos llaves falló leyendo el nombre del "constraint"
@@ -69,4 +69,4 @@ const validarForaneasServicio = (error, res) => {
 };
 
 
-module.exports = { validarCrearServicio, validarActualizarServicio, validarForaneasServicio };
+module.exports = { validarCrearServicio, validarActualizarServicio, validarForaneasServicio, validarId };
