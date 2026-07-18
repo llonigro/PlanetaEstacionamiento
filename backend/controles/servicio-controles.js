@@ -1,6 +1,8 @@
 const serviciosService = require('../servicio/servicio-servicios.js');
+const { validarForaneasServicio } = require('../validacion/validacion-servicio.js');
 
-const ObtenerServicios = async (req, res, next) => {
+/////////////////////////////////////////////////////////////////////////////////////
+const ObtenerServicios = async (req, res) => {
     try {
         const servicios = await serviciosService.obtenerTodos();
         if (servicios.length === 0) {
@@ -13,7 +15,7 @@ const ObtenerServicios = async (req, res, next) => {
     }
 };
 
-const VerUnicoServicio = async (req, res, next) => {
+const VerUnicoServicio = async (req, res) => {
     try {
         const { id } = req.params;
         const servicio = await serviciosService.VerServicio(id);
@@ -28,6 +30,23 @@ const VerUnicoServicio = async (req, res, next) => {
     }
 };
 
+// POST
+const CrearServicio = async (req, res) => {
+    try {
+        const nuevoServicio = await serviciosService.crear(req.body);
+        res.status(201).json({ 
+            message: 'Servicio registrado con éxito', 
+            registro: nuevoServicio 
+        });
+    } catch (error) {
+        // Si es un error de PostgreSQL (Llaves foráneas)
+        if (validarForaneasServicio(error, res)) return;
+        console.error(error);
+        res.status(500).json({ message: 'Algo salió mal en el servidor' });
+    }
+};
+
+
 ///////////////////////////////////////////////////////////////////////////////
 
-module.exports = {ObtenerServicios, VerUnicoServicio};
+module.exports = {ObtenerServicios, VerUnicoServicio, CrearServicio};

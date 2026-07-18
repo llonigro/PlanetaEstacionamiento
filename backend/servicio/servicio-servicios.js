@@ -16,4 +16,14 @@ const VerServicio = async (id) => {
     return rows[0]; 
 };
 
-module.exports = { obtenerTodos, VerServicio };
+
+// 2. POST
+const crear = async (datos) => {
+    const { vehiculo_id, servicio_id, precio_final } = datos;
+    const result = await pool.query(
+        "INSERT INTO servicios (vehiculo_id, servicio_id, precio_final) VALUES ($1, $2, $3) RETURNING *",
+        [vehiculo_id, servicio_id, precio_final]
+    );
+    return result.rows[0];
+};
+module.exports = { obtenerTodos, VerServicio,crear };
