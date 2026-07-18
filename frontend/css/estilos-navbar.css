@@ -6,80 +6,6 @@
     --verde-agua: #3AB397;
 }
 
-/* ESTILOS DEL LOGO EN NAVBAR */
-
-
-/*El icono del planeta */
-.logo-icono {
-    max-height: 70px !important;
-    margin-right: 5px;
-}
-
-/*El contenedor que apila los textos */
-.logo-texto-contenedor {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    line-height: 1;
-    user-select: none; 
-    margin-right: 5px;
-}
-
-/*La palabra PLANETA */
-.logo-texto-principal {
-    font-size: 25px;         
-    font-weight: 900;           
-    color: var(--azul-oscuro);            
-    text-transform: uppercase;  
-    letter-spacing: 2px;        
-}
-
-/*La palabra ESTACIONAMIENTO */
-.logo-texto-secundario {
-    font-size: 12px;         
-    font-weight: 700;          
-    color: var(--azul-oscuro);            
-    text-transform: uppercase;  
-    letter-spacing: 1.2px;      
-    margin-top: 2px;            
-    display: block;
-}
-
-
-
-
-/* MENU REGISTRO */
-
-
-/* Color del menú */
-.menu-color {
-    background-color: var(--azul-petroleo) !important;
-    --box-link-active-shadow: var(--azul-petroleo) !important;
-}
-
-/* Color del resplandor cuando se enfoca un input */
-.input:focus, .textarea:focus {
-    border-color: var(--turquesa);
-
-    box-shadow: 0 0 0 0.125em rgba(11,176,167,0.25);
-}
-
-/* Color del ícono cuando se enfoca un input */
-.input:focus ~ .icon {
-    color: var(--turquesa) !important;
-}
-
-.color-titulo-registro {
-    color: var(--turquesa) !important; 
-    font-weight: 600;
-}
-
-.linea-divisoria-registro {
-    background-color: #ffffff;
-    height: 2px;
-}
-
-
 
 
 /* NAVBAR */
@@ -166,3 +92,81 @@
     /* Sombra */
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
 }
+
+
+/* ESTILOS DEL LOGO EN NAVBAR */
+
+
+/*El icono del planeta */
+.logo-icono {
+    max-height: 70px !important;
+    margin-right: 5px;
+}
+
+/*El contenedor que apila los textos */
+.logo-texto-contenedor {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    line-height: 1;
+    user-select: none; 
+    margin-right: 5px;
+}
+
+/*La palabra PLANETA */
+.logo-texto-principal {
+    font-size: 25px;         
+    font-weight: 900;           
+    color: var(--azul-oscuro);            
+    text-transform: uppercase;  
+    letter-spacing: 2px;        
+}
+
+/*La palabra ESTACIONAMIENTO */
+.logo-texto-secundario {
+    font-size: 12px;         
+    font-weight: 700;          
+    color: var(--azul-oscuro);            
+    text-transform: uppercase;  
+    letter-spacing: 1.2px;      
+    margin-top: 2px;            
+    display: block;
+}
+
+
+
+
+/* MENU REGISTRO */
+
+
+/* Color del menú */
+.menu-color {
+    background-color: var(--azul-petroleo) !important;
+    --box-link-active-shadow: var(--azul-petroleo) !important;
+}
+
+/* Color del resplandor cuando se enfoca un input */
+.input:focus, .textarea:focus {
+    border-color: var(--turquesa);
+
+    box-shadow: 0 0 0 0.125em rgba(11,176,167,0.25);
+}
+
+/* Color del ícono cuando se enfoca un input */
+.input:focus ~ .icon {
+    color: var(--turquesa) !important;
+}
+
+.color-titulo-registro {
+    color: var(--turquesa) !important; 
+    font-weight: 600;
+}
+
+.linea-divisoria-registro {
+    background-color: #ffffff;
+    height: 2px;
+}
+
+
+
+

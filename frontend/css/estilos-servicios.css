@@ -1,0 +1,21 @@
+.seccion-servicios {
+    position: relative;
+    padding-bottom: 50px; 
+}
+
+.linea-divisoria-servicios {
+    justify-content: center;
+    height: 7px;           
+    width: 50%;              
+    background-color: #0bb0a77a;
+    transform: translateX(50%);
+}
+
+.imagen-servicios {
+    background-color: rgb(0, 0, 0);
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
