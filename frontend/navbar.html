@@ -95,10 +95,11 @@
             <div class="field">
                 <label class="label">Usuario</label>
                 <div class="control has-icons-left">
-                    <input id="username" class="input" type="text" placeholder="Nombre">
+                    <input id="nombre" class="input" type="text" placeholder="Nombre">
                     <span class="icon is-small is-left">
                         <i class="fas fa-user"></i>
                     </span>
+                    <p id="error-nombre" class="help is-danger"></p>
                 </div>
             </div>
 
@@ -110,6 +111,7 @@
                     <span class="icon is-small is-left">
                         <i class="fas fa-solid fa-at"></i>
                     </span>
+                    <p id="error-email" class="help is-danger"></p>
                 </div>
             </div>
 
@@ -117,7 +119,7 @@
             <div class="field">   
                 <label class="label">Contraseña</label>
                 <div class="control has-icons-left has-icons-right">
-                    <input id="password" class="input input-password" type="password" placeholder="**********">
+                    <input id="contrasenia" class="input input-password" type="password" placeholder="**********">
 
                     <span class="icon is-small is-left">
                         <i class="fa-solid fa-lock"></i>
@@ -126,18 +128,20 @@
                     <span class="icon is-small is-right is-clickable boton-ojo">
                         <i class="fa-solid fa-eye icono-ojo"></i>
                     </span>
+                    <p id="error-contrasenia" class="help is-danger"></p>
 
                 </div>
             </div>
 
             <!-- Teléfono -->
             <div class="field">   
-                <label class="label">Numero Telefónico</label>
+                <label class="label">Número Telefónico</label>
                 <div class="control has-icons-left">
-                    <input id="phone" class="input" type="tel" placeholder="+54 9 11 1234-5678">
+                    <input id="telefono" class="input" type="tel" placeholder="+54 9 11 1234-5678 (opcional)">
                     <span class="icon is-small is-left">
                         <i class="fa-solid fa-phone"></i>
                     </span>
+                    <p id="error-telefono" class="help is-danger"></p>
                 </div>
             </div>
 
@@ -178,7 +182,7 @@
             <div class="field">   
                 <label class="label">Contraseña</label>
                 <div class="control has-icons-left has-icons-right">
-                    <input id="login-password" class="input input-password" type="password" placeholder="**********">
+                    <input id="login-contrasenia" class="input input-password" type="password" placeholder="**********">
 
                     <span class="icon is-small is-left">
                         <i class="fa-solid fa-lock"></i>

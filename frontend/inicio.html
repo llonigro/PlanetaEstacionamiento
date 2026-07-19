@@ -146,6 +146,7 @@
     </div>
   </footer>
 
+  <!-- Scripts del skeleton -->
   <script>
     document.addEventListener("DOMContentLoaded", () => {
         const images = document.querySelectorAll('.fade-img');
@@ -166,8 +167,9 @@
     });
   </script>
 
-  <!-- Script para cargar el navbar -->
+  <!-- Scripts -->
   <script src="js/navbar-scripts.js"></script>
+  <script src="js/usuario-scripts.js"></script>
 
   <script>
   (async() => {
@@ -177,10 +179,14 @@
           document.getElementById('navbar-placeholder').innerHTML = data;
 
           inicializarScriptsNavbar();
+          inicializarScriptsUsuario();
+
       } catch (error) {
-          console.error('Error al cargar el navbar:', error);
+          console.error('Error al cargar los scripts:', error);
       }
   })();
   </script>
+
+
 </body>
 </html>

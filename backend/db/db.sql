@@ -1,5 +1,5 @@
 -- 1. CREACIÓN DE LA BASE DE DATOS
-CREATE DATABASE PlanetaEstacionamiento;
+-- CREATE DATABASE PlanetaEstacionamiento;
 
 -- (Asegúrate de conectarte a la base de datos PlanetaEstacionamiento antes de ejecutar lo siguiente)
 

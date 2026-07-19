@@ -32,6 +32,7 @@ function inicializarScriptsNavbar() {
 
     function closeModal($el) {
       $el.classList.remove('is-active');
+
       // Limpiar los campos de entrada del modal al cerrarlo
       const inputs = $el.querySelectorAll('input');
       inputs.forEach(input => {
@@ -45,17 +46,17 @@ function inicializarScriptsNavbar() {
       });
     }
 
-    // Add a click event on buttons to open a specific modal
-    (document.querySelectorAll('.js-modal-trigger') || []).forEach(($trigger) => {
+    // Abrir modal al hacer clic en el botón correspondiente
+    document.querySelectorAll('.js-modal-trigger').forEach(($trigger) => {
       const modal = $trigger.dataset.target;
       const $target = document.getElementById(modal);
 
-      $trigger.addEventListener('click', () => {
-        openModal($target);
-      });
+      $trigger.addEventListener('click', () => openModal($target));
+
+    });
 
     // Add a click event on various child elements to close the parent modal
-    (document.querySelectorAll('.modal-background, .modal-close, .modal-card-head, .delete, .modal-card-foot, .button, .js-modal-close') || []).forEach(($close) => {
+    document.querySelectorAll('.modal-background, .modal-close, .js-modal-close').forEach(($close) => {
       const $target = $close.closest('.modal');
 
       $close.addEventListener('click', () => {
@@ -69,7 +70,7 @@ function inicializarScriptsNavbar() {
         closeAllModals();
       }
     });
-  })
+
 
   /* Scripts para mostrar/ocultar contraseña */
 
