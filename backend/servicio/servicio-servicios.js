@@ -17,7 +17,7 @@ const VerServicio = async (id) => {
 };
 
 
-// 2. POST
+// 3. POST
 const crear = async (datos) => {
     const { vehiculo_id, servicio_id, precio_final } = datos;
     const result = await pool.query(
@@ -27,7 +27,7 @@ const crear = async (datos) => {
     return result.rows[0];
 };
 
-// 2. PATCH
+// 4. PATCH
 const actualizarParcial = async (id, datos) => {
     const { estado, notificado_cliente } = datos;
     
@@ -42,4 +42,13 @@ const actualizarParcial = async (id, datos) => {
     
     return result.rows[0];
 };
-module.exports = { obtenerTodos, VerServicio,crear, actualizarParcial };
+
+// 5 . DELETE
+const eliminar = async (id) => {
+    const { rows } = await pool.query('DELETE FROM servicios WHERE id = $1 RETURNING *', [id]);
+    return rows[0]; 
+};
+
+
+/////////////////////////////////////////////////////////////////////////////////
+module.exports = { obtenerTodos, VerServicio,crear, actualizarParcial, eliminar };

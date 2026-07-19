@@ -65,6 +65,30 @@ const ActualizarServicio = async (req, res, next) => {
     }
 };
 
+
+const eliminarServicio = async (req, res) => {
+    try {
+        const {id} = req.params;
+        const servicio = await serviciosService.eliminar(id);
+        if (!servicio) {
+            return res.status(404).json({
+                ok: false,
+                mensaje: "Servicio no encontrado"
+            });
+        }
+        res.status(200).json({
+            ok: true,
+            mensaje: "Servicio eliminado correctamente de la base de datos",
+            servicioEliminado: servicio[0]
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Algo salió mal en el servidor" });
+    }
+};
+
+
 ///////////////////////////////////////////////////////////////////////////////
 
-module.exports = {ObtenerServicios, VerUnicoServicio, CrearServicio, ActualizarServicio};
+module.exports = {ObtenerServicios, VerUnicoServicio, CrearServicio, ActualizarServicio, eliminarServicio};
