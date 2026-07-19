@@ -26,4 +26,20 @@ const crear = async (datos) => {
     );
     return result.rows[0];
 };
-module.exports = { obtenerTodos, VerServicio,crear };
+
+// 2. PATCH
+const actualizarParcial = async (id, datos) => {
+    const { estado, notificado_cliente } = datos;
+    
+    // Consulta dinámica para actualizar solo lo que se envía (PATCH)
+    const result = await pool.query(
+        `UPDATE servicios SET 
+            estado = COALESCE($1, estado), 
+            notificado_cliente = COALESCE($2, notificado_cliente) 
+         WHERE id = $3 RETURNING *`,
+        [estado, notificado_cliente, id]
+    );
+    
+    return result.rows[0];
+};
+module.exports = { obtenerTodos, VerServicio,crear, actualizarParcial };

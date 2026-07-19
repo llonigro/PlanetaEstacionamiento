@@ -9,6 +9,7 @@ const verificarErrores = (req, res, next) => {
     next();
 };
 
+
 const validarId = [
     param('id')
         .isInt().withMessage('El ID debe ser un número entero válido'),
@@ -35,13 +36,14 @@ const validarCrearServicio = [
 const validarActualizarServicio = [
     
     body('estado')
-        .optional()
-        .isString().withMessage('El estado debe ser texto')
-        .trim().escape(),
+        .optional({ checkFalsy: true })
+        .trim().escape()
+        .toLowerCase() 
+        .isIn(['en espera ', 'en proceso','finalizado' ]).withMessage('El estado debe ser "en espera" , "en proceso" o "finalizado"'),
     body('notificado_cliente')
-        .optional()
-        .isBoolean().withMessage('El valor de notificación debe ser true o false')
-        .trim().escape(),
+        .optional({ checkFalsy: true })
+        .trim().escape()
+        .isBoolean().withMessage('El valor de notificación debe ser true o false'),
     verificarErrores
 ];
 

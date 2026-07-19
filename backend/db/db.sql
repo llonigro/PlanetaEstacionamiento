@@ -67,7 +67,7 @@ CREATE TABLE servicios(
     vehiculo_id INT NOT NULL,
     servicio_id INT NOT NULL,
     -- Usamos CHECK para asegurar que solo entren los estados de tu negocio
-    estado VARCHAR(50) DEFAULT 'En Espera' CHECK (estado IN ('En Espera', 'En Proceso', 'Finalizado')),
+    estado VARCHAR(50) DEFAULT 'En Espera', 
     precio_final DECIMAL(10, 2) NOT NULL,
     fecha_solicitud TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     notificado_cliente BOOLEAN DEFAULT false, -- Controla el envío de alertas/mensajes
