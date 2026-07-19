@@ -13,14 +13,13 @@ html {
 }
 
 body {
-    background-image: radial-gradient(#3AB397 0.5px, transparent 1px);
+    background-image: radial-gradient(#3AB397 0.5px, transparent 0.85px);
     background-size: 20px 20px; 
     background-color: #ffffff;
     min-height: 100dvh;
     margin: 0;
     padding: 0;
     min-height: 100dvh;
-
 }
 
 .navbar-spacer {
@@ -49,6 +48,7 @@ body {
 }
 
 .footer {
+    margin-bottom: 0;
     height: 100%;
     padding: 3.5rem 0;
 }

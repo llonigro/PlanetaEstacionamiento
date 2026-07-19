@@ -11,6 +11,10 @@
 /* NAVBAR */
 
 
+.navbar-shadow {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
 /* Color de fondo principal del navbar */
 .navbar-color {
     background-color: var(--turquesa) !important;
