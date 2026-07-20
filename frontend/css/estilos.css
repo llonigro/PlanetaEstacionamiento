@@ -27,7 +27,7 @@ body {
 }
 
 .section {
-    background: transparent !important;
+    background: transparent;
     border-radius: 15px;
     margin: 20px;
 }
