@@ -25,7 +25,7 @@ app.use(RutaVehiculos)
 app.use(RutaCocheras)
 app.use(RutaRegistros)
 app.use(RutaCatalogoServicios)
-app.use(RutaRegistros)
+// app.use(RutaRegistros)
 app.use(RutaServicios)
 
 // si no existe la ruta devuelve un json ej / http://localhost:5000/dhdh

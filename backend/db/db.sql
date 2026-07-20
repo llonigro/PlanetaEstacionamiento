@@ -22,7 +22,7 @@ CREATE TABLE vehiculos (
     modelo VARCHAR(100) NOT NULL,
     color VARCHAR(100),
     usuario_id INT NOT NULL,
-    permitir_valet BOOLEAN NOT NULL, -- cambiar a default false 
+    permitir_valet BOOLEAN NOT NULL,
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
 );  
 
@@ -93,13 +93,3 @@ INSERT INTO registros (cochera_id, vehiculo_id, fecha_ingreso, fecha_egreso, pre
 VALUES (1, 1, '2024-06-01 08:00:00', '2024-06-01 10:00:00', 20.00, false);
 
 
-
--- create table servicios(
---     id SERIAL PRIMARY KEY,
---     vehiculo_id INT NOT NULL,
---     servicio_id INT NOT NULL,
---     estado VARCHAR(100),
---     precio_final DECIMAL,
---     FOREIGN KEY(vehiculo_id) REFERENCES vehiculos(id)    
---     FOREIGN KEY(servicio_id) REFERENCES catalogo_servicios(id)
--- )
