@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inicio | Planeta Estacionamiento</title>
+    <title>Dashboard</title>
 
     <!-- Icono de la pestaña -->
     <link rel="icon" type="image/png" href="img/icono.png">
@@ -33,7 +33,7 @@
             <section class="seccion-vehiculo">
                 <div class="vehiculo">
 
-                    <h1 class="title is-4 has-text-black">VEHÍCULO REGISTRADO</h1>
+                    <h1 class="title is-4 titulo-turquesa">VEHÍCULO REGISTRADO</h1>
 
                     <div class="vehiculo-contenido">
                         
@@ -54,22 +54,22 @@
 
             <section class="tarjetas">
                 <article class="acciones-rapidas">
-                    <h3 class="title is-4">ACCIONES RÁPIDAS</h3>
+                    <h3 class="title is-4 titulo-blanco">ACCIONES RÁPIDAS</h3>
 
                     <div class="contenedor-botones">
-                        <button class="accion">
-                            <i class="fas fa-car" style="color:turquoise"></i>
+                        <button id="ver-cocheras" class="accion">
+                            <i class="fas fa-car" style="color:darkcyan"></i>
                             <span>Ver cocheras</span>
                         </button>
-                        <button class="accion">
+                        <button id="reservar-lavado" class="accion">
                             <i class="fas fa-droplet" style="color:lightskyblue"></i>
                             <span>Reservar lavado</span>
                         </button>
-                        <button class="accion">
+                        <button id="reportar-danio" class="accion">
                             <i class="fas fa-warning" style="color:lightcoral"></i>
                             <span>Reportar daño</span>
                         </button>
-                        <button class="accion">
+                        <button id="solicitar-valet" class="accion">
                             <i class="fas fa-concierge-bell" style="color:orange"></i>
                             <span>Solicitar valet</span>
                         </button>
@@ -81,43 +81,123 @@
             <section class="seccion-servicios">
                 <div class="servicios">
 
-                    <h2 class="title is-4 has-text-black">SERVICIOS ACTIVOS</h2>
+                    <h2 class="title is-4 titulo-turquesa">SERVICIOS ACTIVOS</h2>
 
-                    <div class="servicios-contenido">
-                        
-                        <div class="servicio">
+                    <div class="contenedor-tarjetas">
 
-                            <div class="servicio-imagen">
-                                <img src="https://picsum.photos/350/350" alt="Imagen del vehículo" class="imagen-vehiculo">
+                        <div class="servicios-tarjetas" data-estado="lavando">
+
+                            <div class="servicio-descripcion">
+                                <div class="imagen-servicio">
+                                    <img src="https://picsum.photos/80/80" 
+                                         alt="Imagen icono lavado">
+                                </div>
+
+                                <div class="titulo-servicio">
+                                    <h1>Lavado</h1>
+
+                                    <p> Estado: 
+                                        <span class="estado-texto"></span>
+                                    </p>
+                                </div>
                             </div>
 
-                            <div class="servicio-info">
-                                <h2 class="lavado">LAVADO</h2>
-                                <p class="lavado-estado">Estado: Lavando</p>
+                            <!-- BARRA DE PROGRESO -->
+                            <div class="barra-progreso">
+
+                                <div class="lineas">
+                                    <div class="linea-progreso"></div>
+                                    <div class="linea-activa"></div>
+                                </div>
+
+
+                                <div class="pasos">
+
+                                    <div class="paso" data-paso="espera">
+                                        <span></span>
+                                        <p>En espera</p>
+                                    </div>
+
+                                    <div class="paso" data-paso="lavando">
+                                        <span></span>
+                                        <p>Lavando</p>
+                                    </div>
+
+                                    <div class="paso" data-paso="listo">
+                                        <span></span>
+                                        <p>Listo</p>
+                                    </div>
+
+                                </div>
+
                             </div>
+
+
+                            <!-- MENSAJE -->
+                            <p class="mensaje-servicio">
+                                No tenés servicios activos en este momento.
+                            </p>
 
                         </div>
 
-                        <div class="servicio">
-                            <div class="servicio-imagen">
-                                <img src="https://picsum.photos/350/350" alt="Imagen del vehículo" class="imagen-vehiculo">
-                            </div>
+                        <div class="servicios-tarjetas">
 
-                            <div class="servicio-info">
-                                <h2 class="valet">VALET</h2>
-                                <p class="valet-estado">Estado: En espera</p>
+                            <div class="servicio-descripcion">
+                                <div class="imagen-servicio">
+                                    <img src="https://picsum.photos/80/80" alt="Imagen icono lavado">
+                                </div>
+                                <div class="titulo-servicio">
+                                    <h1>Valet</h1>
+                                    <p>Estado: </p>
+                                </div>
                             </div>
-
                         </div>
+
                     </div>
+
                 </div>
             </section>
 
-
             <section class="seccion-noticias">
                 <div class="noticias">
-                    <h2 class="title is-4">NOTICIAS</h2>
-                </div>
+
+                    <h2 class="title is-4 titulo-blanco">NOTICIAS</h2>
+
+
+
+                    <div class="contenedor-noticias">
+
+                        <div class="noticia">
+                            <div class="icono-noticia">
+                                <i class="fa-solid fa-triangle-exclamation" style="color:gold"></i>
+                            </div>
+
+                            <div class="contenido-noticia">
+                                <div class="cabecera-noticia">
+                                    <h3 class="title is-5">Nuevo servicio de valet</h3>
+
+                                    <p class="fecha-noticia"> Fecha: 15/06/2024</p>
+                                </div>
+                                <p class="descripcion-noticia">Ahora ofrecemos un servicio de valet para tu comodidad. ¡Reservá tu turno!</p>
+                            </div>
+                        </div>
+
+                        <div class="noticia">
+                            <div class="icono-noticia">
+                                <i class="fa-solid fa-percent" style="color: lightgreen"></i>
+                            </div>
+
+                            <div class="contenido-noticia">
+                                <div class="cabecera-noticia">
+                                    <h3 class="title is-5">Promoción especial de lavado</h3>
+
+                                    <p class="fecha-noticia"> Fecha: 20/06/2024</p>
+                                </div>
+                                <p class="descripcion-noticia">Durante este mes, todos los lavados tienen un 20% de descuento. ¡Aprovechá!</p>
+                            </div>
+                        </div>
+
+                    </div>
             </section>
 
         </main>
@@ -143,3 +223,5 @@
         </div>
     </footer>
 </body>
+
+<script src="js/dashboard-scripts.js"></script> 

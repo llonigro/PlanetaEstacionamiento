@@ -110,3 +110,15 @@ body {
     letter-spacing: 2px;
     font-weight: 700;
 }
+
+.titulo-turquesa {
+    color: var(--turquesa);
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.titulo-blanco {
+    color: white;
+    text-transform: uppercase;
+    font-weight: 700;
+}
