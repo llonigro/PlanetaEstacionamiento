@@ -45,21 +45,10 @@ const CrearVehiculo = async (req, res) => {
         if (ValidarPatente(error, res)) {
             return;
         }
-        // Verificamos si es un error de patente duplicada (Código de Postgres 23505)
-        //if (error.code === '23505' && error.constraint === 'vehiculos_patente_key') {
-        //    return res.status(400).json({ message: 'La patente ya se encuentra registrada' });
-        //}
 
         if (ValidarForeignKey(error, res)) {
             return;
         }
-
-        // Verificamos si es un error de usuario inexistente (Código de Postgres 23503)
-        //if (error.code === '23503' && error.constraint === 'vehiculos_usuario_id_fkey') {
-         //   return res.status(400).json({ message: 'El usuario asignado no existe en el sistema' });
-        //}
-
-
 
         // Si es cualquier otro error, lo imprimimos en consola y respondemos con 500
         console.error("Error al crear el vehículo:", error); 

@@ -13,7 +13,7 @@ const verificarErrores = (req, res, next) => {
 // Validación para rutas que requieren ID (GET único, PATCH, DELETE)
 const validarId = [
     param('id')
-        .isInt().withMessage('El ID debe ser un número entero válido'),
+        .isInt({min : 1}).withMessage('El ID debe ser un número entero válido y mayor o igual a 1'),
     // 2. Middleware para interceptar los errores
     verificarErrores
 ];
