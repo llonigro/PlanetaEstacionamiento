@@ -36,7 +36,6 @@ CREATE TABLE cocheras (
     clima VARCHAR(100) NOT NULL
 );
 
-ALTER TABLE cocheras ALTER COLUMN libre SET DEFAULT true;
 
 -- 5. TABLA REGISTROS 
 CREATE TABLE registros (
@@ -50,6 +49,32 @@ CREATE TABLE registros (
     FOREIGN KEY(cochera_id) REFERENCES cocheras(id),    
     FOREIGN KEY(vehiculo_id) REFERENCES vehiculos(id)    
 );
+
+
+-- 5. TABLA CATÁLOGO DE SERVICIOS
+create table catalogo_servicios(
+    id SERIAL PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    descripcion TEXT,
+    precio_base DECIMAL(10, 2) NOT NULL
+);
+
+--6 TABLA SERVICIOS
+
+-- 6. TABLA SERVICIOS (Con control de estados y notificaciones)
+CREATE TABLE servicios(
+    id SERIAL PRIMARY KEY,
+    vehiculo_id INT NOT NULL,
+    servicio_id INT NOT NULL,
+    -- Usamos CHECK para asegurar que solo entren los estados de tu negocio
+    estado VARCHAR(50) DEFAULT 'En Espera', 
+    precio_final DECIMAL(10, 2) NOT NULL,
+    fecha_solicitud TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    notificado_cliente BOOLEAN DEFAULT false, -- Controla el envío de alertas/mensajes
+    FOREIGN KEY(vehiculo_id) REFERENCES vehiculos(id),
+    FOREIGN KEY(servicio_id) REFERENCES catalogo_servicios(id)
+);
+
 
 -- ==========================================
 -- DATOS DE PRUEBA (INSERCIONES)
@@ -68,19 +93,3 @@ INSERT INTO registros (cochera_id, vehiculo_id, fecha_ingreso, fecha_egreso, pre
 VALUES (1, 1, '2024-06-01 08:00:00', '2024-06-01 10:00:00', 20.00, false);
 
 
--- create table catalogo_servicios(
---     id SERIAL PRIMARY KEY,
---     nombre VARCHAR(100) NOT NULL,
---     descripcion TEXT,
---     precio_base DECIMAL NOT NULL
--- );
-
--- create table servicios(
---     id SERIAL PRIMARY KEY,
---     vehiculo_id INT NOT NULL,
---     servicio_id INT NOT NULL,
---     estado VARCHAR(100),
---     precio_final DECIMAL,
---     FOREIGN KEY(vehiculo_id) REFERENCES vehiculos(id)    
---     FOREIGN KEY(servicio_id) REFERENCES catalogo_servicios(id)
--- )
