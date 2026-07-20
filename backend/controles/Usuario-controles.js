@@ -1,6 +1,6 @@
 // controles/Usuario-controles.js
 const usuariosService = require('../servicio/servicio-usuario.js');
-const { validarGmailUnico } = require('../validacion/validacion-usuario.js');
+const { validarGmailUnico, validarClaveForanea } = require('../validacion/validacion-usuario.js');
 
 const VerUsuarios = async (req, res) => {
     try {
@@ -27,7 +27,8 @@ const VerUnicoUsuario = async (req, res, next) => {
         
         res.json(usuario);
     } catch (error) {
-        next(error); // 👈 ¡Le pasamos el error a Express!
+        console.error(error);
+        res.status(500).json({ message: "Algo salió mal en el servidor" });
     }
 };
 
@@ -49,7 +50,7 @@ const ActualizarUsuario = async (req, res) => {
     try {
         const { id } = req.params;
         const usuarioActualizado = await usuariosService.actualizarParcial(id, req.body);
-        if (!usuarioActualizado) {
+        if (usuarioActualizado === undefined) {
             return res.status(404).json({ message: "Usuario no encontrado" });
         }
         res.json(usuarioActualizado);
@@ -71,6 +72,9 @@ const eliminarUsuario = async (req, res) => {
         }
         res.status(204).json({ message: "Usuario eliminado correctamente" });
     } catch (error) {
+        if (validarClaveForanea(error, res)) {
+            return;
+        }
         console.error(error);
         res.status(500).json({ message: "Algo salió mal en el servidor" });
     }
