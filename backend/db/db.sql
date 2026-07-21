@@ -26,16 +26,21 @@ CREATE TABLE vehiculos (
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
 );  
 
+
+
 -- 4. TABLA COCHERAS
 CREATE TABLE cocheras (
     id SERIAL PRIMARY KEY,
-    numero INT NOT NULL,
+    numero INT UNIQUE NOT NULL,
     tipo VARCHAR(100) NOT NULL,
     estado VARCHAR(100) NOT NULL,
     libre BOOLEAN  DEFAULT true,
-    clima VARCHAR(100) NOT NULL
+    clima VARCHAR(100) NOT NULL,
 );
 
+
+ALTER TABLE cocheras
+SET COLUMN actividad;
 
 -- 5. TABLA REGISTROS 
 CREATE TABLE registros (

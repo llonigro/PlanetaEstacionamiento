@@ -15,7 +15,7 @@ const verificarErrores = (req, res, next) => {
 // Validación para rutas que requieren ID (GET único, PATCH, DELETE)
 const validarId = [
     param('id')
-        .isInt().withMessage('El ID debe ser un número entero válido'),
+        .isInt({min : 1}).withMessage('El ID debe ser un número entero válido y mayor o igual a 1'),
     // 2. Middleware para interceptar los errores
     verificarErrores
 ];
@@ -29,7 +29,7 @@ const validarCrearCochera = [
         .escape()
         .trim()
         .notEmpty().withMessage('El numero es obligatorio')
-        .isInt().withMessage('El numero debe ser un número entero válido'),
+        .isInt({min : 1}).withMessage('El numero debe ser un número entero válido'),
         // Verifica que email sea obligatorio y tenga formato correcto
     body('tipo')
         .escape()
@@ -66,8 +66,7 @@ const validarActualizarCochera = [
         .optional({ checkFalsy: true })
         .trim()
         .notEmpty().withMessage('El numero es obligatorio')
-        .isInt().withMessage('El numero debe ser un número entero válido'),
-        // Verifica que email sea obligatorio y tenga formato correcto
+        .isInt({min : 1}).withMessage('El numero debe ser un número entero válido'),
     body('tipo')
         .escape()
         .optional({ checkFalsy: true })
@@ -98,5 +97,18 @@ const validarActualizarCochera = [
     verificarErrores
 ];
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-module.exports = { validarId, validarCrearCochera, validarActualizarCochera };
+const validarClaveForanea = (error, res) => { 
+    if (error?.code === '23503' && error?.constraint === 'registros_cochera_id_fkey') {
+        res.status(409).json({ message: 'No se puede eliminar la cochera porque esta registrado en registros.' });
+        return true;
+    }
+
+    return false;
+};
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+module.exports = { validarId, validarCrearCochera, validarActualizarCochera, validarClaveForanea };

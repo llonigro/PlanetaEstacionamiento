@@ -1,6 +1,9 @@
 // controles/Cocheras-controles.js
 const cocherasServicio = require('../servicio/servicio-cocheras.js');
+const { validarClaveForanea } = require('../validacion/validacion-cochera.js');
 
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const VerCocheras = async (req, res) => {
     try {
         const cocheras = await cocherasServicio.obtenerTodos();
@@ -63,10 +66,15 @@ const eliminarCochera = async (req, res) => {
         }
         res.status(204).json({ message: "Cochera eliminada correctamente" });
     } catch (error) {
+        if (validarClaveForanea(error, res)) {
+            return;
+        }
         console.error(error);
         res.status(500).json({ message: "Algo salió mal en el servidor" });
     }
 };
+
+
 
 
 module.exports = {
