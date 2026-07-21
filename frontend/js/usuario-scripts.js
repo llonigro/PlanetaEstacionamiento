@@ -127,7 +127,7 @@ async function iniciarSesion() {
             return;
         }
 
-        const rol = datos.usuario.rol;
+        const rol = datos.rol;
         const dashboard = dashboards[rol];
 
         if (!dashboard) {
