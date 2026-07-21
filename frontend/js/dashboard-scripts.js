@@ -64,3 +64,16 @@ tarjetas.forEach(tarjeta => {
     });
 
 });
+
+function mostrarSeccion(seccionId) {
+    const secciones = document.querySelectorAll('.dashboard-section');
+
+    secciones.forEach(seccion => {
+        seccion.classList.add('is-hidden');
+    });
+
+    const seccionMostrar = document.getElementById(seccionId);
+    if (seccionMostrar) {
+        seccionMostrar.classList.remove('is-hidden');
+    }
+}

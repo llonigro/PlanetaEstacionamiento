@@ -24,7 +24,7 @@
     <div class="dashboard">
 
         <header class="header">
-            <h1>Hola, [Nombre del usuario]</h1>
+            <h1>Hola, <span id="nombre-usuario">Usuario</span></h1>
         </header>
 
 
@@ -42,11 +42,11 @@
                         </div>
 
                         <div class="vehiculo-info">
-                            <p><strong>Marca:</strong> [Marca del vehículo]</p>
-                            <p><strong>Modelo:</strong> [Modelo del vehículo]</p>
-                            <p><strong>Año:</strong> [Año del vehículo]</p>
-                            <p><strong>Color:</strong> [Color del vehículo]</p>
-                            <p><strong>Patente:</strong> [Patente del vehículo]</p>
+                            <p><strong>Marca:</strong> <span id="marca-vehiculo"></span></p>
+                            <p><strong>Modelo:</strong> <span id="modelo-vehiculo"></span></p>
+                            <p><strong>Año:</strong> <span id="año-vehiculo"></span></p>
+                            <p><strong>Color:</strong> <span id="color-vehiculo"></span></p>
+                            <p><strong>Patente:</strong> <span id="patente-vehiculo"></span></p>
                         </div>
                     </div>
                 </div>
@@ -85,6 +85,7 @@
 
                     <div class="contenedor-tarjetas">
 
+                        <!-- Tarjeta de servicio (cambiar estado)-->
                         <div class="servicios-tarjetas" data-estado="lavando">
 
                             <div class="servicio-descripcion">
@@ -176,7 +177,8 @@
                                 <div class="cabecera-noticia">
                                     <h3 class="title is-5">Nuevo servicio de valet</h3>
 
-                                    <p class="fecha-noticia"> Fecha: 15/06/2024</p>
+                                    <p class="fecha-noticia">Fecha: <span id="fecha-noticia-1">01/01/2026</span>
+                                    </p>
                                 </div>
                                 <p class="descripcion-noticia">Ahora ofrecemos un servicio de valet para tu comodidad. ¡Reservá tu turno!</p>
                             </div>
@@ -191,7 +193,8 @@
                                 <div class="cabecera-noticia">
                                     <h3 class="title is-5">Promoción especial de lavado</h3>
 
-                                    <p class="fecha-noticia"> Fecha: 20/06/2024</p>
+                                    <p class="fecha-noticia">Fecha: <span id="fecha-noticia-2">01/01/2026</span>
+                                    </p>
                                 </div>
                                 <p class="descripcion-noticia">Durante este mes, todos los lavados tienen un 20% de descuento. ¡Aprovechá!</p>
                             </div>
