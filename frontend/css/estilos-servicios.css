@@ -1,9 +1,14 @@
 body {
+    min-height: 100dvh;
     background-image: 
     linear-gradient(rgba(255,255,255,0.95), rgba(255,255,255,0.95)),
     url('../img/fondo-servicios.webp');
     background-size: cover;
     background-repeat: no-repeat;
+}
+
+.columns {
+    align-items: stretch;
 }
 
 .seccion-servicios {
@@ -12,11 +17,10 @@ body {
 }
 
 .linea-divisoria-servicios {
-    justify-content: center;
-    height: 7px;           
     width: 50%;              
-    background-color: #0bb0a77a;
-    transform: translateX(50%);
+    height: 7px;
+    margin: 0 auto;           
+    background-color: var(--turquesa);
     border-radius: 5px;
 }
 
@@ -29,19 +33,24 @@ body {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.card.card-servicios {
+.card-servicios {
     color: #ffffff !important;
+    height: 100%;
+
     padding: 5px;
     border-radius: 8px;
+
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
-.card.titulo-tarjeta {
+.titulo-tarjeta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
     font-size: 1.5rem;
-    letter-spacing: 1px;
-    flex-wrap: wrap;
     line-height: 1.2;
+    letter-spacing: 1px;
 }
 
 .imagenes-laterales {

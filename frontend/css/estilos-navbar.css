@@ -1,13 +1,3 @@
-:root {
-    --azul-oscuro: #0A192F;
-    --azul-marino: #89d4d2;
-    --turquesa: #0bb0a7;
-    --azul-petroleo: #133A42;
-    --verde-agua: #3AB397;
-}
-
-
-
 /* NAVBAR */
 
 
@@ -31,71 +21,11 @@
 /* Estilos para cuando se pasa el mouse por encima */
 .navbar-color .navbar-item:hover, 
 .navbar-color .navbar-link:hover {
+    color: #ffffff !important;
     background-color: rgba(255, 255, 255, 0.15) !important;
-    color: #ffffff !important;
 }
 
 
-/* Estilos para el dropdown */
-.navbar-color .navbar-dropdown {
-    background-color: var(--azul-marino) !important; 
-    border-top: none;
-}
-
-.navbar-color .navbar-dropdown .navbar-item:hover {
-    background-color: var(--turquesa) !important;
-    color: #ffffff !important;
-}
-
-.navbar-color .navbar-dropdown .navbar-divider {
-    background-color: rgba(0, 0, 0, 0.1); 
-}
-
-.navbar-color .navbar-link::after {
-    border-color: var(--azul-petroleo) !important; 
-}
-
-.navbar-color .navbar-link:hover::after {
-    border-color: var(--azul-marino) !important; 
-}
-
-
-/* CUSTOMIZACIÓN DEL MENÚ 'HAMBURGUESA'  */
-
-
-/* Color de las líneas del menú hamburguesa */
-.navbar-color .navbar-burger span {
-    background-color: var(--azul-oscuro) !important; 
-    height: 2px; 
-}
-
-/* Color cuando pasás el mouse por encima (Hover) */
-.navbar-color .navbar-burger:hover {
-    background-color: rgba(255, 255, 255, 0.15) !important; 
-}
-
-/* Tamaño del botón */
-.navbar-color .navbar-burger {
-    height: 4.5rem; 
-    width: 4.5rem;
-}
-
-/* Estilos para el menú desplegable cuando está activo */
-.navbar-color .navbar-menu.is-active {
-    background-color: var(--turquesa) !important;
-
-    /* Margen redondo */
-    border-bottom-left-radius: 16px;
-    border-bottom-right-radius: 16px;
-    border-top-left-radius: 16px;
-    border-top-right-radius: 16px;
-    
-    /* Un margen a los costados */
-    margin: 0 10px; 
-    
-    /* Sombra */
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-}
 
 
 /* ESTILOS DEL LOGO EN NAVBAR */
@@ -108,17 +38,17 @@
 }
 
 /*El contenedor que apila los textos */
-.logo-texto-contenedor {
+.logo-texto {
     display: flex;
     flex-direction: column;
     justify-content: center;
     line-height: 1;
-    user-select: none; 
     margin-right: 5px;
+    user-select: none; 
 }
 
 /*La palabra PLANETA */
-.logo-texto-principal {
+.logo-principal {
     font-size: 25px;         
     font-weight: 900;           
     color: var(--azul-oscuro);            
@@ -127,7 +57,7 @@
 }
 
 /*La palabra ESTACIONAMIENTO */
-.logo-texto-secundario {
+.logo-secundario {
     font-size: 12px;         
     font-weight: 700;          
     color: var(--azul-oscuro);            
@@ -140,37 +70,86 @@
 
 
 
-/* MENU REGISTRO */
+/* DROPDOWN */
+
+/* Estilos para el dropdown */
+.navbar-dropdown {
+    background-color: var(--azul-marino) !important; 
+    border-top: none;
+}
+
+.navbar-dropdown .navbar-item:hover {
+    background-color: var(--turquesa) !important;
+    color: #ffffff !important;
+}
+
+.navbar-link::after {
+    border-color: var(--azul-petroleo) !important; 
+}
+
+
+/* CUSTOMIZACIÓN DEL MENÚ 'HAMBURGUESA'  */
+
+/* Tamaño del botón */
+.navbar-burger {
+    width: 3.5rem;
+    height: 3.5rem;
+}
+
+/* Color de las líneas del menú hamburguesa */
+.navbar-burger span {
+    background-color: var(--azul-oscuro) !important; 
+    height: 2px; 
+}
+
+/* Color cuando pasás el mouse por encima (Hover) */
+.navbar-burger:hover {
+    background-color: rgba(255, 255, 255, 0.15) !important; 
+}
+
+
+/* Estilos para el menú hamburguesa en pantallas pequeñas */
+@media screen and (max-width: 1023px) {
+
+    .navbar-menu.is-active {
+        background-color: var(--turquesa) !important;
+        margin: 0 10px;
+        border-radius: 16px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    }
+
+}
+
+
+
+
+/* MENU REGISTRO Y LOGIN */
 
 
 /* Color del menú */
 .menu-color {
     background-color: var(--azul-petroleo) !important;
-    --box-link-active-shadow: var(--azul-petroleo) !important;
+}
+
+/* Color del título del modal */
+.modal-titulo {
+    color: white !important;
+    font-weight: 600;
+}
+
+.modal-header hr {
+    height: 2px;
+    background-color: white;
 }
 
 /* Color del resplandor cuando se enfoca un input */
-.input:focus, .textarea:focus {
+.input:focus, 
+.textarea:focus {
     border-color: var(--turquesa);
-
-    box-shadow: 0 0 0 0.125em rgba(11,176,167,0.25);
+    box-shadow: 0 0 0 0.125em rgba(11, 176, 167, 0.25);
 }
 
 /* Color del ícono cuando se enfoca un input */
 .input:focus ~ .icon {
     color: var(--turquesa) !important;
 }
-
-.color-titulo-registro {
-    color: var(--turquesa) !important; 
-    font-weight: 600;
-}
-
-.linea-divisoria-registro {
-    background-color: #ffffff;
-    height: 2px;
-}
-
-
-
-

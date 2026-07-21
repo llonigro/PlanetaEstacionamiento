@@ -1,3 +1,9 @@
+const dashboards = {
+    usuario: "dashboard.html",
+    gerente: "dashboard_gerente/dashboard-gerente.html",
+}
+
+
 function inicializarScriptsUsuario() {
 
     const botonConfirmarRegistro = document.getElementById("confirmar-registro");
@@ -100,11 +106,41 @@ async function iniciarSesion() {
     const email = document.getElementById("login-email").value;
     const contrasenia = document.getElementById("login-contrasenia").value;
 
-    const respuesta = await fetch('http://localhost:3000/usuarios', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json' 
-        },
-        body: JSON.stringify({email, contrasenia})
-    });
+
+    try {
+
+        const respuesta = await fetch('http://localhost:3000/usuarios', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email,
+                contrasenia
+            })
+        });
+
+        const datos = await respuesta.json();
+
+        if (!respuesta.ok) {
+            alert(datos.mensaje || 'Email o contraseña incorrectos');
+            return;
+        }
+
+        const rol = datos.usuario.rol;
+        const dashboard = dashboards[rol];
+
+        if (!dashboard) {
+            alert('Rol de usuario desconocido');
+            return;
+        }
+
+        window.location.href = dashboard;
+
+    } catch (error) {
+
+        console.error('Error al iniciar sesión:', error);
+        alert('No se pudo conectar con el servidor');
+
+    }
 }
