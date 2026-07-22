@@ -16,11 +16,7 @@ const verificarErrores = (req, res, next) => {
 // Validación para rutas que requieren ID (GET único, PATCH, DELETE)
 const validarId = [
     param('id')
-<<<<<<< HEAD
         .isInt({min : 1}).withMessage('El ID debe ser un número entero y mayor a cero'),
-=======
-        .isInt().withMessage('El ID debe ser un número entero válido'),
->>>>>>> f3e7abda41f3651a607c9d8acc0ac62c447dd575
     // 2. Middleware para interceptar los errores
     verificarErrores
 ];
@@ -62,7 +58,6 @@ const validarActualizarCatalogo = [
 ];
 
 
-<<<<<<< HEAD
 
 const ValidarForeignKeyServicio = (error, res) => {
     if (error?.code === '23503' && error?.constraint === 'servicios_servicio_id_fkey') {
@@ -77,10 +72,4 @@ module.exports = {
     validarCrearCatalogo,
     validarActualizarCatalogo,
     ValidarForeignKeyServicio
-=======
-module.exports = {
-    validarId,
-    validarCrearCatalogo,
-    validarActualizarCatalogo 
->>>>>>> f3e7abda41f3651a607c9d8acc0ac62c447dd575
 }

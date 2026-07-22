@@ -8,10 +8,6 @@ const RutaCocheras = require("../rutas/cochera-ruta.js");
 const RutaRegistros = require("../rutas/registros-ruta.js");
 const RutaCatalogoServicios = require("../rutas/catalogo-servicio-ruta.js");
 const RutaServicios = require("../rutas/servicio-ruta.js");
-<<<<<<< HEAD:backend/Index/index.js
-=======
-
->>>>>>> f3e7abda41f3651a607c9d8acc0ac62c447dd575:backend/index/index.js
 
 
 
