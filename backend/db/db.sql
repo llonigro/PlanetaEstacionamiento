@@ -36,6 +36,12 @@ CREATE TABLE cocheras (
     clima VARCHAR(100) NOT NULL
 );
 
+ALTER TABLE cocheras
+ALTER COLUMN numero SET NOT NULL;
+
+ALTER TABLE cocheras
+ADD CONSTRAINT cocheras_numero_unique UNIQUE (numero);
+
 
 -- 5. TABLA REGISTROS 
 CREATE TABLE registros (
