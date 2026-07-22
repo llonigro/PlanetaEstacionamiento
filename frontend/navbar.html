@@ -1,0 +1,216 @@
+<!-- Solo navbar y modales -->
+
+<nav class="navbar navbar-color is-fixed-top navbar-shadow" role="navigation" aria-label="main navigation">
+    <div class="container is-fluid">
+
+        <!-- Logo y nombre -->
+        <div class="navbar-brand">
+            <a class="navbar-item logo" href="inicio.html">
+
+            <img src="img/logo.png" 
+            alt="Logo Planeta Estacionamiento"class="logo-icono">
+    
+        <div class="logo-texto">
+            <span class="logo-principal">Planeta</span>
+            <span class="logo-secundario">Estacionamiento</span>
+        </div>
+        </a>
+
+        <!-- Botón de menú 'hamburguesa' -->
+            <a role="button" class="navbar-burger" aria-label="menu hamburguesa" aria-expanded="false" data-target="navbarItems">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            </a>
+        </div>
+
+        <!-- Elementos del menú -->
+        <div id="navbarItems" class="navbar-menu">
+            <div class="navbar-start">
+
+            <a class="navbar-item" aria-label="Inicio" href="inicio.html">
+                <i class="fas fa-home" aria-hidden="true"></i> 
+                Inicio
+            </a>
+
+            <a class="navbar-item" aria-label="Servicios" href="servicios.html">
+                <i class="fas fa-concierge-bell" aria-hidden="true"></i>
+                Servicios
+            </a>
+
+                <a class="navbar-item" aria-label="Tarifas" href="tarifas.html">
+                <i class="fas fa-dollar-sign" aria-hidden="true"></i>
+                Tarifas
+            </a>
+            
+            <div class="navbar-item has-dropdown is-hoverable">
+                <a class="navbar-link">
+                Más
+                </a>
+
+                <div class="navbar-dropdown is-boxed">
+                <a class="navbar-item" aria-label="Nosotros" href="nosotros.html">
+                    <i class="fas fa-users" aria-hidden="true"></i>
+                    Nosotros
+                </a>
+                <a class="navbar-item" aria-label="Contacto" href="contacto.html">
+                    <i class="fas fa-envelope" aria-hidden="true"></i>
+                    Contacto
+                </a>
+                </div>
+            </div>
+            </div>
+
+            <div class="navbar-end">
+            <div class="navbar-item">
+
+                <div class="buttons">
+
+                <a id="registrarse" class="button is-primary js-modal-trigger" data-target="menu-registro">
+                    <strong>Registrarse</strong>
+                </a>
+
+                <a id="iniciar-sesion" class="button is-light js-modal-trigger" data-target="menu-login">
+                    Iniciar Sesión
+                </a>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</nav>
+<!-- Navbar termina -->
+
+<!-- Menú de Registro -->
+<div id="menu-registro" class="modal">
+    <div class="modal-background is-transparent"></div>
+    <div class="modal-content">
+        <div class="box menu-color">
+
+            <div class="modal-header">
+                <h2 class="title is-4 modal-titulo">
+                    Creá tu cuenta
+                </h2>
+
+                <hr>
+            </div>
+
+            <!-- Usuario -->
+            <div class="field">
+                <label class="label">Usuario</label>
+                <div class="control has-icons-left">
+                    <input id="nombre" class="input" type="text" placeholder="Nombre">
+                    <span class="icon is-small is-left">
+                        <i class="fas fa-user"></i>
+                    </span>
+                    <p id="error-nombre" class="help is-danger"></p>
+                </div>
+            </div>
+
+            <!-- Email -->
+            <div class="field">
+                <label class="label">Email</label>
+                <div class="control has-icons-left">
+                    <input id="email" class="input" type="email" placeholder="correo@ejemplo.com">
+                    <span class="icon is-small is-left">
+                        <i class="fas fa-solid fa-at"></i>
+                    </span>
+                    <p id="error-email" class="help is-danger"></p>
+                </div>
+            </div>
+
+            <!-- Contraseña -->
+            <div class="field">   
+                <label class="label">Contraseña</label>
+                <div class="control has-icons-left has-icons-right">
+                    <input id="contrasenia" class="input input-password" type="password" placeholder="**********">
+
+                    <span class="icon is-small is-left">
+                        <i class="fa-solid fa-lock"></i>
+                    </span>
+
+                    <span class="icon is-small is-right is-clickable boton-ojo">
+                        <i class="fa-solid fa-eye icono-ojo"></i>
+                    </span>
+                    <p id="error-contrasenia" class="help is-danger"></p>
+
+                </div>
+            </div>
+
+            <!-- Teléfono -->
+            <div class="field">   
+                <label class="label">Número Telefónico</label>
+                <div class="control has-icons-left">
+                    <input id="telefono" class="input" type="tel" placeholder="+54 9 11 1234-5678 (opcional)">
+                    <span class="icon is-small is-left">
+                        <i class="fa-solid fa-phone"></i>
+                    </span>
+                    <p id="error-telefono" class="help is-danger"></p>
+                </div>
+            </div>
+
+            <div class="buttons">
+            <button id="confirmar-registro" class="button is-success is-rounded">Confirmar</button>
+            <button id="cancelar" class="button is-light is-rounded js-modal-close">Cancelar</button>
+            </div>
+
+        </div>
+    <button class="modal-close is-large" aria-label="cerrar"></button>
+    </div>
+
+</div>
+
+<!-- Menu de Login -->
+<div id="menu-login" class="modal">
+
+    <div class="modal-background is-transparent"></div>
+    
+    <div class="modal-content">
+        <div class="box menu-color">
+
+            <div class="modal-header">
+                <h2 class="title is-4 modal-titulo">
+                    Iniciá sesión
+                </h2>
+
+                <hr>
+            </div>
+
+            <!-- Email -->
+            <div class="field">
+                <label class="label">Email</label>
+                <div class="control has-icons-left">
+                    <input id="login-email" class="input" type="email" placeholder="correo@ejemplo.com">
+                    <span class="icon is-small is-left">
+                        <i class="fas fa-solid fa-at"></i>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Contraseña -->
+            <div class="field">   
+                <label class="label">Contraseña</label>
+                <div class="control has-icons-left has-icons-right">
+                    <input id="login-contrasenia" class="input input-password" type="password" placeholder="**********">
+
+                    <span class="icon is-small is-left">
+                        <i class="fa-solid fa-lock"></i>
+                    </span>
+
+                    <span class="icon is-small is-right is-clickable boton-ojo">
+                        <i class="fa-solid fa-eye icono-ojo"></i>
+                    </span>
+
+                </div>
+            </div>
+
+            <div class="buttons">
+            <button id="confirmar-sesion" class="button is-success is-rounded">Confirmar</button>
+            <button id="cancelar" class="button is-light is-rounded js-modal-close">Cancelar</button>
+            </div>
+
+        </div>
+    <button class="modal-close is-large" aria-label="cerrar"></button>
+    </div>
+</div>

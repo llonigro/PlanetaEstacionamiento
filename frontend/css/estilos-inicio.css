@@ -1,0 +1,16 @@
+/* INICIO */
+
+.texto-seccion-informativa {
+    color: var(--azul-marino);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+}
+
+.parrafo-seccion-informativa {
+    color: var(--azul-oscuro);
+    font-size: 1.15rem;
+    line-height: 1.5;
+    text-align: justify;
+    font-weight: 350;
+}

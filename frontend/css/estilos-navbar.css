@@ -1,0 +1,155 @@
+/* NAVBAR */
+
+
+.navbar-shadow {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Color de fondo principal del navbar */
+.navbar-color {
+    background-color: var(--turquesa) !important;
+}
+
+/* Estilo de los elementos del navbar */
+.navbar-color .navbar-item, 
+.navbar-color .navbar-link {
+    color: var(--azul-oscuro) !important; 
+    background-color: transparent !important;
+    font-weight: 500; 
+}
+
+/* Estilos para cuando se pasa el mouse por encima */
+.navbar-color .navbar-item:hover, 
+.navbar-color .navbar-link:hover {
+    color: #ffffff !important;
+    background-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+
+
+
+/* ESTILOS DEL LOGO EN NAVBAR */
+
+
+/*El icono del planeta */
+.logo-icono {
+    max-height: 70px !important;
+    margin-right: 5px;
+}
+
+/*El contenedor que apila los textos */
+.logo-texto {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    line-height: 1;
+    margin-right: 5px;
+    user-select: none; 
+}
+
+/*La palabra PLANETA */
+.logo-principal {
+    font-size: 25px;         
+    font-weight: 900;           
+    color: var(--azul-oscuro);            
+    text-transform: uppercase;  
+    letter-spacing: 2px;        
+}
+
+/*La palabra ESTACIONAMIENTO */
+.logo-secundario {
+    font-size: 12px;         
+    font-weight: 700;          
+    color: var(--azul-oscuro);            
+    text-transform: uppercase;  
+    letter-spacing: 1.2px;      
+    margin-top: 2px;            
+    display: block;
+}
+
+
+
+
+/* DROPDOWN */
+
+/* Estilos para el dropdown */
+.navbar-dropdown {
+    background-color: var(--azul-marino) !important; 
+    border-top: none;
+}
+
+.navbar-dropdown .navbar-item:hover {
+    background-color: var(--turquesa) !important;
+    color: #ffffff !important;
+}
+
+.navbar-link::after {
+    border-color: var(--azul-petroleo) !important; 
+}
+
+
+/* CUSTOMIZACIÓN DEL MENÚ 'HAMBURGUESA'  */
+
+/* Tamaño del botón */
+.navbar-burger {
+    width: 3.5rem;
+    height: 3.5rem;
+}
+
+/* Color de las líneas del menú hamburguesa */
+.navbar-burger span {
+    background-color: var(--azul-oscuro) !important; 
+    height: 2px; 
+}
+
+/* Color cuando pasás el mouse por encima (Hover) */
+.navbar-burger:hover {
+    background-color: rgba(255, 255, 255, 0.15) !important; 
+}
+
+
+/* Estilos para el menú hamburguesa en pantallas pequeñas */
+@media screen and (max-width: 1023px) {
+
+    .navbar-menu.is-active {
+        background-color: var(--turquesa) !important;
+        margin: 0 10px;
+        border-radius: 16px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    }
+
+}
+
+
+
+
+/* MENU REGISTRO Y LOGIN */
+
+
+/* Color del menú */
+.menu-color {
+    background-color: var(--azul-petroleo) !important;
+}
+
+/* Color del título del modal */
+.modal-titulo {
+    color: white !important;
+    font-weight: 600;
+}
+
+.modal-header hr {
+    height: 2px;
+    background-color: white;
+}
+
+/* Color del resplandor cuando se enfoca un input */
+.input:focus, 
+.textarea:focus {
+    border-color: var(--turquesa);
+    box-shadow: 0 0 0 0.125em rgba(11, 176, 167, 0.25);
+}
+
+/* Color del ícono cuando se enfoca un input */
+.input:focus ~ .icon {
+    color: var(--turquesa) !important;
+}

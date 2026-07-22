@@ -1,4 +1,4 @@
-const config = require('../Index/config.js');
+const config = require('./config.js');
 const express = require("express");
 const cors = require('cors');
 const {pool} = require("../db/db.js");
@@ -14,7 +14,7 @@ const RutaServicios = require("../rutas/servicio-ruta.js");
 
 
 
-const PORT = 5000;
+const PORT = 3000;
 
 const app = express();
 app.use(cors());

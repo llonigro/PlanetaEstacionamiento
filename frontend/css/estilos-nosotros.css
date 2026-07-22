@@ -1,0 +1,68 @@
+/* HERO DE 'NOSOTROS' */
+
+.hero-nosotros {
+    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(57, 190, 184, 0.6)), url('../img/hero-nosotros.webp') center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.hero-nosotros .hero-body {
+    display: flex;
+    justify-content: center;
+
+    align-items: flex-start;
+    
+    padding-top: 15rem;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(6px);
+}
+
+.linea-divisoria-nosotros {
+    justify-content: center;
+    height: 7px;           
+    width: 100%;              
+    background-color: #0bb0a77a;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    height: 100%;
+
+    backdrop-filter: blur(20px);          
+
+    border: 1px solid rgba(255, 255, 255, 0.2); 
+    border-radius: 20px;      
+
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.card-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.card-image img {
+    width: 180px;  
+    height: 180px;
+}
+
+.card-content {
+    text-align: center;
+    padding: 10px !important;
+}
+
+
+
+.seccion-superior {
+  background: linear-gradient(135deg, #fdf6f2 0%, #f4e5e2 100%);
+}
+
