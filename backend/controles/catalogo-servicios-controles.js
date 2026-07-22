@@ -1,5 +1,7 @@
 // controles/catalogo-servicio-controles.js
 const catalogoServicio = require('../servicio/servicio-catalogo-servicios.js');
+const { ValidarForeignKeyServicio } = require('../validacion/validacion-catalogo-servicio.js');
+
 
 const VerCatalogosServicios = async (req, res) => {
     try {
@@ -67,6 +69,9 @@ const eliminarCatalogo = async (req, res) => {
         }
         return res.json({ message: "catalogo eliminado correctamente" });
     } catch (error) {
+        if (ValidarForeignKeyServicio(error, res)) {
+            return;
+        }
         console.error(error);
         res.status(500).json({ message: "Algo salió mal en el servidor" });
     }

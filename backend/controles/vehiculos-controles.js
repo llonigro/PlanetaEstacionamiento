@@ -2,7 +2,7 @@
 const pool = require("../db/db.js");
 // controles/Usuario-controles.js
 const VehiculosServicio = require('../servicio/servicio-vehiculo.js');
-const { ValidarPatente, ValidarForeignKey } = require('../validacion/validacion-vehiculos.js');
+const { ValidarPatente, ValidarForeignKey, ValidarForeignKeyRegistros, ValidarForeignKeyServicio } = require('../validacion/validacion-vehiculos.js');
 
 
 
@@ -85,6 +85,12 @@ const eliminarVehiculo = async (req, res) => {
         }
         return res.status(204).json({ message: "vehiculo eliminado correctamente" });
     } catch (error) {
+        if (ValidarForeignKeyRegistros(error, res)) {
+            return;
+        }
+        if (ValidarForeignKeyServicio(error, res)) {
+            return;
+        }
         console.error(error);
         res.status(500).json({ message: "Algo salió mal en el servidor" });
     }

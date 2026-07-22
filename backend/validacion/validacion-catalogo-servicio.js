@@ -16,7 +16,7 @@ const verificarErrores = (req, res, next) => {
 // Validación para rutas que requieren ID (GET único, PATCH, DELETE)
 const validarId = [
     param('id')
-        .isInt().withMessage('El ID debe ser un número entero válido'),
+        .isInt({min : 1}).withMessage('El ID debe ser un número entero y mayor a cero'),
     // 2. Middleware para interceptar los errores
     verificarErrores
 ];
@@ -58,8 +58,18 @@ const validarActualizarCatalogo = [
 ];
 
 
+
+const ValidarForeignKeyServicio = (error, res) => {
+    if (error?.code === '23503' && error?.constraint === 'servicios_servicio_id_fkey') {
+        res.status(400).json({ message: 'El catalogo esta registrado a un servicio' });
+        return true;
+    }
+    return false;
+};
+
 module.exports = {
     validarId,
     validarCrearCatalogo,
-    validarActualizarCatalogo 
+    validarActualizarCatalogo,
+    ValidarForeignKeyServicio
 }
