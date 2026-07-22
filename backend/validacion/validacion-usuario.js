@@ -35,6 +35,7 @@ const validarCrearUsuario = [
     body('email')
         .escape()
         .notEmpty().withMessage('El email es obligatorio')
+        .bail()
         .isEmail().withMessage('El email es incorrecto')
         .normalizeEmail(),
         // Verifica que la contraseña sea obligatorio y contenga 6 caracteres

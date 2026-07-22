@@ -68,6 +68,9 @@ const eliminar = async (id) => {
     return rows[0]; // Retorna la cocheras eliminada o undefined si no existía
 };
 
+
+
+
 module.exports = {
     obtenerTodos,
     VerCochera,

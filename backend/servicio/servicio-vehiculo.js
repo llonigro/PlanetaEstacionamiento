@@ -27,8 +27,7 @@ const crearVehiculo = async (datosVehiculo) => {
 const actualizarParcial = async (id, datosVehiculo) => {
    // const {id} = datosUsuario;
     const { patente, marca, modelo, color, usuario_id, permitir_valet } = datosVehiculo;
-    console.log("=== DATOS QUE LLEGAN A LA QUERY ===");
-    console.log({ id, patente, marca, modelo, color, usuario_id, permitir_valet });
+
     const { rows } = await pool.query(
         `UPDATE vehiculos SET 
         patente = COALESCE($1, patente), 

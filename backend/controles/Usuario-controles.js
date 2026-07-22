@@ -17,7 +17,7 @@ const VerUsuarios = async (req, res) => {
     }
 };
 
-const VerUnicoUsuario = async (req, res, next) => {
+const VerUnicoUsuario = async (req, res) => {
     try {
         const { id } = req.params;
         const usuario = await usuariosService.VerUsuario(id);
