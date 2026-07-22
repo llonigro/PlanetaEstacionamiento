@@ -108,7 +108,15 @@ const validarClaveForanea = (error, res) => {
     return false;
 };
 
+const ValidarUnicoNumero = (error, res) => { 
+    if (error?.code === '23505' && error?.constraint === 'cocheras_numero_key') {
+        res.status(409).json({ message: 'El numero debe ser unico.' });
+        return true;
+    }
+    return false;
+};
+
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-module.exports = { validarId, validarCrearCochera, validarActualizarCochera, validarClaveForanea };
+module.exports = { validarId, validarCrearCochera, validarActualizarCochera, validarClaveForanea, ValidarUnicoNumero};

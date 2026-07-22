@@ -14,8 +14,6 @@ CREATE TABLE usuarios (
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-ALTER TABLE cocheras
-SET COLUMN actividad;
 
 -- 3. TABLA VEHÍCULOS
 CREATE TABLE vehiculos (

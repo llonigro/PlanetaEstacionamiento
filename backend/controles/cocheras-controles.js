@@ -1,6 +1,6 @@
 // controles/Cocheras-controles.js
 const cocherasServicio = require('../servicio/servicio-cocheras.js');
-const { validarClaveForanea } = require('../validacion/validacion-cochera.js');
+const { validarClaveForanea, ValidarUnicoNumero } = require('../validacion/validacion-cochera.js');
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -38,6 +38,9 @@ const CrearCochera = async (req, res) => {
         }
         res.status(201).json(nuevaCochera);
     } catch (error) {
+        if (ValidarUnicoNumero(error, res)) {
+            return;
+        }
         console.error(error);
         res.status(500).json({ message: "Algo salió mal en el servidor" });
     }
@@ -52,6 +55,9 @@ const ActualizarCochera = async (req, res) => {
         }
         res.status(200).json(cocheraActualizada);
     } catch (error) {
+        if (ValidarUnicoNumero(error, res)) {
+            return;
+        }
         console.error(error);
         res.status(500).json({ message: "Algo salió mal en el servidor" });
     }
