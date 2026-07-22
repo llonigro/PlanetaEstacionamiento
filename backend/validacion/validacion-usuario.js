@@ -16,7 +16,7 @@ const verificarErrores = (req, res, next) => {
 // Validación para rutas que requieren ID (GET único, PATCH, DELETE)
 const validarId = [
     param('id')
-        .isInt().withMessage('El ID debe ser un número entero válido'),
+        .isInt({min: 1}).withMessage('El ID debe ser un número entero válido'),
     // 2. Middleware para interceptar los errores
     verificarErrores
 ];
@@ -35,7 +35,9 @@ const validarCrearUsuario = [
     body('email')
         .escape()
         .notEmpty().withMessage('El email es obligatorio')
-        .isEmail().withMessage('El email es incorrecto'),
+        .bail()
+        .isEmail().withMessage('El email es incorrecto')
+        .normalizeEmail(),
         // Verifica que la contraseña sea obligatorio y contenga 6 caracteres
     body('contrasenia')
         .escape()
@@ -63,7 +65,8 @@ const validarActualizarUsuario = [
     body('email')
         .escape()
         .optional({ checkFalsy: true })
-        .isEmail().withMessage('El formato del email es incorrecto'),
+        .isEmail().withMessage('El formato del email es incorrecto')
+        .normalizeEmail(),
 
     body('contrasenia')
         .escape()
@@ -82,7 +85,7 @@ const validarActualizarUsuario = [
 
 
 // Si el usuario ingresa un gmail existente toma el error y muestra un json
-const validarGmailUnico = (error, res) => { // analizar 
+const validarGmailUnico = (error, res) => { 
     if (error?.code === '23505' && error?.constraint === 'usuarios_email_key') {
         res.status(409).json({ message: 'El email ya está registrado' });
         return true;
@@ -91,5 +94,14 @@ const validarGmailUnico = (error, res) => { // analizar
     return false;
 };
 
+const validarClaveForanea = (error, res) => { 
+    if (error?.code === '23503' && error?.constraint === 'vehiculos_usuario_id_fkey') {
+        res.status(409).json({ message: 'No se puede eliminar el usuario porque tiene vehículos registrados. Elimine primero los vehículos' });
+        return true;
+    }
 
-module.exports = { validarCrearUsuario, validarGmailUnico, validarId, validarActualizarUsuario};
+    return false;
+};
+
+
+module.exports = { validarCrearUsuario, validarGmailUnico, validarId, validarActualizarUsuario, validarClaveForanea};

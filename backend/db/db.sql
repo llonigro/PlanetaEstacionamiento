@@ -14,6 +14,7 @@ CREATE TABLE usuarios (
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+
 -- 3. TABLA VEHÍCULOS
 CREATE TABLE vehiculos (
     id SERIAL PRIMARY KEY,
@@ -26,15 +27,24 @@ CREATE TABLE vehiculos (
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
 );  
 
+
+
 -- 4. TABLA COCHERAS
 CREATE TABLE cocheras (
     id SERIAL PRIMARY KEY,
-    numero INT NOT NULL,
+    numero INT UNIQUE NOT NULL,
     tipo VARCHAR(100) NOT NULL,
     estado VARCHAR(100) NOT NULL,
     libre BOOLEAN  DEFAULT true,
-    clima VARCHAR(100) NOT NULL
+    clima VARCHAR(100) NOT NULL,
 );
+
+ALTER TABLE cocheras
+ALTER COLUMN numero SET NOT NULL;
+
+ALTER TABLE cocheras
+ADD CONSTRAINT cocheras_numero_unique UNIQUE (numero);
+
 
 
 -- 5. TABLA REGISTROS 
@@ -66,7 +76,6 @@ CREATE TABLE servicios(
     id SERIAL PRIMARY KEY,
     vehiculo_id INT NOT NULL,
     servicio_id INT NOT NULL,
-    -- Usamos CHECK para asegurar que solo entren los estados de tu negocio
     estado VARCHAR(50) DEFAULT 'En Espera', 
     precio_final DECIMAL(10, 2) NOT NULL,
     fecha_solicitud TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

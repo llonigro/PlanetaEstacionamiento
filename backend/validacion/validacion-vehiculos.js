@@ -10,10 +10,13 @@ const verificarErrores = (req, res, next) => {
     next();
 };
 
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 // Validación para rutas que requieren ID (GET único, PATCH, DELETE)
 const validarId = [
     param('id')
-        .isInt().withMessage('El ID debe ser un número entero válido'),
+        .isInt({min : 1}).withMessage('El ID debe ser un número entero válido y mayor o igual a 1'),
     // 2. Middleware para interceptar los errores
     verificarErrores
 ];
@@ -69,6 +72,9 @@ const validarActualizarVehiculo = [
     verificarErrores 
 ];
 
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
 // Validar Patente única (Vehículos)
 const ValidarPatente = (error, res) => { 
     if (error?.code === '23505' && error?.constraint === 'vehiculos_patente_key') {
@@ -87,11 +93,29 @@ const ValidarForeignKey = (error, res) => {
     return false;
 };
 
+const ValidarForeignKeyRegistros = (error, res) => {
+    if (error?.code === '23503' && error?.constraint === 'registros_vehiculo_id_fkey') {
+        res.status(400).json({ message: 'El vehiculo esta registrado a un registro' });
+        return true;
+    }
+    return false;
+};
+
+
+const ValidarForeignKeyServicio = (error, res) => {
+    if (error?.code === '23503' && error?.constraint === 'servicios_vehiculo_id_fkey') {
+        res.status(400).json({ message: 'El vehiculo esta registrado a un servicio' });
+        return true;
+    }
+    return false;
+};
 
 module.exports = {
     validarId,
     validarCrearVehiculo,
     validarActualizarVehiculo,
     ValidarPatente,
-    ValidarForeignKey
+    ValidarForeignKey,
+    ValidarForeignKeyRegistros,
+    ValidarForeignKeyServicio 
 };

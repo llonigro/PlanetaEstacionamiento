@@ -32,8 +32,6 @@ const crear = async (datosUsuario) => {
 const actualizarParcial = async (id, datosUsuario) => {
    // const {id} = datosUsuario;
     const { nombre, email, contrasenia, rol, telefono } = datosUsuario;
-    console.log("=== DATOS QUE LLEGAN A LA QUERY ===");
-    console.log({ id, nombre, email, contrasenia, rol, telefono });
     const { rows } = await pool.query(
         `UPDATE usuarios SET 
         nombre = COALESCE($1, nombre), 

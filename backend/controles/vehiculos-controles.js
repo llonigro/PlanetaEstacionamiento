@@ -2,7 +2,7 @@
 const pool = require("../db/db.js");
 // controles/Usuario-controles.js
 const VehiculosServicio = require('../servicio/servicio-vehiculo.js');
-const { ValidarPatente, ValidarForeignKey } = require('../validacion/validacion-vehiculos.js');
+const { ValidarPatente, ValidarForeignKey, ValidarForeignKeyRegistros, ValidarForeignKeyServicio } = require('../validacion/validacion-vehiculos.js');
 
 
 
@@ -45,21 +45,10 @@ const CrearVehiculo = async (req, res) => {
         if (ValidarPatente(error, res)) {
             return;
         }
-        // Verificamos si es un error de patente duplicada (Código de Postgres 23505)
-        //if (error.code === '23505' && error.constraint === 'vehiculos_patente_key') {
-        //    return res.status(400).json({ message: 'La patente ya se encuentra registrada' });
-        //}
 
         if (ValidarForeignKey(error, res)) {
             return;
         }
-
-        // Verificamos si es un error de usuario inexistente (Código de Postgres 23503)
-        //if (error.code === '23503' && error.constraint === 'vehiculos_usuario_id_fkey') {
-         //   return res.status(400).json({ message: 'El usuario asignado no existe en el sistema' });
-        //}
-
-
 
         // Si es cualquier otro error, lo imprimimos en consola y respondemos con 500
         console.error("Error al crear el vehículo:", error); 
@@ -96,6 +85,12 @@ const eliminarVehiculo = async (req, res) => {
         }
         return res.status(204).json({ message: "vehiculo eliminado correctamente" });
     } catch (error) {
+        if (ValidarForeignKeyRegistros(error, res)) {
+            return;
+        }
+        if (ValidarForeignKeyServicio(error, res)) {
+            return;
+        }
         console.error(error);
         res.status(500).json({ message: "Algo salió mal en el servidor" });
     }
