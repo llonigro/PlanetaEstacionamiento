@@ -10,6 +10,9 @@ const verificarErrores = (req, res, next) => {
     next();
 };
 
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 // Validación para rutas que requieren ID (GET único, PATCH, DELETE)
 const validarId = [
     param('id')
@@ -68,6 +71,9 @@ const validarActualizarVehiculo = [
     // ... middleware para revisar los resultados
     verificarErrores 
 ];
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Validar Patente única (Vehículos)
 const ValidarPatente = (error, res) => { 
