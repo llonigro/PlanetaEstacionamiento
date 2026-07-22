@@ -1,10 +1,19 @@
-body {
+.body-servicios {
     min-height: 100dvh;
-    background-image: 
-    linear-gradient(rgba(255,255,255,0.95), rgba(255,255,255,0.95)),
-    url('../img/fondo-servicios.webp');
+    display: flex;
+    flex-direction: column;
+
+
+    background-image: linear-gradient(
+            rgba(19, 58, 66, 0.35),
+            rgba(19, 58, 66, 0.35)
+        ), url('../img/fondo-servicios.webp');
     background-size: cover;
     background-repeat: no-repeat;
+}
+
+.body-servicios main {
+    flex: 1;
 }
 
 .columns {
@@ -34,7 +43,7 @@ body {
 }
 
 .card-servicios {
-    color: #ffffff !important;
+    color: var(--azul-oscuro) !important;
     height: 100%;
 
     padding: 5px;
@@ -51,6 +60,7 @@ body {
     font-size: 1.5rem;
     line-height: 1.2;
     letter-spacing: 1px;
+    color: var(--azul-oscuro);
 }
 
 .imagenes-laterales {

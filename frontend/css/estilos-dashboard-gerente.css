@@ -151,7 +151,7 @@
     box-shadow: 0 0 0 0.125em rgba(11,176,167,0.25);
 }
 
-/* Color de l */
+/* Color de la flecha del select y del resplandor */
 .select::after {
   border-color: var(--turquesa) !important; 
 }
@@ -159,4 +159,11 @@
 .select select:focus {
     border-color: var(--turquesa);
     box-shadow: 0 0 0 0.125em rgba(11, 176, 167, 0.25);
+}
+
+.linea-divisoria-cocheras {
+    width: 100%;
+    height: 2px;
+    background-color: rgba(255, 255, 255, 0.7);
+    margin: 1rem 0;
 }

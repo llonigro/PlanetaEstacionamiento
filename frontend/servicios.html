@@ -32,9 +32,12 @@
 
         <!-- NUESTRO EQUIPO -->
         <section class="section">
-            <h1 class="title is-1 has-text-centered texto-principal">
+            <h1 class="title is-1 has-text-centered texto-principal mb-3">
                 NUESTROS SERVICIOS 
             </h1>
+            <p class="subtitle is-4 has-text-centered has-text-white">
+                Descubre cómo nuestra plataforma de estacionamiento puede mejorar tu experiencia de movilidad urbana.
+            </p>
         </section>
 
         <div class="linea-divisoria-servicios"></div>
@@ -170,42 +173,13 @@
   </footer>
 
 
+    <!-- Scripts -->
+    <script src="js/skeleton-scripts.js"></script>
+    <script src="js/navbar-scripts.js"></script>
+
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const images = document.querySelectorAll('.fade-img');
-
-            images.forEach(img => {
-                // Verificamos si la imagen ya se cargó (por caché)
-                if (img.complete) {
-                    img.classList.add('is-loaded');
-                    img.parentElement.classList.add('is-loaded');
-                } else {
-                    // Si no, esperamos al evento load
-                    img.addEventListener('load', () => {
-                        img.classList.add('is-loaded');
-                        img.parentElement.classList.add('is-loaded');
-                    });
-                }
-            });
-        });
+        cargarNavbar();
     </script>
-
-
-        <!-- Script para cargar el navbar -->
-        <script src="js/navbar-scripts.js"></script>
-
-        <script>
-        (async() => {
-            try {
-                const respuesta = await fetch('navbar.html');
-                const data = await respuesta.text();
-                document.getElementById('navbar-placeholder').innerHTML = data;
-
-                inicializarScriptsNavbar();
-            } catch (error) {
-                console.error('Error al cargar el navbar:', error);
-            }
-        })();
-        </script>
+    
 </body>
 </html>

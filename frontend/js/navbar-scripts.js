@@ -3,7 +3,7 @@ function inicializarScriptsNavbar() {
   /* Scripts para el burger menu de la navbar */
 
   // Get all "navbar-burger" elements
-  const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+  const navbarBurgers = document.querySelectorAll('.navbar-burger');
 
   // Add a click event on each of them
   $navbarBurgers.forEach( el => {
@@ -30,15 +30,15 @@ function inicializarScriptsNavbar() {
       $el.classList.add('is-active');
     }
 
-    function closeModal($el) {
-      $el.classList.remove('is-active');
+    function closeModal($el, limpiar = true) {
+    $el.classList.remove('is-active');
 
-      // Limpiar los campos de entrada del modal al cerrarlo
-      const inputs = $el.querySelectorAll('input');
-      inputs.forEach(input => {
-        input.value = '';
-      });
+    if (limpiar) {
+        $el.querySelectorAll('input').forEach(input => {
+            input.value = '';
+        });
     }
+}
 
     function closeAllModals() {
       (document.querySelectorAll('.modal') || []).forEach(($modal) => {
@@ -48,10 +48,10 @@ function inicializarScriptsNavbar() {
 
     // Abrir modal al hacer clic en el botón correspondiente
     document.querySelectorAll('.js-modal-trigger').forEach(($trigger) => {
-      const modal = $trigger.dataset.target;
-      const $target = document.getElementById(modal);
+      const targetId = $trigger.dataset.target;
+      const targetModal = document.getElementById(targetId);
 
-      $trigger.addEventListener('click', () => openModal($target));
+      $trigger.addEventListener('click', () => openModal(targetModal));
 
     });
 
@@ -100,3 +100,21 @@ function inicializarScriptsNavbar() {
     });
 
 }
+
+async function cargarNavbar() {
+
+    try {
+
+        const respuesta = await fetch('navbar.html');
+        const data = await respuesta.text();
+
+        document.getElementById('navbar-placeholder').innerHTML = data;
+
+        inicializarScriptsNavbar();
+        inicializarScriptsUsuario();
+
+    } catch (error) {
+        console.error('Error al cargar los scripts:', error);
+    }
+};
+

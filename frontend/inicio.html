@@ -164,13 +164,16 @@
   <!-- Scripts del skeleton -->
   <script>
     document.addEventListener("DOMContentLoaded", () => {
+
         const images = document.querySelectorAll('.fade-img');
 
         images.forEach(img => {
+
             // Verificamos si la imagen ya se cargó (por caché)
             if (img.complete) {
                 img.classList.add('is-loaded');
                 img.parentElement.classList.add('is-loaded');
+
             } else {
                 // Si no, esperamos al evento load
                 img.addEventListener('load', () => {
@@ -185,21 +188,10 @@
   <!-- Scripts -->
   <script src="js/navbar-scripts.js"></script>
   <script src="js/usuario-scripts.js"></script>
+  <script src="js/skeleton-scripts.js"></script>
 
   <script>
-  (async() => {
-      try {
-          const respuesta = await fetch('navbar.html');
-          const data = await respuesta.text();
-          document.getElementById('navbar-placeholder').innerHTML = data;
-
-          inicializarScriptsNavbar();
-          inicializarScriptsUsuario();
-
-      } catch (error) {
-          console.error('Error al cargar los scripts:', error);
-      }
-  })();
+    cargarNavbar();
   </script>
 
 
