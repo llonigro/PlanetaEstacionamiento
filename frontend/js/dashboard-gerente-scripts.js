@@ -1,83 +1,77 @@
 // const nombreGerente = document.getElementById("nombre-gerente");
 // nombreGerente.textContent = datos.nombre;
 
-
 async function cargarSeccion(pagina, elementoActivo) {
+  const respuesta = await fetch(pagina);
 
-    const respuesta = await fetch(pagina);
+  const contenido = await respuesta.text();
 
-    const contenido = await respuesta.text();
+  document.getElementById("contenido-dashboard").innerHTML = contenido;
 
-    document.getElementById("contenido-dashboard").innerHTML = contenido;
+  document.querySelectorAll(".menu-item").forEach((item) => {
+    item.classList.remove("is-active");
+  });
 
-    document.querySelectorAll(".menu-item").forEach(item => {
+  elementoActivo.classList.add("is-active");
 
-            item.classList.remove("is-active");
-
-        });
-
-
-    elementoActivo.classList.add("is-active");
-
-    if (pagina === "gerente-cocheras.html") {
-        inicializarModalCochera();
-    }
-
+  inicializarScriptsSeccion(pagina);
 }
 
-function inicializarModalCochera() {
+function inicializarScriptsSeccion(pagina) {
+  if (pagina === "gerente-cocheras.html") {
+    inicializarModal();
 
-    const modal =
-        document.getElementById("modal-agregar-cochera");
+    agregarCochera();
+  }
 
-    const btnAbrir =
-        document.getElementById("btn-agregar-cochera");
+  if (pagina === "gerente-tarifas.html") {
+    inicializarModal();
+  }
 
-    const btnCerrar =
-        document.getElementById("btn-cerrar-modal");
+  if (pagina === "gerente-servicios.html") {
+    inicializarModal();
+  }
+}
 
-    const btnCancelar =
-        document.getElementById("btn-cancelar-modal");
+function agregarCochera() {
+  const form = document.getElementById("form-agregar-cochera");
 
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
 
-    // Abrir modal
-    btnAbrir.addEventListener("click", function () {
+    const numero = document.getElementById("numero-cochera").value;
+    const tipo = document.getElementById("tipo-cochera").value;
+    const estado = document.getElementById("estado-cochera").value;
+    const clima = document.getElementById("clima-cochera").value;
 
-        modal.classList.add("is-active");
+    const respuesta = await fetch("http://localhost:3000/cocheras", {
+      method: "POST",
 
+      headers: {
+        "Content-Type": "application/json",
+      },
+
+      body: JSON.stringify({
+        numero,
+        tipo,
+        estado,
+        clima,
+      }),
     });
 
+    const resultado = await respuesta.json();
 
-    // Cerrar modal
-    btnCerrar.addEventListener("click", function () {
-
-        modal.classList.remove("is-active");
-
-    });
-
-
-    // Cancelar
-    btnCancelar.addEventListener("click", function () {
-
-        modal.classList.remove("is-active");
-
-    });
-
-
-    // Cerrar al hacer click en el fondo
-    modal.querySelector(".modal-background").addEventListener("click", function () {
-
-            modal.classList.remove("is-active");
-
-        });
-
+    if (respuesta.ok) {
+      alert("Cochera agregada exitosamente");
+    } else {
+      alert("Error al agregar la cochera: " + resultado.error);
+    }
+  });
 }
 
 // Cargar la sección de inicio al cargar la página
 document.addEventListener("DOMContentLoaded", function () {
+  const dashboard = document.querySelector(".menu-item");
 
-    const dashboard = document.querySelector(".menu-item");
-
-    cargarSeccion("gerente-inicio.html", dashboard);
-
+  cargarSeccion("gerente-inicio.html", dashboard);
 });

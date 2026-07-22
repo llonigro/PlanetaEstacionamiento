@@ -1,296 +1,216 @@
 <section class="cocheras-seccion">
+  <div class="level">
+    <div class="level-left">
+      <div>
+        <h2 class="title is-3">Cocheras</h2>
 
-    <div class="level">
-
-        <div class="level-left">
-
-            <div>
-                <h2 class="title is-3">
-                    Cocheras
-                </h2>
-
-                <p class="subtitle is-6">
-                    Administrá los espacios de tu estacionamiento
-                </p>
-            </div>
-
-        </div>
-
-        <div class="level-right">
-
-            <button class="button is-primary" id="btn-agregar-cochera">
-                <span class="icon">
-                    <i class="fas fa-plus"></i>
-                </span>
-
-                <span>
-                    Agregar cochera
-                </span>
-            </button>
-
-        </div>
-
+        <p class="subtitle is-6">
+          Administrá los espacios de tu estacionamiento
+        </p>
+      </div>
     </div>
 
+    <div class="level-right">
+      <button
+        class="button is-primary js-modal-trigger"
+        data-target="modal-agregar-cochera"
+      >
+        <span class="icon">
+          <i class="fas fa-plus"></i>
+        </span>
 
-    <!-- RESUMEN -->
-    <div class="columns is-multiline">
+        <span> Agregar cochera </span>
+      </button>
+    </div>
+  </div>
 
-        <div class="column is-3">
-            <div class="card">
-                <div class="card-content">
-                    <p class="heading titulo-azul-petroleo">TOTAL</p>
-                    <p class="title titulo-turquesa"><span id="cocheras-total">0</span></p>
-                </div>
-            </div>
+  <!-- RESUMEN -->
+  <div class="columns is-multiline">
+    <div class="column is-3">
+      <div class="card">
+        <div class="card-content">
+          <p class="heading titulo-azul-petroleo">TOTAL</p>
+          <p class="title titulo-turquesa">
+            <span id="cocheras-total">0</span>
+          </p>
         </div>
-
-        <div class="column is-3">
-            <div class="card">
-                <div class="card-content">
-                    <p class="heading titulo-azul-petroleo">DISPONIBLES</p>
-                    <p class="title titulo-turquesa"><span id="cocheras-disponibles">0</span></p>
-                </div>
-            </div>
-        </div>
-
-        <div class="column is-3">
-            <div class="card">
-                <div class="card-content">
-                    <p class="heading titulo-azul-petroleo">OCUPADOS</p>
-                    <p class="title titulo-turquesa"><span id="cocheras-ocupadas">0</span></p>
-                </div>
-            </div>
-        </div>
-
-        <div class="column is-3">
-            <div class="card">
-                <div class="card-content">
-                    <p class="heading titulo-azul-petroleo">MANTENIMIENTO</p>
-                    <p class="title titulo-turquesa"><span id="cocheras-mantenimiento">0</span></p>
-                </div>
-            </div>
-        </div>
-
+      </div>
     </div>
 
-    <div class="linea-divisoria-cocheras"></div>
-
-    <!-- COCHERAS -->
-    <div class="columns is-multiline">
-
-        <div class="column is-12-mobile is-6-tablet is-4-desktop">
-
-            <div class="card cochera-card">
-
-                <div class="card-content">
-
-                    <div class="level">
-
-                        <div class="level-left">
-                            <h3 class="title is-4 titulo-azul-petroleo">
-                                A-01
-                            </h3>
-                        </div>
-
-                        <div class="level-right">
-                            <span class="tag is-success">
-                                Disponible
-                            </span>
-                        </div>
-
-                    </div>
-
-                    <p class="titulo-azul-petroleo">
-                        <strong >Condición:</strong>
-                        Buena
-                    </p>
-
-                    <p class="titulo-azul-petroleo">
-                        <strong>Tipo:</strong>
-                        Exterior
-                    </p>
-
-                    <button class="button is-light is-fullwidth mt-4">
-                        Ver detalles
-                    </button>
-
-                </div>
-
-            </div>
-
+    <div class="column is-3">
+      <div class="card">
+        <div class="card-content">
+          <p class="heading titulo-azul-petroleo">DISPONIBLES</p>
+          <p class="title titulo-turquesa">
+            <span id="cocheras-disponibles">0</span>
+          </p>
         </div>
-
+      </div>
     </div>
 
+    <div class="column is-3">
+      <div class="card">
+        <div class="card-content">
+          <p class="heading titulo-azul-petroleo">OCUPADOS</p>
+          <p class="title titulo-turquesa">
+            <span id="cocheras-ocupadas">0</span>
+          </p>
+        </div>
+      </div>
+    </div>
 
-    <!-- AGREGAR COCHERA -->
-    <div class="modal" id="modal-agregar-cochera">
+    <div class="column is-3">
+      <div class="card">
+        <div class="card-content">
+          <p class="heading titulo-azul-petroleo">MANTENIMIENTO</p>
+          <p class="title titulo-turquesa">
+            <span id="cocheras-mantenimiento">0</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
 
-    <!-- Fondo oscuro -->
+  <div class="linea-divisoria-cocheras"></div>
+
+  <!-- COCHERAS -->
+  <div class="columns is-multiline">
+    <div class="column is-12-mobile is-6-tablet is-4-desktop">
+      <div class="card cochera-card">
+        <div class="card-content">
+          <div class="level">
+            <div class="level-left">
+              <h3 class="title is-4 titulo-azul-petroleo">01</h3>
+            </div>
+
+            <div class="level-right">
+              <span class="tag is-success"> Disponible </span>
+            </div>
+          </div>
+
+          <p class="titulo-azul-petroleo">
+            <strong>Condición:</strong>
+            Buena
+          </p>
+
+          <p class="titulo-azul-petroleo">
+            <strong>Tipo:</strong>
+            Exterior
+          </p>
+
+          <button
+            class="button is-light is-fullwidth mt-4 js-modal-trigger"
+            data-target="modal-editar-cochera"
+          >
+            Ver detalles
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AGREGAR COCHERA -->
+  <div class="modal" id="modal-agregar-cochera">
+    <!-- Fondo -->
     <div class="modal-background"></div>
-
 
     <!-- Contenido -->
     <div class="modal-card">
+      <!-- Header -->
+      <header class="modal-card-head">
+        <p class="modal-card-title">Agregar cochera</p>
 
-        <!-- Header -->
-        <header class="modal-card-head">
+        <button
+          class="delete js-modal-close"
+          id="btn-cerrar-modal"
+          aria-label="close"
+        ></button>
+      </header>
 
-            <p class="modal-card-title">
-                Agregar cochera
-            </p>
+      <!-- Body -->
+      <section class="modal-card-body">
+        <form id="formulario-cochera">
+          <!-- Nombre -->
+          <div class="field">
+            <label class="label"> Identificador de la cochera </label>
 
-            <button
-                class="delete"
-                id="btn-cerrar-modal"
-                aria-label="close">
-            </button>
+            <div class="control">
+              <input
+                class="input"
+                type="text"
+                id="numero-cochera"
+                placeholder="Ej: 1"
+                required
+              />
+            </div>
+          </div>
 
-        </header>
+          <!-- Tipo -->
+          <div class="field">
+            <label class="label"> Tipo de cochera </label>
 
+            <div class="control">
+              <div class="select is-fullwidth is-turquesa">
+                <select id="tipo-cochera">
+                  <option value="">Seleccioná un tipo</option>
 
-        <!-- Body -->
-        <section class="modal-card-body">
+                  <option value="techado">Techado</option>
 
-            <form id="formulario-cochera">
+                  <option value="descubierto">Descubierto</option>
+                </select>
+              </div>
+            </div>
+          </div>
 
-                <!-- Nombre -->
-                <div class="field">
+          <!-- Estado -->
+          <div class="field">
+            <label class="label"> Estado </label>
 
-                    <label class="label">
-                        Identificador de la cochera
-                    </label>
+            <div class="control">
+              <div class="select is-fullwidth is-turquesa">
+                <select id="estado-cochera">
+                  <option value="buen estado">Bueno</option>
 
-                    <div class="control">
+                  <option value="mal estado">Malo</option>
+                </select>
+              </div>
+            </div>
+          </div>
 
-                        <input
-                            class="input"
-                            type="text"
-                            id="nombre-cochera"
-                            placeholder="Ej: A-01"
-                            required>
+          <div class="field">
+            <label class="label"> Clima </label>
 
-                    </div>
+            <div class="control">
+              <div class="select is-fullwidth">
+                <select id="clima-cochera" required>
+                  <option value="">Seleccioná una condición climática</option>
 
-                </div>
+                  <option value="frio">Frío</option>
 
+                  <option value="templado">Templado</option>
 
-                <!-- Tipo -->
-                <div class="field">
+                  <option value="caluroso">Caluroso</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </form>
+      </section>
 
-                    <label class="label">
-                        Tipo de cochera
-                    </label>
+      <!-- Footer -->
+      <footer class="modal-card-foot">
+        <button
+          type="submit"
+          class="button is-primary"
+          id="btn-guardar-cochera"
+        >
+          Guardar cochera
+        </button>
 
-                    <div class="control">
-
-                        <div class="select is-fullwidth is-turquesa">
-
-                            <select id="tipo-cochera">
-
-                                <option value="">
-                                    Seleccioná un tipo
-                                </option>
-
-                                <option value="techado">
-                                    Techado
-                                </option>
-
-                                <option value="exterior">
-                                    Exterior
-                                    
-                                </option>
-
-                            </select>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <!-- Condición -->
-                <div class="field">
-
-                    <label class="label">
-                        Condición
-                    </label>
-
-                    <div class="control">
-
-                        <div class="select is-fullwidth is-turquesa">
-
-                            <select id="condicion-cochera">
-
-                                <option value="buena">
-                                    Buena
-                                </option>
-
-                                <option value="regular">
-                                    Regular
-                                </option>
-
-                                <option value="mantenimiento">
-                                    Necesita mantenimiento
-                                </option>
-
-                            </select>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <!-- Descripción -->
-                <div class="field">
-
-                    <label class="label">
-                        Descripción
-                    </label>
-
-                    <div class="control">
-
-                        <textarea
-                            class="textarea"
-                            id="descripcion-cochera"
-                            placeholder="Información adicional">
-                        </textarea>
-
-                    </div>
-
-                </div>
-
-            </form>
-
-        </section>
-
-
-        <!-- Footer -->
-        <footer class="modal-card-foot">
-
-            <button
-                class="button is-primary"
-                id="btn-guardar-cochera">
-
-                Guardar cochera
-
-            </button>
-
-            <button
-                class="button"
-                id="btn-cancelar-modal">
-
-                Cancelar
-
-            </button>
-
-        </footer>
-
+        <button class="button js-modal-close" id="btn-cancelar-modal">
+          Cancelar
+        </button>
+      </footer>
     </div>
-</div>
-
+  </div>
 </section>
