@@ -1,0 +1,396 @@
+.dashboard {
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
+    height: 6.25rem;
+    padding: 2rem;
+    background-color: var(--azul-marino);
+}
+
+.contenido {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 1rem;
+    padding: 1rem;
+}
+
+
+
+
+/* VEHICULO REGISTRADO */
+
+.seccion-vehiculo {
+    flex: 2;
+    min-width: 300px;
+    min-height: 300px;
+
+    background-color: white;
+    border-radius: 30px;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.seccion-vehiculo:hover {
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.25);
+    transform: scale(1.01);
+}
+
+.vehiculo {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 3rem;
+}
+
+.vehiculo-contenido {
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+}
+
+.vehiculo-imagen {
+    width: 500px;
+    height: 500px;
+    object-fit: cover;
+}
+
+.vehiculo-imagen img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50px;
+    min-width: auto;
+    min-height: auto;
+}
+
+.vehiculo-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.tarjetas {
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    min-width: 300px;
+}
+
+.acciones-rapidas {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+
+    gap: 1rem;
+    padding: 2rem;
+    
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border: 2px solid rgba(0, 0, 0, 0.15);
+    background-color: var(--turquesa);
+
+    border-radius: 30px;
+    transition: 0.2s;
+    min-height: 400px;
+}
+
+.acciones-rapidas:hover {
+    transform: scale(1.01);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+}
+
+.contenedor-botones {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.accion {
+    flex: 1 1 calc(50% - 0.5rem);
+    min-height: 160px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+
+    border: none;
+    border-radius: 20px;
+
+    background: white;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.accion:hover {
+    transform: scale(1.04);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+}
+
+.accion i {
+    font-size: 5rem;
+    color: var(--azul-marino);
+}
+
+.accion span {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--azul-petroleo);
+}
+
+
+
+/* SERVICIOS */
+
+.seccion-servicios {
+    width: 100%;
+    min-height: 220px;
+    padding: 1.5rem;
+
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 30px;
+
+    background-color: white;
+
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.seccion-servicios:hover {
+    transform: scale(1.01);
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.25);
+}
+
+.servicios {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.contenedor-tarjetas {
+    display: flex;
+    gap: 1.1rem;
+}
+
+.servicios-tarjetas {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+
+    gap: 1rem;
+    padding: 1.5rem;
+    min-height: 110px;
+
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 30px;
+
+    background-color: rgba(0, 255, 242, 0.164);
+
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.servicios-tarjetas:hover {
+    transform: scale(1.02);
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.25);
+}
+
+.servicio-descripcion {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+.imagen-servicio {
+    width: 80px;
+    height: 80px;
+    flex-shrink: 0;
+}
+
+.imagen-servicio img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.titulo-servicio {
+    padding: 0.2rem;
+}
+
+.titulo-servicio h1 {
+    margin: 0;
+
+    color: var(--azul-petroleo);
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+
+.titulo-servicio p {
+    margin: 0;
+
+    color: var(--turquesa);
+    font-weight: 500;
+    font-size: 1.2rem;
+}
+
+.barra-progreso,
+.mensaje-servicio {
+    display: none;
+}
+
+
+.barra-progreso {
+    position: relative;
+    width: 100%;
+}
+
+.lineas {
+    position: absolute;
+
+    top: 15px;
+    left: 38px;
+    right: 20px;
+
+    height: 4px;
+}
+
+.linea-progreso,
+.linea-activa {
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    height: 100%;
+}
+
+.linea-progreso {
+    width: 100%;
+    background-color: lightgrey;
+}
+
+.linea-activa {
+    width: 0%;
+    background-color: var(--azul-marino);
+
+    transition: width 0.3s ease;
+
+    z-index: 1;
+}
+
+.pasos {
+    display: flex;
+    justify-content: space-between;
+
+    margin: 0 16px;
+
+    position: relative;
+    z-index: 2;
+}
+
+.paso {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.paso span {
+    width: 32px;
+    height: 32px;
+
+    border: 2px solid lightgrey;
+    border-radius: 50%;
+
+    background-color: lightgrey;
+}
+
+.paso.activo span {
+    background-color: var(--azul-marino);
+    border: 2px solid var(--turquesa);
+}
+
+.paso.activo p {
+    color: var(--turquesa);
+    font-weight: bold;
+}
+
+
+.mostrar {
+    display: block;
+}
+
+
+/* NOTICIAS */
+
+.seccion-noticias {
+    width: 100%;
+    min-height: 220px;
+
+    padding: 1.5rem;
+    gap: rem;
+
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 30px;   
+
+    background-color: var(--turquesa);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.seccion-noticias:hover {
+    transform: scale(1.01);
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.25);
+}
+
+.contenedor-noticias {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.noticia {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+
+    padding: 1rem 1.5rem;
+
+    background-color: white;
+    border-radius: 20px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.icono-noticia {
+    flex-shrink: 0;
+    font-size: 3rem;
+}
+
+.cabecera-noticia {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cabecera-noticia h3 {
+    margin: 0;
+    color: var(--azul-petroleo);
+}
+
+.contenido-noticia {
+    flex: 1;
+}
+
+.descripcion-noticia {
+    margin: 0;
+    color: lightblack;
+    font-weight: 500;
+    font-size: 1rem;
+}

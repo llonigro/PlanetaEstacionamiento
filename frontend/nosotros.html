@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nosotros | Planeta Estacionamiento</title>
+
+    <!-- Icono de la pestaña -->
+    <link rel="icon" type="image/png" href="img/icono.png">
+
+    <!-- Agrego Font Awesome para los íconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Agrego Bulma CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
+
+    <!-- Agrego los archivos de estilos -->
+    <link rel="stylesheet" href="css/estilos.css">
+    <link rel="stylesheet" href="css/estilos-nosotros.css">
+    <link rel="stylesheet" href="css/estilos-navbar.css">
+
+</head>
+<body>
+    <header class="header">
+
+    <div id="navbar-placeholder"></div>
+
+    </header>
+
+    <!-- NUESTRO EQUIPO -->
+    <section class="hero is-fullheight-with-navbar hero-nosotros">
+        <div class="hero-body">
+            <div class="container has-text-centered">
+                <h1 class="title is-1 texto-principal">SOBRE NOSOTROS</h1>
+                <p class="subtitle is-4 has-text-white"></p>
+
+                <div class="columns is-multiline is-centered mt-6">
+
+                    <div class="column is-one-third">
+                        <div class="card">
+
+                            <div class="card-image">
+                                <img src="img/mision-nosotros.webp" alt="Icono Misión">
+                            </div>
+                            <div class="card-content">
+                                <p class="title is-2 has-text-white mb-2">MISIÓN</p>
+                                <p class="subtitle is-5 has-text-white">
+                                    Nuestra misión es transformar la movilidad urbana, ofreciendo una plataforma tecnológica de estacionamiento que brinda seguridad, confianza y eficiencia tanto a usuarios como a propietarios.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="column is-one-third">
+                        <div class="card">
+
+                            <div class="card-image">
+                                <img src="img/vision-nosotros.webp" alt="Icono Visión">
+                            </div>
+                            <div class="card-content">
+                                <p class="title is-2 has-text-white mb-2">VISIÓN</p>
+                                <p class="subtitle is-5 has-text-white">Ser el referente global en soluciones de estacionamiento inteligente, impulsando ciudades más conectadas, organizadas y sostenibles donde el tiempo de nuestros usuarios sea nuestra mayor prioridad.</p>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="column is-one-third">
+                        <div class="card">
+
+                            <div class="card-image">
+                                <img src="img/valores-nosotros.webp" alt="Icono Valores">
+                            </div>
+                            <div class="card-content">
+                                <p class="title is-2 has-text-white mb-2">VALORES</p>
+                                <p class="subtitle is-5 has-text-white">Nos mueve la innovación constante, la transparencia en cada transacción, la equidad para con nuestros socios y un compromiso inquebrantable con el desarrollo urbano sostenible.</p>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                </div>
+            </div>
+        </div>
+    </section> 
+
+    <!-- Pie de página -->
+    <footer class="footer navbar-color">
+        <div class="content has-text-centered has-text-white">
+
+        <div class="is-flex is-align-items-center is-justify-content-center mb-3" style="gap: 10px;">
+
+            <a href="https://github.com/llonigro/PlanetaEstacionamiento" target="_blank" rel="noopener noreferrer">
+            <i class="fab fa-github fa-2x" style="color: rgb(255,255,255);"></i>
+            </a>
+
+            <h4 class="mb-0">
+            <strong>Planeta Estacionamiento</strong> 
+            </h4>
+        </div>
+        <p style="margin-top: 10px;">Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+
+        <!-- Script para cargar el navbar -->
+        <script src="js/navbar-scripts.js"></script>
+
+        <script>
+        (async() => {
+            try {
+                const respuesta = await fetch('navbar.html');
+                const data = await respuesta.text();
+                document.getElementById('navbar-placeholder').innerHTML = data;
+
+                inicializarScriptsNavbar();
+            } catch (error) {
+                console.error('Error al cargar el navbar:', error);
+            }
+        })();
+        </script>
+</body>
+</html>

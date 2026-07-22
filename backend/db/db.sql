@@ -1,5 +1,5 @@
 -- 1. CREACIÓN DE LA BASE DE DATOS
-CREATE DATABASE PlanetaEstacionamiento;
+-- CREATE DATABASE PlanetaEstacionamiento;
 
 -- (Asegúrate de conectarte a la base de datos PlanetaEstacionamiento antes de ejecutar lo siguiente)
 
@@ -39,6 +39,7 @@ CREATE TABLE cocheras (
     clima VARCHAR(100) NOT NULL,
 );
 
+<<<<<<< HEAD
 ALTER TABLE cocheras
 ALTER COLUMN numero SET NOT NULL;
 
@@ -46,6 +47,8 @@ ALTER TABLE cocheras
 ADD CONSTRAINT cocheras_numero_unique UNIQUE (numero);
 
 
+=======
+>>>>>>> f3e7abda41f3651a607c9d8acc0ac62c447dd575
 
 -- 5. TABLA REGISTROS 
 CREATE TABLE registros (
@@ -76,6 +79,10 @@ CREATE TABLE servicios(
     id SERIAL PRIMARY KEY,
     vehiculo_id INT NOT NULL,
     servicio_id INT NOT NULL,
+<<<<<<< HEAD
+=======
+    -- Usamos CHECK para asegurar que solo entren los estados de tu negocio
+>>>>>>> f3e7abda41f3651a607c9d8acc0ac62c447dd575
     estado VARCHAR(50) DEFAULT 'En Espera', 
     precio_final DECIMAL(10, 2) NOT NULL,
     fecha_solicitud TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
