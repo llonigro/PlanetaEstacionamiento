@@ -5,7 +5,7 @@ function inicializarScriptsNavbar() {
   const navbarBurgers = document.querySelectorAll(".navbar-burger");
 
   // Add a click event on each of them
-  $navbarBurgers.forEach((el) => {
+  navbarBurgers.forEach((el) => {
     el.addEventListener("click", () => {
       // Get the target from the "data-target" attribute
       const target = el.dataset.target;

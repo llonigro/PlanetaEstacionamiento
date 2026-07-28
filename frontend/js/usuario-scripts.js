@@ -36,7 +36,7 @@ async function registrarUsuario() {
       email: document.getElementById("email").value,
       contrasenia: document.getElementById("contrasenia").value,
       telefono: document.getElementById("telefono").value,
-      rol: "usuario",
+      rol: document.getElementById("rol").value,
     };
 
     // Hacer la solicitud POST al backend para registrar el usuario
@@ -84,6 +84,7 @@ async function registrarUsuario() {
       document.getElementById("nombre").value = "";
       document.getElementById("email").value = "";
       document.getElementById("contrasenia").value = "";
+      document.getElementById("rol").value = "";
       document.getElementById("telefono").value = "";
       // cerrar modal
       const modal = document.getElementById("menu-registro");

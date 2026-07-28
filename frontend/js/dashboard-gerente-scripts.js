@@ -30,6 +30,12 @@ function inicializarScriptsSeccion(pagina) {
     inicializarModalCochera();
   }
 
+  if (pagina === "gerente-registros.html") {
+    inicializarModal();
+
+    cargarRegistros();
+  }
+
   if (pagina === "gerente-tarifas.html") {
     inicializarModal();
   }
@@ -305,6 +311,71 @@ async function borrarCochera() {
       "Error al borrar la cochera: " + (resultado.error || resultado.message),
     );
   }
+}
+
+async function cargarRegistros() {
+  const respuesta = await fetch("http://localhost:3000/registros");
+
+  const registros = await respuesta.json();
+
+  const tbody = document.getElementById("registros-body");
+
+  tbody.innerHTML = "";
+
+  registros.forEach((registro) => {
+    const fila = document.createElement("tr");
+
+    fila.innerHTML = `
+            <td>${registro.id}</td>
+            <td>${registro.cochera_id}</td>
+            <td>${registro.vehiculo_id}</td>
+            <td>${formatearFecha(registro.fecha_ingreso)}</td>
+            <td>${formatearFecha(registro.fecha_egreso)}</td>
+            <td>$${registro.precio_total}</td>
+            
+            <td>
+                <div class="acciones-registro">
+                    <button
+                        class="boton-accion ver"
+                        onclick="verRegistro(${registro.id})"
+                        title="Ver detalles"
+                    >
+                        <i class="fas fa-eye"></i>
+                    </button>
+
+                    <button
+                        class="boton-accion egreso"
+                        onclick="registrarEgreso(${registro.id})"
+                        title="Registrar egreso"
+                    >
+                        <i class="fas fa-right-from-bracket"></i>
+                    </button>
+
+                    <button
+                        class="boton-accion eliminar"
+                        onclick="anularRegistro(${registro.id})"
+                        title="Anular registro"
+                    >
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </td>
+        `;
+
+    tbody.appendChild(fila);
+  });
+}
+
+function formatearFecha(fecha) {
+  if (!fecha) return "-";
+
+  return new Date(fecha).toLocaleString("es-AR", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 }
 
 // Cargar la sección de inicio al cargar la página

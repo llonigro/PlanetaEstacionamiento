@@ -1,0 +1,45 @@
+<section class="registros-seccion">
+  <!-- HEADER -->
+  <div class="level dashboard-header">
+    <div class="level-left">
+      <div>
+        <h2 class="title is-3">Registros</h2>
+
+        <p class="subtitle is-6">
+          Consulta y administra los registros de tu estacionamiento
+        </p>
+      </div>
+    </div>
+
+    <div class="level-right">
+      <button
+        class="button is-primary js-modal-trigger"
+        data-target="modal-agregar-registro"
+      >
+        <span class="icon">
+          <i class="fas fa-plus"></i>
+        </span>
+
+        <span> Agregar registro </span>
+      </button>
+    </div>
+  </div>
+
+  <div class="tabla-registros">
+    <table class="table is-fullwidth is-striped is-hoverable is-bordered">
+      <thead>
+        <tr>
+          <th>Cochera</th>
+          <th>Vehiculo</th>
+          <th>Ingreso</th>
+          <th>Egreso</th>
+          <th>Estado</th>
+          <th>Precio</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+
+      <tbody id="registros-body"></tbody>
+    </table>
+  </div>
+</section>
