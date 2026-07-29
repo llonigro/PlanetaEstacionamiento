@@ -254,3 +254,223 @@
   background-color: #f5d5d5;
   color: #b42318;
 }
+
+.boton-accion:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* MODAL DE DETALLES DE REGISTRO */
+
+.modal-registro {
+  width: 600px;
+  max-width: 90%;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+/* ENCABEZADO */
+
+.modal-registro .modal-card-head {
+  background-color: var(--azul-oscuro);
+  border-bottom: 1px solid var(--azul-petroleo);
+  padding: 1.5rem 2rem;
+}
+
+.modal-registro .modal-card-head .delete {
+  margin-left: auto;
+}
+
+.modal-registro-titulo {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: white;
+}
+
+/* CONTENIDO */
+
+.modal-registro .modal-card-body {
+  padding: 2rem;
+  background-color: var(--azul-oscuro);
+}
+
+/* ESTADO */
+
+.estado-contenedor {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.estado-registro {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  padding: 0.5rem 1rem;
+
+  border-radius: 50px;
+
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.estado-registro i {
+  font-size: 0.45rem;
+}
+
+.estado-registro.activo {
+  color: #16805c;
+  background-color: #e2f7ee;
+}
+
+.estado-registro.finalizado {
+  color: var(--azul-petroleo);
+  background-color: #e5f4f4;
+}
+
+.estado-registro.anulado {
+  color: #b42318;
+  background-color: #fbe4e4;
+}
+
+/* SECCIONES */
+
+.detalle-seccion {
+  margin-bottom: 1.5rem;
+}
+
+.detalle-titulo {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+
+  margin-bottom: 0.7rem;
+
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: white;
+
+  text-transform: uppercase;
+}
+
+.detalle-titulo i {
+  width: 20px;
+  text-align: center;
+}
+
+/* TARJETA INTERNA */
+
+.detalle-card {
+  padding: 1rem 1.2rem;
+
+  background-color: var(--azul-marino);
+
+  border: 1px solid white;
+  border-radius: 12px;
+}
+
+/* DATOS */
+
+.detalle-dato {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 0.5rem 0;
+
+  gap: 1rem;
+}
+
+.detalle-dato:not(:last-child) {
+  border-bottom: 1px solid #e5eeee;
+}
+
+.detalle-dato span {
+  color: var(--azul-oscuro);
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.detalle-dato strong {
+  color: var(--azul-oscuro);
+  font-size: 0.9rem;
+  text-align: right;
+}
+
+/* PRECIO */
+
+.precio-contenedor {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 1rem;
+
+  background-color: var(--azul-petroleo);
+
+  border-radius: 12px;
+}
+
+.precio-contenedor span {
+  color: white;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+/* FOOTER */
+
+.modal-registro .modal-card-foot {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.7rem;
+
+  padding: 1.2rem 2rem;
+
+  background-color: var(--azul-petroleo);
+}
+
+/* BOTONES */
+
+.boton-modal {
+  padding: 0.65rem 1rem;
+
+  border: none;
+  border-radius: 10px;
+
+  font-size: 0.9rem;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.boton-modal:hover {
+  transform: translateY(-1px);
+}
+
+.boton-anular {
+  background-color: #fbe4e4;
+  color: #b42318;
+}
+
+.boton-egreso {
+  background-color: var(--turquesa);
+  color: white;
+}
+
+.boton-cerrar {
+  background-color: #edf2f2;
+  color: var(--azul-oscuro);
+}
+
+.boton-egreso:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+}

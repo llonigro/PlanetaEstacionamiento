@@ -31,8 +31,7 @@ function inicializarScriptsSeccion(pagina) {
   }
 
   if (pagina === "gerente-registros.html") {
-    inicializarModal();
-
+    inicializarModalRegistro();
     cargarRegistros();
   }
 
@@ -345,8 +344,13 @@ async function cargarRegistros() {
 
                     <button
                         class="boton-accion egreso"
+                        ${registro.fecha_egreso || registro.anulado ? "disabled" : ""}
                         onclick="registrarEgreso(${registro.id})"
-                        title="Registrar egreso"
+                        title="${
+                          registro.fecha_egreso
+                            ? "El egreso ya fue registrado"
+                            : "Registrar egreso"
+                        }"
                     >
                         <i class="fas fa-right-from-bracket"></i>
                     </button>
@@ -375,6 +379,118 @@ function formatearFecha(fecha) {
     year: "numeric",
     hour: "2-digit",
     minute: "2-digit",
+  });
+}
+
+async function verRegistro(id) {
+  try {
+    const respuesta = await fetch(`http://localhost:3000/registros/${id}`);
+
+    const registro = await respuesta.json();
+
+    if (!respuesta.ok) {
+      alert(registro.mensaje);
+      return;
+    }
+
+    document.getElementById("detalle-id").textContent =
+      `Registro #${registro.id}`;
+
+    document.getElementById("detalle-patente").textContent = registro.patente;
+
+    document.getElementById("detalle-marca").textContent = registro.marca;
+
+    document.getElementById("detalle-modelo").textContent = registro.modelo;
+
+    document.getElementById("detalle-cochera").textContent =
+      registro.cochera_id;
+
+    document.getElementById("detalle-ingreso").textContent = formatearFecha(
+      registro.fecha_ingreso,
+    );
+
+    document.getElementById("detalle-egreso").textContent = formatearFecha(
+      registro.fecha_egreso,
+    );
+
+    document.getElementById("detalle-precio").textContent =
+      `$${registro.precio_total}`;
+
+    const estado = document.getElementById("detalle-estado");
+
+    // Estado del registro: Activo, Finalizado o Anulado
+    if (registro.anulado) {
+      estado.textContent = "Anulado";
+    } else if (registro.fecha_egreso) {
+      estado.textContent = "Finalizado";
+    } else {
+      estado.textContent = "Activo";
+    }
+
+    // Habilitar o deshabilitar el botón de egreso según el estado del registro
+    const btnEgreso = document.getElementById("boton-egreso");
+
+    if (registro.fecha_egreso || registro.anulado) {
+      btnEgreso.disabled = true;
+    } else {
+      btnEgreso.disabled = false;
+    }
+
+    document
+      .getElementById("modal-detalle-registro")
+      .classList.add("is-active");
+  } catch (error) {
+    console.error("Error al obtener registro:", error);
+    alert("No se pudo obtener el registro.");
+  }
+}
+
+async function anularRegistro(id) {
+  const confirmar = confirm(
+    "¿Estás seguro de que querés anular este registro?",
+  );
+
+  if (!confirmar) return;
+
+  try {
+    const respuesta = await fetch(`http://localhost:3000/registros/${id}`, {
+      method: "DELETE",
+    });
+
+    const datos = await respuesta.json();
+
+    if (!respuesta.ok) {
+      alert(datos.message || "No se pudo anular el registro.");
+      return;
+    }
+
+    // Actualizamos la tabla
+    await cargarRegistros();
+
+    alert("Registro anulado correctamente.");
+  } catch (error) {
+    console.error("Error al anular registro:", error);
+    alert("Ocurrió un error al anular el registro.");
+  }
+}
+
+function inicializarModalRegistro() {
+  const modal = document.getElementById("modal-detalle-registro");
+
+  document
+    .getElementById("btn-cerrar-detalle-registro")
+    .addEventListener("click", () => {
+      modal.classList.remove("is-active");
+    });
+
+  document
+    .getElementById("btn-cerrar-detalle-registro-2")
+    .addEventListener("click", () => {
+      modal.classList.remove("is-active");
+    });
+
+  modal.querySelector(".modal-background").addEventListener("click", () => {
+    modal.classList.remove("is-active");
   });
 }
 
