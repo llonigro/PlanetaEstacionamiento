@@ -127,7 +127,7 @@
 
             <div class="contenedor-tarjetas">
               <!-- Tarjeta de servicio (cambiar estado)-->
-              <div class="servicios-tarjetas" data-estado="lavando">
+              <div class="servicios-tarjetas" data-servicio="lavando">
                 <div class="servicio-descripcion">
                   <div class="imagen-servicio">
                     <img
@@ -177,7 +177,10 @@
                 </p>
               </div>
 
-              <div class="servicios-tarjetas tarjeta-valet">
+              <div
+                class="servicios-tarjetas tarjeta-valet"
+                data-servicio="valet"
+              >
                 <div class="servicio-descripcion">
                   <div class="imagen-servicio">
                     <i class="fas fa-concierge-bell"></i>
@@ -270,129 +273,99 @@
       </main>
 
       <!-- MODAL: Edición del vehículo (guardar / eliminar) -->
-      <div id="modal-vehiculo" class="modal">
+    <div id="modal-vehiculo" class="modal">
+
         <div class="modal-background"></div>
 
         <div class="modal-card">
-          <header class="modal-card-head">
-            <p class="modal-card-title">Editar vehículo</p>
 
-            <button
-              id="cerrar-modal-vehiculo"
-              class="delete"
-              aria-label="close"
-            ></button>
-          </header>
+            <header class="modal-card-head">
+                <p class="modal-card-title">
+                    Editar vehículo
+                </p>
 
-          <section class="modal-card-body">
-            <div class="field">
-              <label class="label">Marca</label>
+                <button
+                    id="cerrar-modal-vehiculo"
+                    class="delete"
+                    aria-label="close">
+                </button>
+            </header>
 
-              <div class="control">
-                <input
-                  id="input-marca"
-                  class="input"
-                  type="text"
-                  placeholder="Ej: Ford"
-                />
-              </div>
-            </div>
+            <section class="modal-card-body">
 
-            <div class="field">
-              <label class="label">Modelo</label>
+                <div class="field">
+                    <label class="label">Marca</label>
+                    <div class="control">
+                        <input id="input-marca" class="input" type="text">
+                    </div>
+                </div>
 
-              <div class="control">
-                <input
-                  id="input-modelo"
-                  class="input"
-                  type="text"
-                  placeholder="Ej: Fiesta"
-                />
-              </div>
-            </div>
+                <div class="field">
+                    <label class="label">Modelo</label>
+                    <div class="control">
+                        <input id="input-modelo" class="input" type="text">
+                    </div>
+                </div>
 
-            <div class="field">
-              <label class="label">Año</label>
+                <div class="field">
+                    <label class="label">Año</label>
+                    <div class="control">
+                        <input id="input-año" class="input" type="number">
+                    </div>
+                </div>
 
-              <div class="control">
-                <input
-                  id="input-año"
-                  class="input"
-                  type="number"
-                  placeholder="Ej: 2018"
-                />
-              </div>
-            </div>
+                <div class="field">
+                    <label class="label">Color</label>
+                    <div class="control">
+                        <input id="input-color" class="input" type="text">
+                    </div>
+                </div>
 
-            <div class="field">
-              <label class="label">Color</label>
+                <div class="field">
+                    <label class="label">Patente</label>
+                    <div class="control">
+                        <input id="input-patente" class="input" type="text">
+                    </div>
+                </div>
 
-              <div class="control">
-                <input
-                  id="input-color"
-                  class="input"
-                  type="text"
-                  placeholder="Ej: Azul"
-                />
-              </div>
-            </div>
+            </section>
 
-            <div class="field">
-              <label class="label">Patente</label>
+            <footer class="modal-card-foot">
 
-              <div class="control">
-                <input
-                  id="input-patente"
-                  class="input"
-                  type="text"
-                  placeholder="Ej: ABC123"
-                />
-              </div>
-            </div>
-          </section>
+                <button
+                    id="btn-eliminar-vehiculo"
+                    class="button btn-eliminar-vehiculo">
+                    <i class="fas fa-trash"></i>
+                    <span>Eliminar vehículo</span>
+                </button>
 
-          <footer class="modal-card-foot">
-            <button
-              id="btn-eliminar-vehiculo"
-              class="button is-danger is-light"
-            >
-              <i class="fas fa-trash"></i>
-              Eliminar vehículo
-            </button>
+                <button
+                    id="btn-guardar-vehiculo"
+                    class="button btn-guardar-vehiculo">
+                    <i class="fas fa-save"></i>
+                    <span>Guardar cambios</span>
+                </button>
 
-            <button id="btn-guardar-vehiculo" class="button is-primary">
-              <i class="fas fa-save"></i>
-              Guardar cambios
-            </button>
-          </footer>
+            </footer>
+
         </div>
-      </div>
     </div>
 
     <!-- FOOTER: créditos y enlaces -->
-    <footer class="footer navbar-color">
-      <div class="content has-text-centered has-text-white">
-        <div
-          class="is-flex is-align-items-center is-justify-content-center mb-3"
-          style="gap: 10px"
+    <footer class="footer footer-principal">
+      <div class="footer-marca">
+        <a
+          href="https://github.com/llonigro/PlanetaEstacionamiento"
+          target="_blank"
+          rel="noopener noreferrer"
         >
-          <a
-            href="https://github.com/llonigro/PlanetaEstacionamiento"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <i
-              class="fab fa-github fa-2x"
-              style="color: rgb(255, 255, 255)"
-            ></i>
-          </a>
+          <i class="fab fa-github fa-2x"></i>
+        </a>
 
-          <h4 class="mb-0">
-            <strong>Planeta Estacionamiento</strong>
-          </h4>
-        </div>
-        <p style="margin-top: 10px">Todos los derechos reservados.</p>
+        <strong>Planeta Estacionamiento</strong>
       </div>
+
+      <p class="footer-derechos">Todos los derechos reservados.</p>
     </footer>
   </body>
 

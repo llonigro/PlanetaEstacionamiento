@@ -628,3 +628,164 @@
   color: var(--azul-petroleo);
   font-size: 1.1rem;
 }
+
+#modal-vehiculo .modal-background {
+  background-color: rgba(10, 25, 47, 0.65);
+}
+
+#modal-vehiculo .modal-card {
+  width: min(600px, calc(100% - 2rem));
+
+  border-radius: 25px;
+  overflow: hidden;
+
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+}
+
+/* CABECERA */
+
+#modal-vehiculo .modal-card-head {
+  padding: 1.5rem 2rem;
+
+  background-color: var(--azul-marino);
+
+  border: none;
+}
+
+#modal-vehiculo .modal-card-title {
+  margin: 0;
+
+  color: white;
+
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+/* BOTÓN CERRAR */
+
+#modal-vehiculo .delete {
+  background-color: rgba(255, 255, 255, 0.15);
+  transition:
+    background-color 0.2s,
+    transform 0.2s;
+}
+
+#modal-vehiculo .delete:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+  transform: rotate(90deg);
+}
+
+/* CUERPO */
+
+#modal-vehiculo .modal-card-body {
+  padding: 2rem;
+
+  background-color: var(--azul-marino);
+}
+
+/* CAMPOS */
+
+#modal-vehiculo .field {
+  margin-bottom: 1.2rem;
+}
+
+#modal-vehiculo .label {
+  margin-bottom: 0.4rem;
+
+  color: var(--azul-oscuro);
+
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+#modal-vehiculo .input {
+  height: 2.8rem;
+
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+
+  box-shadow: none;
+
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+#modal-vehiculo .input:focus {
+  border-color: var(--turquesa);
+
+  box-shadow: 0 0 0 2px rgba(11, 176, 167, 0.15);
+}
+
+/* FOOTER */
+
+#modal-vehiculo .modal-card-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+
+  padding: 1.25rem 2rem;
+
+  background-color: color-mix(in srgb, var(--azul-marino) 90%, transparent);
+
+  border: none;
+}
+
+/* BOTÓN ELIMINAR */
+
+.btn-eliminar-vehiculo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  color: #d64545;
+  background-color: #fbe4e4;
+
+  border: 1px solid #d64545;
+  border-radius: 10px;
+
+  font-weight: 600;
+
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    transform 0.2s;
+}
+
+.btn-eliminar-vehiculo:hover {
+  color: white;
+  background-color: #d64545;
+
+  transform: translateY(-2px);
+}
+
+/* BOTÓN GUARDAR */
+
+.btn-guardar-vehiculo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  color: white;
+  background-color: var(--turquesa);
+
+  border: none;
+  border-radius: 10px;
+
+  font-weight: 600;
+
+  transition:
+    background-color 0.2s,
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+
+.btn-guardar-vehiculo:hover {
+  color: white;
+  background-color: var(--azul-petroleo);
+
+  transform: translateY(-2px);
+
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
