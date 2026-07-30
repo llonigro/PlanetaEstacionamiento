@@ -1,6 +1,20 @@
-// Script para manejar la barra de progreso de los servicios en el dashboard
-const tarjetas = document.querySelectorAll(".servicios-tarjetas");
+// SECCIONES DEL DASHBOARD
+function mostrarSeccion(seccionId) {
+  const secciones = document.querySelectorAll(".dashboard-section");
 
+  secciones.forEach((seccion) => {
+    seccion.classList.add("is-hidden");
+  });
+
+  const seccionMostrar = document.getElementById(seccionId);
+  if (seccionMostrar) {
+    seccionMostrar.classList.remove("is-hidden");
+  }
+}
+
+// Script para manejar la barra de progreso de los servicios en el dashboard
+//
+// Estados posibles del servicio de lavado
 const ordenEstados = ["espera", "lavando", "listo"];
 
 const progreso = {
@@ -15,15 +29,14 @@ const mensajesEstado = {
   listo: "Listo",
 };
 
-// Iteramos sobre cada tarjeta de servicio para actualizar su barra de progreso y estado
-tarjetas.forEach((tarjeta) => {
-  const servicio = tarjeta.dataset.servicio;
+// LAVADO
 
-  if (servicio !== "lavado") {
-    return;
-  }
+function actualizarEstadoLavado(estado) {
+  const tarjeta = document.querySelector(
+    '.servicios-tarjetas[data-servicio="lavado"]',
+  );
 
-  const estado = tarjeta.dataset.estado;
+  if (!tarjeta) return;
 
   const barra = tarjeta.querySelector(".barra-progreso");
   const mensaje = tarjeta.querySelector(".mensaje-servicio");
@@ -31,118 +44,143 @@ tarjetas.forEach((tarjeta) => {
   const lineaActiva = tarjeta.querySelector(".linea-activa");
   const estadoTexto = tarjeta.querySelector(".estado-texto");
 
-  // Estado sin servicio
+  // Limpiamos estados anteriores
+  pasos.forEach((paso) => {
+    paso.classList.remove("activo");
+  });
+
+  // Si no hay servicio
   if (estado === "sin-servicio") {
-    barra.classList.remove("mostrar");
-    mensaje.classList.add("mostrar");
+    barra.style.display = "none";
+    mensaje.style.display = "block";
+    estadoTexto.textContent = "Sin servicio";
 
     return;
   }
 
-  // Si hay servicio ocultamos el mensaje y mostramos la barra de progreso
-  barra.classList.add("mostrar");
-  mensaje.classList.remove("mostrar");
+  // Hay un servicio activo
+  barra.style.display = "block";
+  mensaje.style.display = "none";
 
-  // Actualizamos la barra de progreso y el mensaje según el estado del servicio
+  // Actualizamos el texto y la barra
+  estadoTexto.textContent = mensajesEstado[estado];
   lineaActiva.style.width = progreso[estado];
 
-  estadoTexto.textContent = mensajesEstado[estado];
-
-  // Buscamos el estado actual
+  // Buscamos la posición del estado actual
   const posicionActual = ordenEstados.indexOf(estado);
 
   pasos.forEach((paso) => {
     const estadoPaso = paso.dataset.paso;
     const posicionPaso = ordenEstados.indexOf(estadoPaso);
 
-    // Si el paso es menor o igual al estado actual, lo marcamos como activo y actualizamos la barra de progreso
     if (posicionPaso <= posicionActual) {
       paso.classList.add("activo");
-      barra.classList.add(estado);
     }
   });
-});
+}
 
-function mostrarSeccion(seccionId) {
-  const secciones = document.querySelectorAll(".dashboard-section");
+async function cargarEstadoLavado() {
+  try {
+    const respuesta = await fetch("http://localhost:3000/servicios");
 
-  secciones.forEach((seccion) => {
-    seccion.classList.add("is-hidden");
+    if (!respuesta.ok) {
+      throw new Error("No se pudo obtener el estado del lavado");
+    }
+
+    const datos = await respuesta.json();
+
+    actualizarEstadoLavado(datos.estado);
+  } catch (error) {
+    console.error("Error al cargar el estado del lavado:", error);
+  }
+}
+
+// MODALES
+
+function inicializarModales() {
+  // Botones que abren modales
+  document.querySelectorAll("[data-modal]").forEach((boton) => {
+    const modalId = boton.dataset.modal;
+    const modal = document.getElementById(modalId);
+
+    if (!modal) return;
+
+    boton.addEventListener("click", () => {
+      if (modal.id === "modal-vehiculo") {
+        cargarDatosVehiculo();
+      }
+
+      modal.classList.add("is-active");
+    });
+
+    // Botón X
+    const botonCerrar = modal.querySelector(".delete");
+
+    if (botonCerrar) {
+      botonCerrar.addEventListener("click", () => {
+        modal.classList.remove("is-active");
+      });
+    }
+
+    // Botón Cancelar
+    const botonCancelar = modal.querySelector(".btn-modal-cancelar");
+
+    if (botonCancelar) {
+      botonCancelar.addEventListener("click", () => {
+        modal.classList.remove("is-active");
+      });
+    }
+
+    // Fondo
+    const fondo = modal.querySelector(".modal-background");
+
+    if (fondo) {
+      fondo.addEventListener("click", () => {
+        modal.classList.remove("is-active");
+      });
+    }
   });
-
-  const seccionMostrar = document.getElementById(seccionId);
-  if (seccionMostrar) {
-    seccionMostrar.classList.remove("is-hidden");
-  }
 }
 
-function inicializarModalVehiculo() {
-  const modal = document.getElementById("modal-vehiculo");
-  const btnEditar = document.getElementById("btn-editar-vehiculo");
-  const btnCerrar = document.getElementById("cerrar-modal-vehiculo");
-  const btnGuardar = document.getElementById("btn-guardar-vehiculo");
+// VEHICULO
 
-  if (!modal || !btnEditar || !btnCerrar || !btnGuardar) {
-    return;
-  }
+function cargarDatosVehiculo() {
+  const campos = ["marca", "modelo", "año", "color", "patente"];
 
-  btnEditar.addEventListener("click", abrirModalVehiculo);
+  campos.forEach((campo) => {
+    const dato = document.getElementById(`${campo}-vehiculo`);
+    const input = document.getElementById(`input-${campo}`);
 
-  btnCerrar.addEventListener("click", cerrarModalVehiculo);
-
-  modal
-    .querySelector(".modal-background")
-    .addEventListener("click", cerrarModalVehiculo);
-
-  btnGuardar.addEventListener("click", guardarVehiculo);
-}
-
-function abrirModalVehiculo() {
-  const modal = document.getElementById("modal-vehiculo");
-
-  // Obtenemos los datos que ya están mostrando las tarjetas
-  const marca = document.getElementById("marca-vehiculo").textContent;
-  const modelo = document.getElementById("modelo-vehiculo").textContent;
-  const año = document.getElementById("año-vehiculo").textContent;
-  const color = document.getElementById("color-vehiculo").textContent;
-  const patente = document.getElementById("patente-vehiculo").textContent;
-
-  // Los colocamos en los inputs
-  document.getElementById("input-marca").value = marca;
-  document.getElementById("input-modelo").value = modelo;
-  document.getElementById("input-año").value = año;
-  document.getElementById("input-color").value = color;
-  document.getElementById("input-patente").value = patente;
-
-  modal.classList.add("is-active");
-}
-
-function cerrarModalVehiculo() {
-  const modal = document.getElementById("modal-vehiculo");
-
-  modal.classList.remove("is-active");
+    if (dato && input) {
+      input.value = dato.textContent.trim();
+    }
+  });
 }
 
 function guardarVehiculo() {
+  const campos = ["marca", "modelo", "año", "color", "patente"];
+
+  campos.forEach((campo) => {
+    const input = document.getElementById(`input-${campo}`);
+    const dato = document.getElementById(`${campo}-vehiculo`);
+
+    if (input && dato) {
+      dato.textContent = input.value;
+    }
+  });
+
   const marca = document.getElementById("input-marca").value;
   const modelo = document.getElementById("input-modelo").value;
-  const año = document.getElementById("input-año").value;
-  const color = document.getElementById("input-color").value;
-  const patente = document.getElementById("input-patente").value;
 
-  // Actualizamos la tarjeta
-  document.getElementById("marca-vehiculo").textContent = marca;
-  document.getElementById("modelo-vehiculo").textContent = modelo;
-  document.getElementById("año-vehiculo").textContent = año;
-  document.getElementById("color-vehiculo").textContent = color;
-  document.getElementById("patente-vehiculo").textContent = patente;
-
-  // Actualizamos el título principal
   document.getElementById("modelo-completo").textContent = `${marca} ${modelo}`;
 
-  cerrarModalVehiculo();
+  document.getElementById("modal-vehiculo").classList.remove("is-active");
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  inicializarModalVehiculo();
+  inicializarModales();
+  document
+    .getElementById("guardar-vehiculo")
+    .addEventListener("click", guardarVehiculo);
+  cargarEstadoLavado();
 });

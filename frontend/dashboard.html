@@ -41,12 +41,16 @@
       <!-- MAIN: contenido principal de la página (vehículo, acciones, servicios, noticias) -->
       <main class="contenido">
         <!-- SECCIÓN: Información del vehículo registrado -->
-        <section class="seccion-vehiculo">
+        <section class="seccion-vehiculo seccion-card">
           <div class="vehiculo">
             <div class="vehiculo-cabecera">
               <h2 class="title is-4 titulo-turquesa">VEHÍCULO REGISTRADO</h2>
 
-              <button id="btn-editar-vehiculo" class="btn-editar-vehiculo">
+              <button
+                id="btn-editar-vehiculo"
+                class="btn-editar-vehiculo"
+                data-modal="modal-vehiculo"
+              >
                 <i class="fas fa-pen"></i>
                 Editar vehículo
               </button>
@@ -100,19 +104,35 @@
             <h3 class="title is-4 titulo-blanco">ACCIONES RÁPIDAS</h3>
 
             <div class="contenedor-botones">
-              <button id="ver-cocheras" class="accion">
+              <button
+                id="ver-cocheras"
+                class="accion"
+                data-modal="modal-cocheras"
+              >
                 <i class="fas fa-car" style="color: darkcyan"></i>
                 <span>Ver cocheras</span>
               </button>
-              <button id="reservar-lavado" class="accion">
+              <button
+                id="reservar-lavado"
+                class="accion"
+                data-modal="modal-lavado"
+              >
                 <i class="fas fa-droplet" style="color: lightskyblue"></i>
                 <span>Reservar lavado</span>
               </button>
-              <button id="reportar-danio" class="accion">
+              <button
+                id="reportar-danio"
+                class="accion"
+                data-modal="modal-danio"
+              >
                 <i class="fas fa-warning" style="color: lightcoral"></i>
                 <span>Reportar daño</span>
               </button>
-              <button id="solicitar-valet" class="accion">
+              <button
+                id="solicitar-valet"
+                class="accion"
+                data-modal="modal-valet"
+              >
                 <i class="fas fa-concierge-bell" style="color: orange"></i>
                 <span>Solicitar valet</span>
               </button>
@@ -121,26 +141,22 @@
         </section>
 
         <!-- SECCIÓN: Servicios activos y progreso de servicios -->
-        <section class="seccion-servicios">
+        <section class="seccion-servicios seccion-card">
           <div class="servicios">
             <h2 class="title is-4 titulo-turquesa">SERVICIOS ACTIVOS</h2>
 
             <div class="contenedor-tarjetas">
               <!-- Tarjeta de servicio (cambiar estado)-->
-              <div class="servicios-tarjetas" data-servicio="lavando">
+              <div class="servicios-tarjetas" data-servicio="lavado">
                 <div class="servicio-descripcion">
                   <div class="imagen-servicio">
-                    <img
-                      src="https://picsum.photos/80/80"
-                      alt="Imagen icono lavado"
-                    />
+                    <i class="fas fa-car-side"></i>
                   </div>
 
                   <div class="titulo-servicio">
                     <h1>Lavado</h1>
 
                     <p>
-                      Estado:
                       <span class="estado-texto"></span>
                     </p>
                   </div>
@@ -190,7 +206,7 @@
                     <h1>Valet</h1>
                     <p>
                       Estado:
-                      <span id="estado-valet"> En camino </span>
+                      <span id="estado-valet"></span>
                     </p>
                   </div>
                 </div>
@@ -201,7 +217,7 @@
 
                     <div>
                       <span>Distancia</span>
-                      <strong id="distancia-valet"> 350 m </strong>
+                      <strong id="distancia-valet"></strong>
                     </div>
                   </div>
 
@@ -210,7 +226,7 @@
 
                     <div>
                       <span>Tiempo estimado</span>
-                      <strong id="tiempo-valet"> 3 min </strong>
+                      <strong id="tiempo-valet"></strong>
                     </div>
                   </div>
                 </div>
@@ -220,7 +236,7 @@
         </section>
 
         <!-- SECCIÓN: Noticias y promociones -->
-        <section class="seccion-noticias">
+        <section class="seccion-noticias seccion-card">
           <div class="noticias">
             <h2 class="title is-4 titulo-blanco">NOTICIAS</h2>
 
@@ -271,84 +287,252 @@
           </div>
         </section>
       </main>
+    </div>
 
-      <!-- MODAL: Edición del vehículo (guardar / eliminar) -->
+    <!-- MODAL: Edición del vehículo (guardar / eliminar) -->
     <div id="modal-vehiculo" class="modal">
+      <div class="modal-background"></div>
 
-        <div class="modal-background"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">Editar vehículo</p>
 
-        <div class="modal-card">
+          <button
+            id="cerrar-modal-vehiculo"
+            class="delete"
+            aria-label="close"
+          ></button>
+        </header>
 
-            <header class="modal-card-head">
-                <p class="modal-card-title">
-                    Editar vehículo
-                </p>
+        <section class="modal-card-body">
+          <div class="field">
+            <label class="label">Marca</label>
+            <div class="control">
+              <input id="input-marca" class="input" type="text" />
+            </div>
+          </div>
 
-                <button
-                    id="cerrar-modal-vehiculo"
-                    class="delete"
-                    aria-label="close">
-                </button>
-            </header>
+          <div class="field">
+            <label class="label">Modelo</label>
+            <div class="control">
+              <input id="input-modelo" class="input" type="text" />
+            </div>
+          </div>
 
-            <section class="modal-card-body">
+          <div class="field">
+            <label class="label">Año</label>
+            <div class="control">
+              <input id="input-año" class="input" type="number" />
+            </div>
+          </div>
 
-                <div class="field">
-                    <label class="label">Marca</label>
-                    <div class="control">
-                        <input id="input-marca" class="input" type="text">
-                    </div>
-                </div>
+          <div class="field">
+            <label class="label">Color</label>
+            <div class="control">
+              <input id="input-color" class="input" type="text" />
+            </div>
+          </div>
 
-                <div class="field">
-                    <label class="label">Modelo</label>
-                    <div class="control">
-                        <input id="input-modelo" class="input" type="text">
-                    </div>
-                </div>
+          <div class="field">
+            <label class="label">Patente</label>
+            <div class="control">
+              <input id="input-patente" class="input" type="text" />
+            </div>
+          </div>
+        </section>
 
-                <div class="field">
-                    <label class="label">Año</label>
-                    <div class="control">
-                        <input id="input-año" class="input" type="number">
-                    </div>
-                </div>
+        <footer class="modal-card-foot">
+          <button
+            id="btn-eliminar-vehiculo"
+            class="button btn-modal btn-modal-eliminar"
+            aria-label="Eliminar vehículo"
+          >
+            <i class="fas fa-trash"></i>
+            <span>Eliminar vehículo</span>
+          </button>
 
-                <div class="field">
-                    <label class="label">Color</label>
-                    <div class="control">
-                        <input id="input-color" class="input" type="text">
-                    </div>
-                </div>
+          <button
+            id="btn-guardar-vehiculo"
+            class="button btn-modal btn-modal-principal"
+            aria-label="Guardar cambios"
+          >
+            <i class="fas fa-save"></i>
+            <span>Guardar cambios</span>
+          </button>
+        </footer>
+      </div>
+    </div>
 
-                <div class="field">
-                    <label class="label">Patente</label>
-                    <div class="control">
-                        <input id="input-patente" class="input" type="text">
-                    </div>
-                </div>
+    <!-- MODAL: Reservar lavado -->
+    <div id="modal-lavado" class="modal">
+      <div class="modal-background"></div>
 
-            </section>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">Reservar lavado</p>
 
-            <footer class="modal-card-foot">
+          <button
+            id="cerrar-modal-lavado"
+            class="delete"
+            aria-label="close"
+          ></button>
+        </header>
 
-                <button
-                    id="btn-eliminar-vehiculo"
-                    class="button btn-eliminar-vehiculo">
-                    <i class="fas fa-trash"></i>
-                    <span>Eliminar vehículo</span>
-                </button>
+        <section class="modal-card-body">
+          <p class="modal-descripcion">
+            Seleccioná cuándo querés realizar el lavado.
+          </p>
 
-                <button
-                    id="btn-guardar-vehiculo"
-                    class="button btn-guardar-vehiculo">
-                    <i class="fas fa-save"></i>
-                    <span>Guardar cambios</span>
-                </button>
+          <div class="field">
+            <label class="label">Fecha</label>
 
-            </footer>
+            <div class="control">
+              <input id="fecha-lavado" class="input" type="date" />
+            </div>
+          </div>
 
-        </div>
+          <div class="field">
+            <label class="label">Horario</label>
+
+            <div class="control">
+              <input id="hora-lavado" class="input" type="time" />
+            </div>
+          </div>
+        </section>
+
+        <footer class="modal-card-foot">
+          <button
+            id="cancelar-lavado"
+            class="button btn-modal btn-modal-cancelar"
+            aria-label="Cancelar"
+          >
+            <i class="fas fa-times"></i>
+            <span>Cancelar</span>
+          </button>
+
+          <button
+            id="confirmar-lavado"
+            class="button btn-modal btn-modal-principal"
+            aria-label="Confirmar lavado"
+          >
+            <i class="fas fa-droplet"></i>
+            Reservar lavado
+          </button>
+        </footer>
+      </div>
+    </div>
+
+    <!-- MODAL: Reportar daño -->
+    <div id="modal-danio" class="modal">
+      <div class="modal-background"></div>
+
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">Reportar daño</p>
+
+          <button
+            id="cerrar-modal-danio"
+            class="delete"
+            aria-label="close"
+          ></button>
+        </header>
+
+        <section class="modal-card-body">
+          <p class="modal-descripcion">
+            Contanos qué problema encontraste en tu vehículo.
+          </p>
+
+          <div class="field">
+            <label class="label">Descripción</label>
+
+            <div class="control">
+              <textarea
+                id="descripcion-danio"
+                class="textarea"
+                placeholder="Describí el daño o problema..."
+              >
+              </textarea>
+            </div>
+          </div>
+        </section>
+
+        <footer class="modal-card-foot">
+          <button
+            id="cancelar-danio"
+            class="button btn-modal btn-modal-cancelar"
+            aria-label="Cancelar"
+          >
+            <i class="fas fa-times"></i>
+            <span>Cancelar</span>
+          </button>
+
+          <button
+            id="confirmar-danio"
+            class="button btn-modal btn-modal-eliminar"
+            aria-label="Confirmar daño"
+          >
+            <i class="fas fa-triangle-exclamation"></i>
+            Reportar daño
+          </button>
+        </footer>
+      </div>
+    </div>
+
+    <!-- MODAL: Solicitar Valet -->
+    <!-- MODAL: Solicitar Valet -->
+    <div id="modal-valet" class="modal">
+      <div class="modal-background"></div>
+
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">Solicitar valet</p>
+
+          <button
+            id="cerrar-modal-valet"
+            class="delete"
+            aria-label="close"
+          ></button>
+        </header>
+
+        <section class="modal-card-body">
+          <div class="valet-confirmacion modal-descripcion">
+            <p>Indicá dónde estás y llevaremos tu vehículo hasta vos.</p>
+          </div>
+
+          <div class="field">
+            <label class="label" for="ubicacion-valet"> ¿Dónde estás? </label>
+
+            <div class="control">
+              <input
+                id="ubicacion-valet"
+                class="input"
+                type="text"
+                placeholder="Ej: Av. Corrientes 1234"
+              />
+            </div>
+          </div>
+        </section>
+
+        <footer class="modal-card-foot">
+          <button
+            id="cancelar-valet"
+            class="button btn-modal btn-modal-cancelar"
+            aria-label="Cancelar"
+          >
+            <i class="fas fa-xmark"></i>
+            Cancelar
+          </button>
+
+          <button
+            id="confirmar-valet"
+            class="button btn-modal btn-modal-principal"
+            aria-label="Solicitar valet"
+          >
+            <i class="fas fa-concierge-bell"></i>
+            Solicitar valet
+          </button>
+        </footer>
+      </div>
     </div>
 
     <!-- FOOTER: créditos y enlaces -->
