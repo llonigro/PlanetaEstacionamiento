@@ -1,0 +1,171 @@
+<!-- SECCIÓN: Registros (tabla y modal de detalle) -->
+<section class="registros-seccion">
+  <!-- HEADER -->
+  <div class="level dashboard-header">
+    <div class="level-left">
+      <div>
+        <h2 class="title is-3">Registros</h2>
+
+        <p class="subtitle is-6">
+          Consulta y administra los registros de tu estacionamiento
+        </p>
+      </div>
+    </div>
+
+    <div class="level-right">
+      <button
+        class="button is-primary js-modal-trigger"
+        data-target="modal-agregar-registro"
+      >
+        <span class="icon">
+          <i class="fas fa-plus"></i>
+        </span>
+
+        <span> Agregar registro </span>
+      </button>
+    </div>
+  </div>
+
+  <div class="tabla-registros">
+    <table class="table is-fullwidth is-striped is-hoverable is-bordered">
+      <thead>
+        <tr>
+          <th>N°</th>
+          <th>Cochera</th>
+          <th>Vehiculo</th>
+          <th>Ingreso</th>
+          <th>Egreso</th>
+          <th>Precio</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+
+      <tbody id="registros-body"></tbody>
+      <!-- Aquí se insertan los registros mediante JavaScript -->
+    </table>
+  </div>
+</section>
+
+<div id="modal-detalle-registro" class="modal">
+  <div class="modal-background"></div>
+
+  <div class="modal-card modal-registro">
+    <!-- ENCABEZADO -->
+    <header class="modal-card-head">
+      <div>
+        <p id="detalle-id" class="modal-registro-titulo">Registro</p>
+      </div>
+
+      <button
+        class="delete"
+        id="btn-cerrar-detalle-registro"
+        aria-label="cerrar"
+      ></button>
+    </header>
+
+    <!-- CONTENIDO -->
+    <section class="modal-card-body">
+      <!-- ESTADO -->
+      <div class="estado-contenedor">
+        <span id="detalle-estado" class="estado-registro activo">
+          <i class="fas fa-circle"></i>
+          Estacionado
+        </span>
+      </div>
+
+      <!-- VEHÍCULO -->
+      <div class="detalle-seccion">
+        <h3 class="detalle-titulo">
+          <i class="fas fa-car"></i>
+          Vehículo
+        </h3>
+
+        <div class="detalle-card">
+          <div class="detalle-dato">
+            <span>Patente</span>
+            <strong id="detalle-patente">AA 123 BB</strong>
+          </div>
+
+          <div class="detalle-dato">
+            <span>Marca</span>
+            <strong id="detalle-marca">Toyota</strong>
+          </div>
+
+          <div class="detalle-dato">
+            <span>Modelo</span>
+            <strong id="detalle-modelo">Corolla</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- ESTACIONAMIENTO -->
+      <div class="detalle-seccion">
+        <h3 class="detalle-titulo">
+          <i class="fas fa-square-parking"></i>
+          Estacionamiento
+        </h3>
+
+        <div class="detalle-card">
+          <div class="detalle-dato">
+            <span>Cochera</span>
+            <strong id="detalle-cochera">A-03</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- ESTADÍA -->
+      <div class="detalle-seccion">
+        <h3 class="detalle-titulo">
+          <i class="fas fa-clock"></i>
+          Estadía
+        </h3>
+
+        <div class="detalle-card">
+          <div class="detalle-dato">
+            <span>Ingreso</span>
+            <strong id="detalle-ingreso"> 28/07/2026 · 14:32 </strong>
+          </div>
+
+          <div class="detalle-dato">
+            <span>Egreso</span>
+            <strong id="detalle-egreso"> En curso </strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- PRECIO -->
+      <div class="detalle-seccion">
+        <h3 class="detalle-titulo">
+          <i class="fas fa-dollar-sign"></i>
+          Precio
+        </h3>
+
+        <div class="precio-contenedor">
+          <span id="detalle-precio"> $2.500 </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ACCIONES -->
+    <footer class="modal-card-foot acciones-modal">
+      <button
+        id="boton-anular"
+        class="boton-modal boton-anular"
+        onclick="anularRegistro('detalle-id')"
+      >
+        Anular
+      </button>
+
+      <button id="boton-egreso" class="boton-modal boton-egreso">
+        Registrar egreso
+      </button>
+
+      <button
+        class="boton-modal boton-cerrar"
+        id="btn-cerrar-detalle-registro-2"
+      >
+        Cerrar
+      </button>
+    </footer>
+  </div>
+</div>

@@ -1,230 +1,661 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dashboard</title>
 
     <!-- Icono de la pestaña -->
-    <link rel="icon" type="image/png" href="img/icono.png">
+    <link rel="icon" type="image/png" href="img/icono.png" />
 
     <!-- Agrego Font Awesome para los íconos -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
 
     <!-- Agrego Bulma CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css"
+    />
 
     <!-- Agrego los archivos de estilos -->
-    <link rel="stylesheet" href="css/estilos.css">
-    <link rel="stylesheet" href="css/estilos-navbar.css">
-    <link rel="stylesheet" href="css/estilos-dashboard.css">
-
-</head>
-<body>
+    <link rel="stylesheet" href="css/estilos.css" />
+    <link rel="stylesheet" href="css/estilos-navbar.css" />
+    <link rel="stylesheet" href="css/estilos-dashboard.css" />
+  </head>
+  <body>
+    <!-- INICIO: Contenedor principal del dashboard -->
     <div class="dashboard">
+      <!-- HEADER: saludo y control de sesión -->
+      <header class="header">
+        <h1>Hola, <span id="nombre-usuario">Usuario</span></h1>
 
-        <header class="header">
-            <h1>Hola, <span id="nombre-usuario">Usuario</span></h1>
-        </header>
+        <button id="btn-cerrar-sesion" class="btn-cerrar-sesion">
+          <i class="fas fa-right-from-bracket"></i>
+          <span>Cerrar sesión</span>
+        </button>
+      </header>
 
+      <!-- MAIN: contenido principal de la página (vehículo, acciones, servicios, noticias) -->
+      <main class="contenido">
+        <!-- SECCIÓN: Información del vehículo registrado -->
+        <section class="seccion-vehiculo seccion-card">
+          <div class="vehiculo">
+            <div class="vehiculo-cabecera">
+              <h2 class="title is-4 titulo-turquesa">VEHÍCULO REGISTRADO</h2>
 
-        <main class="contenido">
+              <button
+                id="btn-editar-vehiculo"
+                class="btn-editar-vehiculo"
+                data-modal="modal-vehiculo"
+              >
+                <i class="fas fa-pen"></i>
+                Editar vehículo
+              </button>
+            </div>
 
-            <section class="seccion-vehiculo">
-                <div class="vehiculo">
+            <div class="vehiculo-contenido">
+              <div class="vehiculo-imagen">
+                <img
+                  src="https://picsum.photos/350/350"
+                  alt="Imagen del vehículo"
+                  class="imagen-vehiculo"
+                />
+              </div>
 
-                    <h1 class="title is-4 titulo-turquesa">VEHÍCULO REGISTRADO</h1>
+              <div class="vehiculo-info">
+                <div class="vehiculo-identificacion">
+                  <h3 id="modelo-completo">[Nombre del vehículo]</h3>
 
-                    <div class="vehiculo-contenido">
-                        
-                        <div class="vehiculo-imagen">
-                            <img src="https://picsum.photos/350/350" alt="Imagen del vehículo" class="imagen-vehiculo">
-                        </div>
-
-                        <div class="vehiculo-info">
-                            <p><strong>Marca:</strong> <span id="marca-vehiculo"></span></p>
-                            <p><strong>Modelo:</strong> <span id="modelo-vehiculo"></span></p>
-                            <p><strong>Año:</strong> <span id="año-vehiculo"></span></p>
-                            <p><strong>Color:</strong> <span id="color-vehiculo"></span></p>
-                            <p><strong>Patente:</strong> <span id="patente-vehiculo"></span></p>
-                        </div>
-                    </div>
+                  <span id="patente-vehiculo"> [ABC123] </span>
                 </div>
-            </section>
 
-            <section class="tarjetas">
-                <article class="acciones-rapidas">
-                    <h3 class="title is-4 titulo-blanco">ACCIONES RÁPIDAS</h3>
+                <div class="datos-vehiculo">
+                  <div class="dato">
+                    <span>Marca</span>
+                    <strong id="marca-vehiculo">[Marca]</strong>
+                  </div>
 
-                    <div class="contenedor-botones">
-                        <button id="ver-cocheras" class="accion">
-                            <i class="fas fa-car" style="color:darkcyan"></i>
-                            <span>Ver cocheras</span>
-                        </button>
-                        <button id="reservar-lavado" class="accion">
-                            <i class="fas fa-droplet" style="color:lightskyblue"></i>
-                            <span>Reservar lavado</span>
-                        </button>
-                        <button id="reportar-danio" class="accion">
-                            <i class="fas fa-warning" style="color:lightcoral"></i>
-                            <span>Reportar daño</span>
-                        </button>
-                        <button id="solicitar-valet" class="accion">
-                            <i class="fas fa-concierge-bell" style="color:orange"></i>
-                            <span>Solicitar valet</span>
-                        </button>
-                    </div>
-                </article>
+                  <div class="dato">
+                    <span>Modelo</span>
+                    <strong id="modelo-vehiculo">[Modelo]</strong>
+                  </div>
 
-            </section>
+                  <div class="dato">
+                    <span>Año</span>
+                    <strong id="año-vehiculo">[Año]</strong>
+                  </div>
 
-            <section class="seccion-servicios">
-                <div class="servicios">
-
-                    <h2 class="title is-4 titulo-turquesa">SERVICIOS ACTIVOS</h2>
-
-                    <div class="contenedor-tarjetas">
-
-                        <!-- Tarjeta de servicio (cambiar estado)-->
-                        <div class="servicios-tarjetas" data-estado="lavando">
-
-                            <div class="servicio-descripcion">
-                                <div class="imagen-servicio">
-                                    <img src="https://picsum.photos/80/80" 
-                                         alt="Imagen icono lavado">
-                                </div>
-
-                                <div class="titulo-servicio">
-                                    <h1>Lavado</h1>
-
-                                    <p> Estado: 
-                                        <span class="estado-texto"></span>
-                                    </p>
-                                </div>
-                            </div>
-
-                            <!-- BARRA DE PROGRESO -->
-                            <div class="barra-progreso">
-
-                                <div class="lineas">
-                                    <div class="linea-progreso"></div>
-                                    <div class="linea-activa"></div>
-                                </div>
-
-
-                                <div class="pasos">
-
-                                    <div class="paso" data-paso="espera">
-                                        <span></span>
-                                        <p>En espera</p>
-                                    </div>
-
-                                    <div class="paso" data-paso="lavando">
-                                        <span></span>
-                                        <p>Lavando</p>
-                                    </div>
-
-                                    <div class="paso" data-paso="listo">
-                                        <span></span>
-                                        <p>Listo</p>
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-
-                            <!-- MENSAJE -->
-                            <p class="mensaje-servicio">
-                                No tenés servicios activos en este momento.
-                            </p>
-
-                        </div>
-
-                        <div class="servicios-tarjetas">
-
-                            <div class="servicio-descripcion">
-                                <div class="imagen-servicio">
-                                    <img src="https://picsum.photos/80/80" alt="Imagen icono lavado">
-                                </div>
-                                <div class="titulo-servicio">
-                                    <h1>Valet</h1>
-                                    <p>Estado: </p>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
+                  <div class="dato">
+                    <span>Color</span>
+                    <strong id="color-vehiculo">[Color]</strong>
+                  </div>
                 </div>
-            </section>
+              </div>
+            </div>
+          </div>
+        </section>
 
-            <section class="seccion-noticias">
-                <div class="noticias">
+        <!-- SECCIÓN: Acciones rápidas / tarjetas -->
+        <section class="tarjetas">
+          <article class="acciones-rapidas menu-bloqueado">
+            <h3 class="title is-4 titulo-blanco">ACCIONES RÁPIDAS</h3>
 
-                    <h2 class="title is-4 titulo-blanco">NOTICIAS</h2>
+            <div class="contenedor-botones">
+              <button
+                id="ver-cocheras"
+                class="accion"
+                data-modal="modal-cocheras"
+              >
+                <i class="fas fa-car" style="color: darkcyan"></i>
+                <span>Ver cocheras</span>
+              </button>
+              <button
+                id="reservar-lavado"
+                class="accion"
+                data-modal="modal-lavado"
+              >
+                <i class="fas fa-droplet" style="color: lightskyblue"></i>
+                <span>Reservar lavado</span>
+              </button>
+              <button
+                id="reportar-danio"
+                class="accion"
+                data-modal="modal-danio"
+              >
+                <i class="fas fa-warning" style="color: lightcoral"></i>
+                <span>Reportar daño</span>
+              </button>
+              <button
+                id="solicitar-valet"
+                class="accion"
+                data-modal="modal-valet"
+              >
+                <i class="fas fa-concierge-bell" style="color: orange"></i>
+                <span>Solicitar valet</span>
+              </button>
+            </div>
+          </article>
+        </section>
 
+        <!-- SECCIÓN: Servicios activos y progreso de servicios -->
+        <section class="seccion-servicios seccion-card">
+          <div class="servicios">
+            <h2 class="title is-4 titulo-turquesa">SERVICIOS ACTIVOS</h2>
 
+            <div class="contenedor-tarjetas">
+              <!-- Tarjeta de servicio (cambiar estado)-->
+              <div class="servicios-tarjetas" data-servicio="lavado">
+                <div class="servicio-descripcion">
+                  <div class="imagen-servicio">
+                    <i class="fas fa-car-side"></i>
+                  </div>
 
-                    <div class="contenedor-noticias">
+                  <div class="titulo-servicio">
+                    <h1>Lavado</h1>
 
-                        <div class="noticia">
-                            <div class="icono-noticia">
-                                <i class="fa-solid fa-triangle-exclamation" style="color:gold"></i>
-                            </div>
+                    <p>
+                      <span class="estado-texto"></span>
+                    </p>
+                  </div>
+                </div>
 
-                            <div class="contenido-noticia">
-                                <div class="cabecera-noticia">
-                                    <h3 class="title is-5">Nuevo servicio de valet</h3>
+                <!-- BARRA DE PROGRESO -->
+                <div class="barra-progreso">
+                  <div class="lineas">
+                    <div class="linea-progreso"></div>
+                    <div class="linea-activa"></div>
+                  </div>
 
-                                    <p class="fecha-noticia">Fecha: <span id="fecha-noticia-1">01/01/2026</span>
-                                    </p>
-                                </div>
-                                <p class="descripcion-noticia">Ahora ofrecemos un servicio de valet para tu comodidad. ¡Reservá tu turno!</p>
-                            </div>
-                        </div>
-
-                        <div class="noticia">
-                            <div class="icono-noticia">
-                                <i class="fa-solid fa-percent" style="color: lightgreen"></i>
-                            </div>
-
-                            <div class="contenido-noticia">
-                                <div class="cabecera-noticia">
-                                    <h3 class="title is-5">Promoción especial de lavado</h3>
-
-                                    <p class="fecha-noticia">Fecha: <span id="fecha-noticia-2">01/01/2026</span>
-                                    </p>
-                                </div>
-                                <p class="descripcion-noticia">Durante este mes, todos los lavados tienen un 20% de descuento. ¡Aprovechá!</p>
-                            </div>
-                        </div>
-
+                  <div class="pasos">
+                    <div class="paso" data-paso="espera">
+                      <span></span>
+                      <p>En espera</p>
                     </div>
-            </section>
 
-        </main>
+                    <div class="paso" data-paso="lavando">
+                      <span></span>
+                      <p>Lavando</p>
+                    </div>
 
+                    <div class="paso" data-paso="listo">
+                      <span></span>
+                      <p>Listo</p>
+                    </div>
+                  </div>
+                </div>
 
+                <!-- MENSAJE -->
+                <p class="mensaje-servicio">
+                  No tenés servicios activos en este momento.
+                </p>
+              </div>
+
+              <div
+                class="servicios-tarjetas tarjeta-valet"
+                data-servicio="valet"
+              >
+                <div class="servicio-descripcion">
+                  <div class="imagen-servicio">
+                    <i class="fas fa-concierge-bell"></i>
+                  </div>
+
+                  <div class="titulo-servicio">
+                    <h1>Valet</h1>
+                    <p>
+                      Estado:
+                      <span id="estado-valet"></span>
+                    </p>
+                  </div>
+                </div>
+
+                <div class="info-valet">
+                  <div class="dato-valet">
+                    <i class="fas fa-location-dot"></i>
+
+                    <div>
+                      <span>Distancia</span>
+                      <strong id="distancia-valet"></strong>
+                    </div>
+                  </div>
+
+                  <div class="dato-valet">
+                    <i class="fas fa-clock"></i>
+
+                    <div>
+                      <span>Tiempo estimado</span>
+                      <strong id="tiempo-valet"></strong>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SECCIÓN: Noticias y promociones -->
+        <section class="seccion-noticias seccion-card">
+          <div class="noticias">
+            <h2 class="title is-4 titulo-blanco">NOTICIAS</h2>
+
+            <div class="contenedor-noticias">
+              <div class="noticia">
+                <div class="icono-noticia">
+                  <i
+                    class="fa-solid fa-triangle-exclamation"
+                    style="color: gold"
+                  ></i>
+                </div>
+
+                <div class="contenido-noticia">
+                  <div class="cabecera-noticia">
+                    <h3 class="title is-5">Nuevo servicio de valet</h3>
+
+                    <p class="fecha-noticia">
+                      Fecha: <span id="fecha-noticia-1">01/01/2026</span>
+                    </p>
+                  </div>
+                  <p class="descripcion-noticia">
+                    Ahora ofrecemos un servicio de valet para tu comodidad.
+                    ¡Reservá tu turno!
+                  </p>
+                </div>
+              </div>
+
+              <div class="noticia">
+                <div class="icono-noticia">
+                  <i class="fa-solid fa-percent" style="color: lightgreen"></i>
+                </div>
+
+                <div class="contenido-noticia">
+                  <div class="cabecera-noticia">
+                    <h3 class="title is-5">Promoción especial de lavado</h3>
+
+                    <p class="fecha-noticia">
+                      Fecha: <span id="fecha-noticia-2">01/01/2026</span>
+                    </p>
+                  </div>
+                  <p class="descripcion-noticia">
+                    Durante este mes, todos los lavados tienen un 20% de
+                    descuento. ¡Aprovechá!
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
     </div>
 
-    <!-- Pie de página -->
-    <footer class="footer navbar-color">
-        <div class="content has-text-centered has-text-white">
+    <!-- MODAL: Edición del vehículo (guardar / eliminar) -->
+    <div id="modal-vehiculo" class="modal">
+      <div class="modal-background"></div>
 
-        <div class="is-flex is-align-items-center is-justify-content-center mb-3" style="gap: 10px;">
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">Editar vehículo</p>
 
-            <a href="https://github.com/llonigro/PlanetaEstacionamiento" target="_blank" rel="noopener noreferrer">
-            <i class="fab fa-github fa-2x" style="color: rgb(255,255,255);"></i>
-            </a>
+          <button
+            id="cerrar-modal-vehiculo"
+            class="delete"
+            aria-label="close"
+          ></button>
+        </header>
 
-            <h4 class="mb-0">
-            <strong>Planeta Estacionamiento</strong> 
-            </h4>
-        </div>
-        <p style="margin-top: 10px;">Todos los derechos reservados.</p>
-        </div>
+        <section class="modal-card-body">
+          <div class="field">
+            <label class="label">Marca</label>
+            <div class="control">
+              <input id="input-marca" class="input" type="text" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">Modelo</label>
+            <div class="control">
+              <input id="input-modelo" class="input" type="text" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">Año</label>
+            <div class="control">
+              <input id="input-año" class="input" type="number" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">Color</label>
+            <div class="control">
+              <input id="input-color" class="input" type="text" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">Patente</label>
+            <div class="control">
+              <input id="input-patente" class="input" type="text" />
+            </div>
+          </div>
+        </section>
+
+        <footer class="modal-card-foot">
+          <button
+            id="btn-eliminar-vehiculo"
+            class="button btn-modal btn-modal-eliminar"
+            aria-label="Eliminar vehículo"
+          >
+            <i class="fas fa-trash"></i>
+            <span>Eliminar vehículo</span>
+          </button>
+
+          <button
+            id="btn-guardar-vehiculo"
+            class="button btn-modal btn-modal-principal"
+            aria-label="Guardar cambios"
+          >
+            <i class="fas fa-save"></i>
+            <span>Guardar cambios</span>
+          </button>
+        </footer>
+      </div>
+    </div>
+
+    <!-- MODAL: Reservar lavado -->
+    <div id="modal-lavado" class="modal">
+      <div class="modal-background"></div>
+
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">Reservar lavado</p>
+
+          <button
+            id="cerrar-modal-lavado"
+            class="delete"
+            aria-label="close"
+          ></button>
+        </header>
+
+        <section class="modal-card-body">
+          <p class="modal-descripcion">
+            Seleccioná cuándo querés realizar el lavado.
+          </p>
+
+          <div class="field">
+            <label class="label">Fecha</label>
+
+            <div class="control">
+              <input id="fecha-lavado" class="input" type="date" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">Horario</label>
+
+            <div class="control">
+              <input id="hora-lavado" class="input" type="time" />
+            </div>
+          </div>
+        </section>
+
+        <footer class="modal-card-foot">
+          <button
+            id="cancelar-lavado"
+            class="button btn-modal btn-modal-cancelar"
+            aria-label="Cancelar"
+          >
+            <i class="fas fa-times"></i>
+            <span>Cancelar</span>
+          </button>
+
+          <button
+            id="confirmar-lavado"
+            class="button btn-modal btn-modal-principal"
+            aria-label="Confirmar lavado"
+          >
+            <i class="fas fa-droplet"></i>
+            Reservar lavado
+          </button>
+        </footer>
+      </div>
+    </div>
+
+    <!-- MODAL: Reportar daño -->
+    <div id="modal-danio" class="modal">
+      <div class="modal-background"></div>
+
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">Reportar daño</p>
+
+          <button
+            id="cerrar-modal-danio"
+            class="delete"
+            aria-label="close"
+          ></button>
+        </header>
+
+        <section class="modal-card-body">
+          <p class="modal-descripcion">
+            Contanos qué problema encontraste en tu vehículo.
+          </p>
+
+          <div class="field">
+            <label class="label">Descripción</label>
+
+            <div class="control">
+              <textarea
+                id="descripcion-danio"
+                class="textarea"
+                placeholder="Describí el daño o problema..."
+              >
+              </textarea>
+            </div>
+          </div>
+        </section>
+
+        <footer class="modal-card-foot">
+          <button
+            id="cancelar-danio"
+            class="button btn-modal btn-modal-cancelar"
+            aria-label="Cancelar"
+          >
+            <i class="fas fa-times"></i>
+            <span>Cancelar</span>
+          </button>
+
+          <button
+            id="confirmar-danio"
+            class="button btn-modal btn-modal-eliminar"
+            aria-label="Confirmar daño"
+          >
+            <i class="fas fa-triangle-exclamation"></i>
+            Reportar daño
+          </button>
+        </footer>
+      </div>
+    </div>
+
+    <!-- MODAL: Solicitar Valet -->
+    <div id="modal-valet" class="modal">
+      <div class="modal-background"></div>
+
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">Solicitar valet</p>
+
+          <button
+            id="cerrar-modal-valet"
+            class="delete"
+            aria-label="close"
+          ></button>
+        </header>
+
+        <section class="modal-card-body">
+          <div class="valet-confirmacion modal-descripcion">
+            <p>Indicá dónde estás y llevaremos tu vehículo hasta vos.</p>
+          </div>
+
+          <div class="field">
+            <label class="label" for="ubicacion-valet"> ¿Dónde estás? </label>
+
+            <div class="control">
+              <input
+                id="ubicacion-valet"
+                class="input"
+                type="text"
+                placeholder="Ej: Av. Corrientes 1234"
+              />
+            </div>
+          </div>
+        </section>
+
+        <footer class="modal-card-foot">
+          <button
+            id="cancelar-valet"
+            class="button btn-modal btn-modal-cancelar"
+            aria-label="Cancelar"
+          >
+            <i class="fas fa-xmark"></i>
+            Cancelar
+          </button>
+
+          <button
+            id="confirmar-valet"
+            class="button btn-modal btn-modal-principal"
+            aria-label="Solicitar valet"
+          >
+            <i class="fas fa-concierge-bell"></i>
+            Solicitar valet
+          </button>
+        </footer>
+      </div>
+    </div>
+
+    <!-- MODAL: Ver cocheras -->
+    <div id="modal-cocheras" class="modal">
+      <div class="modal-background"></div>
+
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">Cocheras disponibles</p>
+
+          <button class="delete" aria-label="close"></button>
+        </header>
+
+        <section class="modal-card-body">
+          <p class="modal-descripcion">
+            Seleccioná una cochera para ver su información.
+          </p>
+
+          <div id="contenedor-cocheras" class="contenedor-cocheras"></div>
+
+          <div class="referencia-cocheras">
+            <span>
+              <i class="fas fa-circle disponible"></i>
+              Disponible
+            </span>
+
+            <span>
+              <i class="fas fa-circle ocupada"></i>
+              Ocupada
+            </span>
+          </div>
+        </section>
+
+        <footer class="modal-card-foot">
+          <button class="button btn-modal-cancelar">Cerrar</button>
+        </footer>
+      </div>
+    </div>
+
+    <!-- MODAL: Registrar ingreso -->
+    <div id="modal-registro-cochera" class="modal">
+      <div class="modal-background"></div>
+
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">Registrar ingreso</p>
+
+          <button class="delete" aria-label="close"></button>
+        </header>
+
+        <section class="modal-card-body">
+          <div class="info-cochera-registro">
+            <i class="fas fa-square-parking"></i>
+
+            <div>
+              <span>Cochera</span>
+              <strong id="registro-numero-cochera"></strong>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">Fecha de ingreso</label>
+
+            <div class="control">
+              <input
+                id="registro-fecha-ingreso"
+                class="input"
+                type="datetime-local"
+                disabled
+              />
+            </div>
+
+            <p class="help">
+              Se registrará automáticamente la fecha y hora actual.
+            </p>
+          </div>
+
+          <div class="field">
+            <label class="label">Fecha de egreso</label>
+
+            <div class="control">
+              <input
+                id="registro-fecha-egreso"
+                class="input"
+                type="datetime-local"
+              />
+            </div>
+
+            <p class="help">Campo opcional.</p>
+          </div>
+        </section>
+
+        <footer class="modal-card-foot">
+          <button class="button btn-modal-cancelar">Cancelar</button>
+
+          <button
+            id="confirmar-registro-cochera"
+            class="button btn-modal btn-modal-principal"
+          >
+            <i class="fas fa-check"></i>
+            Registrar ingreso
+          </button>
+        </footer>
+      </div>
+    </div>
+
+    <!-- FOOTER: créditos y enlaces -->
+    <footer class="footer footer-principal">
+      <div class="footer-marca">
+        <a
+          href="https://github.com/llonigro/PlanetaEstacionamiento"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <i class="fab fa-github fa-2x"></i>
+        </a>
+
+        <strong>Planeta Estacionamiento</strong>
+      </div>
+
+      <p class="footer-derechos">Todos los derechos reservados.</p>
     </footer>
-</body>
+  </body>
 
-<script src="js/dashboard-scripts.js"></script> 
+  <!-- SCRIPTS: lógica de la página -->
+  <script src="js/dashboard-scripts.js"></script>
+</html>
