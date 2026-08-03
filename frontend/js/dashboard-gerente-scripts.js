@@ -110,12 +110,10 @@ function actualizarResumenCocheras(cocheras) {
   const total = cocheras.length;
 
   const disponibles = cocheras.filter(
-    (cochera) => cochera.libre === "Disponible",
+    (cochera) => cochera.libre === true,
   ).length;
 
-  const ocupadas = cocheras.filter(
-    (cochera) => cochera.libre === "Ocupada",
-  ).length;
+  const ocupadas = cocheras.filter((cochera) => cochera.libre === false).length;
 
   document.getElementById("cocheras-total").textContent = total;
   document.getElementById("cocheras-disponibles").textContent = disponibles;
@@ -131,6 +129,17 @@ function crearTarjetaCochera(cochera) {
   tarjeta.querySelector(".js-numero").textContent = cochera.numero;
   tarjeta.querySelector(".js-tipo").textContent = cochera.tipo;
   tarjeta.querySelector(".js-clima").textContent = cochera.clima;
+
+  const estado = tarjeta.querySelector(".js-estado");
+  const esLibre = cochera.libre === true;
+
+  if (esLibre) {
+    estado.textContent = "Disponible";
+    estado.classList.add("is-success");
+  } else {
+    estado.textContent = "Ocupada";
+    estado.classList.add("is-danger");
+  }
 
   const btnDetalles = tarjeta.querySelector(".btn-detalles");
 
