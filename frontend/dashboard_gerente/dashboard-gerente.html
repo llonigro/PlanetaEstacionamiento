@@ -1,108 +1,114 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dashboard | Gerente</title>
 
     <!-- Icono de la pestaña -->
-    <link rel="icon" type="image/png" href="../img/icono.png">
+    <link rel="icon" type="image/png" href="../img/icono.png" />
 
     <!-- Agrego Font Awesome para los íconos -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
 
     <!-- Agrego Bulma CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css"
+    />
 
     <!-- Agrego los archivos de estilos -->
-    <link rel="stylesheet" href="../css/estilos.css">
-    <link rel="stylesheet" href="../css/estilos-dashboard-gerente.css">
-
-</head>
-<body>
-
+    <link rel="stylesheet" href="../css/estilos.css" />
+    <link rel="stylesheet" href="../css/estilos-dashboard-gerente.css" />
+  </head>
+  <body>
+    <!-- LAYOUT: dashboard del gerente (sidebar + contenido) -->
     <div class="columns dashboard">
+      <!-- SIDEBAR: navegación lateral del gerente -->
+      <aside class="column is-2 sidebar">
+        <div class="sidebar-header">
+          <div class="marca">
+            <img
+              src="../img/icono.png"
+              alt="Logo de Planeta Estacionamiento"
+              class="marca-logo"
+            />
 
-        <!-- SIDEBAR -->
-        <aside class="column is-2 sidebar">
+            <div class="marca-nombre">
+              <h1 class="title is-5">PLANETA</h1>
 
-            <div class="sidebar-header">
-
-                <div class="marca">
-                    <img src="../img/icono.png"
-                        alt="Logo de Planeta Estacionamiento"
-                        class="marca-logo">
-
-                    <div class="marca-nombre">
-                        <h1 class="title is-5">
-                            PLANETA
-                        </h1>
-
-                        <h2 class="title is-6">
-                            ESTACIONAMIENTO
-                        </h2>
-                    </div>
-
-                </div>
-
+              <h2 class="title is-6">ESTACIONAMIENTO</h2>
             </div>
+          </div>
+        </div>
 
-            <aside class="menu">
-                <ul class="menu-list">
+        <aside class="menu">
+          <ul class="menu-list">
+            <li>
+              <a
+                id="boton-inicio"
+                class="menu-item"
+                onclick="cargarSeccion('gerente-inicio.html', this)"
+              >
+                <span class="icon">
+                  <i class="fas fa-chart-line"></i>
+                </span>
+                Dashboard
+              </a>
+            </li>
 
-                    <li>
-                        <a class="menu-item" onclick="cargarSeccion('gerente-inicio.html', this)">
-                            <span class="icon">
-                                <i class="fas fa-chart-line"></i>
-                            </span>
-                            Dashboard
-                        </a>
-                    </li>
+            <li>
+              <a
+                id="boton-cocheras"
+                class="menu-item"
+                onclick="cargarSeccion('gerente-cocheras.html', this)"
+              >
+                <span class="icon">
+                  <i class="fas fa-parking"></i>
+                </span>
+                Cocheras
+              </a>
+            </li>
 
-                    <li>
-                        <a class="menu-item" onclick="cargarSeccion('gerente-tarifas.html', this)">
-                            <span class="icon">
-                                <i class="fas fa-dollar-sign"></i>
-                            </span>
-                            Tarifas
-                        </a>
-                    </li>
+            <li>
+              <a
+                id="boton-registros"
+                class="menu-item"
+                onclick="cargarSeccion('gerente-registros.html', this)"
+              >
+                <span class="icon">
+                  <i class="fas fa-clipboard-list"></i>
+                </span>
+                Registros
+              </a>
+            </li>
 
-                    <li>
-                        <a class="menu-item" onclick="cargarSeccion('gerente-cocheras.html', this)">
-                            <span class="icon">
-                                <i class="fas fa-parking"></i>
-                            </span>
-                            Cocheras
-                        </a>
-                    </li>
-
-                    <li>
-                        <a class="menu-item" onclick="cargarSeccion('gerente-servicios.html', this)">
-                            <span class="icon">
-                                <i class="fas fa-tools"></i>
-                            </span>
-                            Servicios
-                        </a>
-                    </li>
-
-                </ul>
-
-            </aside>
-
+            <li>
+              <a
+                id="boton-servicios"
+                class="menu-item"
+                onclick="cargarSeccion('gerente-servicios.html', this)"
+              >
+                <span class="icon">
+                  <i class="fas fa-tools"></i>
+                </span>
+                Servicios
+              </a>
+            </li>
+          </ul>
         </aside>
+      </aside>
 
-
-        <!-- CONTENIDO PRINCIPAL -->
-        <main class="column dashboard-content">
-
-            <div id="contenido-dashboard"></div>
-
-        </main>
-
+      <!-- CONTENIDO PRINCIPAL: área donde se cargan las secciones del gerente -->
+      <main class="column dashboard-content">
+        <div id="contenido-dashboard"></div>
+      </main>
     </div>
 
-<script src="../js/dashboard-gerente-scripts.js"></script>
-
-</body>
+    <script src="../js/dashboard-gerente-scripts.js"></script>
+    <script src="../js/modal-scripts.js"></script>
+  </body>
 </html>
