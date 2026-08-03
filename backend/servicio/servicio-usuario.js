@@ -1,6 +1,7 @@
 
 // services/usuarios.service.js
 const pool = require('../db/db.js');
+const bcrypt = require('bcryptjs');
 
 // Extraemos la lógica de base de datos a funciones puras
 
@@ -20,10 +21,13 @@ const VerUsuario = async (id) => {
 // 3. POST
 const crear = async (datosUsuario) => {
     const { nombre, email, contrasenia, rol, telefono } = datosUsuario;
+    // Hashear la contraseña antes de guardarla
+    const saltRounds = 10;
+    const contraseniaHasheada = await bcrypt.hash(contrasenia, saltRounds);
     // Es buena práctica usar RETURNING * para devolver el usuario recién creado
     const { rows } = await pool.query(
         'INSERT INTO usuarios (nombre, email, contrasenia, rol, telefono) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-        [nombre, email, contrasenia, rol, telefono]
+        [nombre, email, contraseniaHasheada, rol, telefono]
     );
     return rows[0]; 
 };
