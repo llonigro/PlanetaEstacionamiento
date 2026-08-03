@@ -790,3 +790,179 @@
 
   transform: translateY(-2px);
 }
+
+.contenedor-cocheras {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.cochera {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 0.5rem;
+
+  min-height: 120px;
+  padding: 1rem;
+
+  border-radius: 15px;
+
+  background-color: white;
+
+  border: 2px solid transparent;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+
+.cochera:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.15);
+}
+
+.cochera strong {
+  color: var(--azul-petroleo);
+  font-size: 1.3rem;
+}
+
+.cochera i {
+  font-size: 2rem;
+}
+
+.cochera span {
+  font-weight: 600;
+}
+
+/* REFERENCIA */
+
+.referencia-cocheras {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.referencia-cocheras span {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+
+  color: white;
+  font-weight: 600;
+}
+
+.referencia-cocheras .disponible {
+  color: var(--turquesa);
+}
+
+.referencia-cocheras .ocupada {
+  color: #d64545;
+}
+
+.cochera[data-estado="true"] {
+  background-color: rgba(11, 176, 167, 0.15);
+  border: 2px solid var(--turquesa);
+}
+
+.cochera[data-estado="false"] {
+  background-color: rgba(214, 69, 69, 0.12);
+  border: 2px solid #d64545;
+}
+
+.cochera[data-estado="true"] i {
+  color: white;
+}
+
+.cochera[data-estado="false"] i {
+  color: #d64545;
+}
+
+.cochera[data-estado="true"] span {
+  color: var(--turquesa);
+}
+
+.cochera[data-estado="false"] span {
+  color: #d64545;
+}
+
+.cochera[data-estado="false"] strong {
+  color: #d64545;
+}
+
+.info-cochera-registro {
+  display: flex;
+  align-items: center;
+
+  gap: 1rem;
+
+  margin-bottom: 2rem;
+  padding: 1rem 1.2rem;
+
+  background-color: rgba(255, 255, 255, 0.12);
+
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 15px;
+}
+
+.info-cochera-registro > i {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 50px;
+  height: 50px;
+
+  border-radius: 12px;
+
+  background-color: var(--turquesa);
+
+  color: white;
+
+  font-size: 1.5rem;
+}
+
+.info-cochera-registro div {
+  display: flex;
+  flex-direction: column;
+
+  gap: 0.2rem;
+}
+
+.info-cochera-registro span {
+  color: rgba(255, 255, 255, 0.7);
+
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.info-cochera-registro strong {
+  color: white;
+
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.help {
+  color: var(--azul-petroleo);
+
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.menu-bloqueado {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.menu-bloqueado a,
+.menu-bloqueado button {
+  opacity: 0.5;
+  cursor: not-allowed !important;
+  pointer-events: none;
+}

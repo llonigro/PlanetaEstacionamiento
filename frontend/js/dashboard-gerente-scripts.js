@@ -52,7 +52,7 @@ function agregarCochera() {
 
     const numero = document.getElementById("numero-cochera").value;
     const tipo = document.getElementById("tipo-cochera").value;
-    const estado = document.getElementById("estado-cochera").value;
+    const libre = document.getElementById("estado-cochera").value;
     const clima = document.getElementById("clima-cochera").value;
 
     const respuesta = await fetch("http://localhost:3000/cocheras", {
@@ -65,7 +65,7 @@ function agregarCochera() {
       body: JSON.stringify({
         numero,
         tipo,
-        estado,
+        libre,
         clima,
       }),
     });
@@ -110,11 +110,11 @@ function actualizarResumenCocheras(cocheras) {
   const total = cocheras.length;
 
   const disponibles = cocheras.filter(
-    (cochera) => cochera.estado === "Disponible",
+    (cochera) => cochera.libre === "Disponible",
   ).length;
 
   const ocupadas = cocheras.filter(
-    (cochera) => cochera.estado === "Ocupada",
+    (cochera) => cochera.libre === "Ocupada",
   ).length;
 
   document.getElementById("cocheras-total").textContent = total;
@@ -130,7 +130,6 @@ function crearTarjetaCochera(cochera) {
   // Cargar los datos de la cochera en la tarjeta
   tarjeta.querySelector(".js-numero").textContent = cochera.numero;
   tarjeta.querySelector(".js-tipo").textContent = cochera.tipo;
-  tarjeta.querySelector(".js-estado").textContent = cochera.estado;
   tarjeta.querySelector(".js-clima").textContent = cochera.clima;
 
   const btnDetalles = tarjeta.querySelector(".btn-detalles");
@@ -151,8 +150,6 @@ function verDetallesCochera(cochera) {
 
   document.getElementById("detalle-tipo-cochera").value = cochera.tipo;
 
-  document.getElementById("detalle-estado-cochera").value = cochera.estado;
-
   document.getElementById("detalle-clima-cochera").value = cochera.clima;
 
   // Abrirlo en modo detalles
@@ -167,13 +164,10 @@ function activarModoDetalles() {
 
   const tipo = document.getElementById("detalle-tipo-cochera");
 
-  const estado = document.getElementById("detalle-estado-cochera");
-
   const clima = document.getElementById("detalle-clima-cochera");
 
   numero.disabled = true;
   tipo.disabled = true;
-  estado.disabled = true;
   clima.disabled = true;
 
   document
@@ -190,8 +184,6 @@ function activarModoEdicion() {
   document.getElementById("detalle-numero-cochera").disabled = false;
 
   document.getElementById("detalle-tipo-cochera").disabled = false;
-
-  document.getElementById("detalle-estado-cochera").disabled = false;
 
   document.getElementById("detalle-clima-cochera").disabled = false;
 
@@ -212,7 +204,6 @@ async function guardarEdicionCochera() {
 
   const numero = document.getElementById("detalle-numero-cochera").value;
   const tipo = document.getElementById("detalle-tipo-cochera").value;
-  const estado = document.getElementById("detalle-estado-cochera").value;
   const clima = document.getElementById("detalle-clima-cochera").value;
 
   const respuesta = await fetch(`http://localhost:3000/cocheras/${id}`, {
@@ -225,7 +216,6 @@ async function guardarEdicionCochera() {
     body: JSON.stringify({
       numero,
       tipo,
-      estado,
       clima,
     }),
   });

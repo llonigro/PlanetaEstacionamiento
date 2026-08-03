@@ -100,7 +100,7 @@
 
         <!-- SECCIÓN: Acciones rápidas / tarjetas -->
         <section class="tarjetas">
-          <article class="acciones-rapidas">
+          <article class="acciones-rapidas menu-bloqueado">
             <h3 class="title is-4 titulo-blanco">ACCIONES RÁPIDAS</h3>
 
             <div class="contenedor-botones">
@@ -479,7 +479,6 @@
     </div>
 
     <!-- MODAL: Solicitar Valet -->
-    <!-- MODAL: Solicitar Valet -->
     <div id="modal-valet" class="modal">
       <div class="modal-background"></div>
 
@@ -530,6 +529,110 @@
           >
             <i class="fas fa-concierge-bell"></i>
             Solicitar valet
+          </button>
+        </footer>
+      </div>
+    </div>
+
+    <!-- MODAL: Ver cocheras -->
+    <div id="modal-cocheras" class="modal">
+      <div class="modal-background"></div>
+
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">Cocheras disponibles</p>
+
+          <button class="delete" aria-label="close"></button>
+        </header>
+
+        <section class="modal-card-body">
+          <p class="modal-descripcion">
+            Seleccioná una cochera para ver su información.
+          </p>
+
+          <div id="contenedor-cocheras" class="contenedor-cocheras"></div>
+
+          <div class="referencia-cocheras">
+            <span>
+              <i class="fas fa-circle disponible"></i>
+              Disponible
+            </span>
+
+            <span>
+              <i class="fas fa-circle ocupada"></i>
+              Ocupada
+            </span>
+          </div>
+        </section>
+
+        <footer class="modal-card-foot">
+          <button class="button btn-modal-cancelar">Cerrar</button>
+        </footer>
+      </div>
+    </div>
+
+    <!-- MODAL: Registrar ingreso -->
+    <div id="modal-registro-cochera" class="modal">
+      <div class="modal-background"></div>
+
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">Registrar ingreso</p>
+
+          <button class="delete" aria-label="close"></button>
+        </header>
+
+        <section class="modal-card-body">
+          <div class="info-cochera-registro">
+            <i class="fas fa-square-parking"></i>
+
+            <div>
+              <span>Cochera</span>
+              <strong id="registro-numero-cochera"></strong>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">Fecha de ingreso</label>
+
+            <div class="control">
+              <input
+                id="registro-fecha-ingreso"
+                class="input"
+                type="datetime-local"
+                disabled
+              />
+            </div>
+
+            <p class="help">
+              Se registrará automáticamente la fecha y hora actual.
+            </p>
+          </div>
+
+          <div class="field">
+            <label class="label">Fecha de egreso</label>
+
+            <div class="control">
+              <input
+                id="registro-fecha-egreso"
+                class="input"
+                type="datetime-local"
+              />
+            </div>
+
+            <p class="help">Campo opcional.</p>
+          </div>
+        </section>
+
+        <footer class="modal-card-foot">
+          <button class="button btn-modal-cancelar">Cancelar</button>
+
+          <button
+            id="confirmar-registro-cochera"
+            class="button btn-modal btn-modal-principal"
+          >
+            <i class="fas fa-check"></i>
+            Registrar ingreso
           </button>
         </footer>
       </div>
