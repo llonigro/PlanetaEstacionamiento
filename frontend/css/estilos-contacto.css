@@ -1,0 +1,168 @@
+body {
+  min-height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.seccion-contacto {
+  width: 100%;
+  padding: 5rem 1.5rem;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.contacto-contenedor {
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.contacto-card {
+  width: min(600px, 100%);
+
+  padding: 3rem 2.5rem;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  text-align: center;
+
+  background-color: white;
+
+  border: 2px solid var(--azul-marino);
+  border-radius: 30px;
+
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.12);
+
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+
+.contacto-card:hover {
+  transform: translateY(-5px);
+
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.18);
+}
+
+/* ICONO */
+
+.contacto-icono {
+  width: 80px;
+  height: 80px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 1.5rem;
+
+  border-radius: 50%;
+
+  background-color: var(--azul-marino);
+}
+
+.contacto-icono i {
+  color: white;
+  font-size: 2.5rem;
+}
+
+/* TÍTULO */
+
+.titulo-contacto {
+  margin: 0 0 1rem;
+  color: var(--azul-petroleo);
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.hero-contacto .titulo-contacto {
+  color: white;
+  font-size: 2.5rem;
+}
+/* TEXTO */
+
+.texto-contacto {
+  max-width: 480px;
+
+  margin: 0 0 2rem;
+
+  color: var(--azul-oscuro);
+
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+/* BOTÓN */
+
+.boton-github {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+
+  padding: 0.8rem 1.4rem;
+
+  border-radius: 10px;
+
+  background-color: var(--turquesa);
+  color: white;
+
+  font-weight: 600;
+  text-decoration: none;
+
+  transition:
+    background-color 0.2s,
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+
+.boton-github:hover {
+  background-color: var(--azul-petroleo);
+  color: white;
+
+  transform: translateY(-2px);
+
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* HERO */
+
+.hero-contacto {
+  padding: 4rem 1.5rem;
+
+  background-color: var(--turquesa);
+  color: white;
+}
+
+.hero-contacto .titulo-contacto {
+  margin-bottom: 0.8rem;
+
+  color: white;
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+.subtitulo-contacto {
+  margin: 0 auto;
+
+  max-width: 650px;
+
+  color: rgba(255, 255, 255, 0.9);
+
+  font-size: 1.2rem;
+  line-height: 1.5;
+}
