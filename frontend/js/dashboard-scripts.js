@@ -3,20 +3,6 @@ let vehiculoEnEsperaId = null;
 const API_URL = "http://localhost:3000";
 const CAMPOS_VEHICULO = ["marca", "modelo", "año", "color", "patente"];
 
-const ESTADOS_LAVADO = {
-  orden: ["espera", "lavando", "listo"],
-  progreso: {
-    espera: "0%",
-    lavando: "50%",
-    listo: "100%",
-  },
-  mensajes: {
-    espera: "En espera",
-    lavando: "Lavando",
-    listo: "Listo",
-  },
-};
-
 function inicializarBloqueoAccionesRapidas() {
   const menuAcciones = document.getElementById("acciones-rapidas");
 
@@ -35,9 +21,41 @@ function inicializarBloqueoAccionesRapidas() {
   );
 }
 
+function inicializarBloqueoServicios() {
+  const seccionServicios = document.getElementById("contenedor-servicios");
+
+  if (!seccionServicios) return;
+
+  seccionServicios.addEventListener(
+    "click",
+    (e) => {
+      // 1. Si no hay vehículo registrado, bloqueamos toda la sección
+      if (!vehiculoEnEsperaId) {
+        e.preventDefault();
+        e.stopPropagation();
+        alert("No hay un vehículo registrado para ver los servicios.");
+        return;
+      }
+
+      // 2. Si hay vehículo, verificamos si la tarjeta clickeada está inactiva
+      const tarjeta = e.target.closest(".servicios-tarjetas");
+      if (tarjeta) {
+        const estaActivo = tarjeta.dataset.activo === "true";
+        if (!estaActivo) {
+          e.preventDefault();
+          e.stopPropagation();
+          alert("Este servicio no se encuentra activo en este momento.");
+        }
+      }
+    },
+    true,
+  );
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   inicializarModales();
   inicializarBloqueoAccionesRapidas();
+  inicializarBloqueoServicios();
 
   // Botón de guardar vehículo
   document
@@ -49,7 +67,6 @@ document.addEventListener("DOMContentLoaded", () => {
     .getElementById("confirmar-registro-cochera")
     .addEventListener("click", registrarIngresoCochera);
 
-  cargarEstadoLavado();
   inicializarBotonCocheras();
 });
 
@@ -100,18 +117,29 @@ function cargarDatosVehiculo() {
 }
 
 async function guardarVehiculo() {
+  const usuarioId = localStorage.getItem("usuario_id");
+
   const marca = document.getElementById("input-marca").value.trim();
   const modelo = document.getElementById("input-modelo").value.trim();
   const año = document.getElementById("input-año").value.trim();
   const color = document.getElementById("input-color").value.trim();
   const patente = document.getElementById("input-patente").value.trim();
+  const permitirValet = document.getElementById("input-permitir-valet").value;
 
   if (!marca || !modelo || !año || !color || !patente) {
     alert("Por favor, completa todos los campos del vehículo.");
     return;
   }
 
-  const datosVehiculo = { marca, modelo, año, color, patente };
+  const datosVehiculo = {
+    marca,
+    modelo,
+    año: Number(año),
+    color,
+    patente,
+    usuario_id: Number(usuarioId),
+    permitir_valet: permitirValet === "true",
+  };
 
   try {
     const respuesta = await fetch(`${API_URL}/vehiculos`, {
@@ -142,69 +170,6 @@ async function guardarVehiculo() {
     console.error("Error al guardar el vehículo:", error);
     alert("Hubo un problema al guardar el vehículo.");
   }
-}
-
-// LAVADO
-async function cargarEstadoLavado() {
-  try {
-    const respuesta = await fetch(`${API_URL}/servicios`);
-
-    if (!respuesta.ok)
-      throw new Error("No se pudo obtener el estado del lavado");
-
-    const datos = await respuesta.json();
-    actualizarEstadoLavado(datos.estado);
-  } catch (error) {
-    console.error("Error al cargar el estado del lavado:", error);
-  }
-}
-
-function actualizarEstadoLavado(estado) {
-  const tarjeta = document.querySelector(
-    '.servicios-tarjetas[data-servicio="lavado"]',
-  );
-
-  if (!tarjeta) return;
-
-  const barra = tarjeta.querySelector(".barra-progreso");
-  const mensaje = tarjeta.querySelector(".mensaje-servicio");
-  const pasos = tarjeta.querySelectorAll(".paso");
-  const lineaActiva = tarjeta.querySelector(".linea-activa");
-  const estadoTexto = tarjeta.querySelector(".estado-texto");
-
-  // Limpiamos estados anteriores
-  pasos.forEach((paso) => {
-    paso.classList.remove("activo");
-  });
-
-  // Si no hay servicio
-  if (estado === "sin-servicio") {
-    barra.style.display = "none";
-    mensaje.style.display = "block";
-    estadoTexto.textContent = "Sin servicio";
-
-    return;
-  }
-
-  // Hay un servicio activo
-  barra.style.display = "block";
-  mensaje.style.display = "none";
-
-  // Actualizamos el texto y la barra
-  estadoTexto.textContent = mensajesEstado[estado];
-  lineaActiva.style.width = progreso[estado];
-
-  // Buscamos la posición del estado actual
-  const posicionActual = ordenEstados.indexOf(estado);
-
-  pasos.forEach((paso) => {
-    const estadoPaso = paso.dataset.paso;
-    const posicionPaso = ordenEstados.indexOf(estadoPaso);
-
-    if (posicionPaso <= posicionActual) {
-      paso.classList.add("activo");
-    }
-  });
 }
 
 // COCHERAS

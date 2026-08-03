@@ -322,7 +322,6 @@
 .seccion-servicios {
   width: 100%;
   padding: 1.5rem;
-
   background-color: white;
 }
 
@@ -334,24 +333,20 @@
 
 .contenedor-tarjetas {
   display: flex;
-  gap: 1.1rem;
+  gap: 1.5rem;
 }
 
 .servicios-tarjetas {
   flex: 1;
-
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
 
-  gap: 1rem;
   padding: 1.5rem;
+  border: 1px solid rgba(11, 176, 167, 0.4);
+  border-radius: 25px;
 
-  min-height: 110px;
-
-  border: 1px solid rgba(0, 0, 0, 0.15);
-  border-radius: 30px;
-
-  background-color: rgba(0, 255, 242, 0.164);
+  background-color: rgba(11, 176, 167, 0.08);
 
   transition:
     transform 0.2s,
@@ -359,20 +354,19 @@
 }
 
 .servicios-tarjetas:hover {
-  transform: scale(1.02);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+  transform: scale(1.01);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 }
 
-.servicio-descripcion {
+.servicio-contenido-principal {
   display: flex;
-  align-items: center;
-  gap: 1rem;
+  align-items: flex-start;
+  gap: 1.2rem;
 }
 
 .imagen-servicio {
   width: 70px;
   height: 70px;
-
   flex-shrink: 0;
 
   display: flex;
@@ -380,169 +374,112 @@
   justify-content: center;
 
   border-radius: 50%;
-  background-color: var(--azul-marino);
+  background-color: rgba(11, 176, 167, 0.2);
 }
 
 .imagen-servicio i {
-  color: white;
+  color: var(--turquesa);
   font-size: 2rem;
 }
 
 .titulo-servicio {
-  padding: 0.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
 }
 
-.titulo-servicio h1 {
+.titulo-servicio h3 {
   margin: 0;
-
   color: var(--azul-petroleo);
-
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   font-weight: 700;
 }
 
 .titulo-servicio p {
   margin: 0;
-
-  color: var(--turquesa);
-
-  font-size: 1.2rem;
-  font-weight: 500;
+  color: #556070;
+  font-size: 0.95rem;
+  line-height: 1.3;
 }
 
-/* LAVADO */
+/* Pie de la tarjeta (Precio y Botón) */
 
-.barra-progreso,
-.mensaje-servicio {
-  display: none;
-}
-
-.barra-progreso {
-  position: relative;
-  width: 100%;
-}
-
-.lineas {
-  position: absolute;
-
-  top: 15px;
-  left: 38px;
-  right: 20px;
-
-  height: 4px;
-}
-
-.linea-progreso,
-.linea-activa {
-  position: absolute;
-
-  top: 0;
-  left: 0;
-
-  height: 100%;
-}
-
-.linea-progreso {
-  width: 100%;
-  background-color: lightgrey;
-}
-
-.linea-activa {
-  width: 0%;
-
-  background-color: var(--azul-marino);
-
-  transition: width 0.3s ease;
-
-  z-index: 1;
-}
-
-.pasos {
+.servicio-pie {
   display: flex;
+  align-items: center;
   justify-content: space-between;
-
-  margin: 0 16px;
-
-  position: relative;
-  z-index: 2;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
 }
 
-.paso {
+.precio-servicio {
   display: flex;
   flex-direction: column;
-  align-items: center;
 }
 
-.paso span {
-  width: 32px;
-  height: 32px;
-
-  border: 2px solid lightgrey;
-  border-radius: 50%;
-
-  background-color: lightgrey;
+.precio-servicio .monto {
+  color: var(--azul-petroleo);
+  font-size: 1.6rem;
+  font-weight: 800;
+  line-height: 1;
 }
 
-.paso.activo span {
-  background-color: var(--azul-marino);
-  border: 2px solid var(--turquesa);
-}
-
-.paso.activo p {
-  color: var(--turquesa);
-  font-weight: bold;
-}
-
-.mostrar {
-  display: block;
-}
-
-.mensaje-servicio {
-  margin: 0;
-
-  color: #718096;
-
-  font-size: 1rem;
+.precio-servicio .etiqueta-precio {
+  color: #6b7280;
+  font-size: 0.8rem;
   font-weight: 500;
-
-  text-align: center;
+  margin-top: 0.2rem;
 }
 
-/* VALET */
+/* Botón interno de la tarjeta */
+
+.btn-accion-servicio {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+
+  padding: 0.6rem 1.2rem;
+
+  background-color: white;
+  border: 1px solid rgba(11, 176, 167, 0.3);
+  border-radius: 12px;
+
+  color: var(--azul-petroleo);
+  font-size: 0.95rem;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-accion-servicio:hover {
+  background-color: var(--turquesa);
+  color: white;
+  border-color: var(--turquesa);
+  transform: translateY(-2px);
+}
+
+/* ESTILOS ESPECÍFICOS: TARJETA VALET */
 
 .tarjeta-valet {
-  background-color: rgba(212, 211, 137, 0.18);
+  background-color: rgba(235, 215, 180, 0.15);
+  border: 1px solid rgba(212, 175, 55, 0.3);
 }
 
-.info-valet {
-  display: flex;
-  gap: 2rem;
-
-  margin-top: 0.5rem;
+.tarjeta-valet .imagen-servicio {
+  background-color: rgba(212, 175, 55, 0.2);
 }
 
-.dato-valet {
-  display: flex;
-  align-items: center;
-  gap: 0.7rem;
+.tarjeta-valet .imagen-servicio i {
+  color: #c29b38;
 }
 
-.dato-valet > i {
-  color: var(--azul-petroleo);
-  font-size: 1.3rem;
+.tarjeta-valet .btn-accion-servicio:hover {
+  background-color: #d4af37;
+  border-color: #d4af37;
+  color: white;
 }
-
-.dato-valet div {
-  display: flex;
-  flex-direction: column;
-}
-
-.dato-valet span {
-  color: #969371;
-  font-size: 0.85rem;
-  font-weight: 500;
-}
-
 /* NOTICIAS */
 
 .seccion-noticias {
