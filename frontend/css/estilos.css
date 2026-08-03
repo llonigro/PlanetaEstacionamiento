@@ -51,7 +51,6 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 8px;
 
   background-color: #e0e0e0;
   background-image: linear-gradient(
@@ -62,6 +61,13 @@ body {
   );
   background-size: 200% 100%;
   animation: skeleton-pulse 1.5s infinite ease-in-out;
+}
+
+.imagen-contenedor img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
 }
 
 .imagen-fade {
@@ -164,4 +170,11 @@ body {
   color: var(--azul-petroleo);
   text-transform: uppercase;
   font-weight: 700;
+}
+
+.parrafo-seccion-informativa {
+  font-size: 1.3rem !important;
+  line-height: 1.5;
+  text-align: justify;
+  font-weight: 400 !important;
 }
