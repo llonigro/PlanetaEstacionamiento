@@ -27,4 +27,4 @@ const logout = (req, res) => {
   res.status(200).json({ mensaje: "Sesión cerrada correctamente" });
 };
 
-module.exports = { login, logout };
+module.exports = { login };
