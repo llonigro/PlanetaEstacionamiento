@@ -1,19 +1,23 @@
+// VARIABLES GLOBALES
+
 let vehiculoEnEsperaId = null;
 
 const API_URL = "http://localhost:3000";
 const CAMPOS_VEHICULO = ["marca", "modelo", "año", "color", "patente"];
+
+// INICIALIZACIÓN
 
 document.addEventListener("DOMContentLoaded", () => {
   inicializarModales();
   inicializarBloqueoAccionesRapidas();
   inicializarBloqueoServicios();
 
-  // Botón de guardar vehículo
+  // Event listener de guardar vehículo
   document
     .getElementById("btn-guardar-vehiculo")
     .addEventListener("click", guardarVehiculo);
 
-  // Botón de confirmar registro de cochera
+  // Event listener de confirmar registro de cochera
   document
     .getElementById("confirmar-registro-cochera")
     .addEventListener("click", registrarIngresoCochera);
@@ -21,9 +25,11 @@ document.addEventListener("DOMContentLoaded", () => {
   inicializarBotonCocheras();
 });
 
+// AUTENTICACIÓN Y SESIÓN
+
 async function obtenerDatosUsuarioActual() {
   try {
-    const respuesta = await fetch("http://localhost:3000/perfil", {
+    const respuesta = await fetch(`${API_URL}/perfil`, {
       method: "GET",
       credentials: "include",
     });
@@ -43,56 +49,22 @@ async function obtenerDatosUsuarioActual() {
   }
 }
 
-function inicializarBloqueoAccionesRapidas() {
-  const menuAcciones = document.getElementById("acciones-rapidas");
+//async function cerrarSesion() {
+//  try {
+//    const respuesta = await fetch(`${API_URL}/logout`, {
+//      method: "POST",
+//      credentials: "include",
+//    });
+//
+//    if (respuesta.ok) {
+//      window.location.href = "inicio.html";
+//    }
+//  } catch (error) {
+//    console.error("Error al cerrar sesión", error);
+//  }
+//}
 
-  if (!menuAcciones) return;
-
-  menuAcciones.addEventListener(
-    "click",
-    (e) => {
-      if (!vehiculoEnEsperaId) {
-        e.preventDefault();
-        e.stopPropagation();
-        alert("No hay un vehículo registrado para realizar esta acción.");
-      }
-    },
-    true,
-  );
-}
-
-function inicializarBloqueoServicios() {
-  const seccionServicios = document.getElementById("contenedor-servicios");
-
-  if (!seccionServicios) return;
-
-  seccionServicios.addEventListener(
-    "click",
-    (e) => {
-      // 1. Si no hay vehículo registrado, bloqueamos toda la sección
-      if (!vehiculoEnEsperaId) {
-        e.preventDefault();
-        e.stopPropagation();
-        alert("No hay un vehículo registrado para ver los servicios.");
-        return;
-      }
-
-      // 2. Si hay vehículo, verificamos si la tarjeta clickeada está inactiva
-      const tarjeta = e.target.closest(".servicios-tarjetas");
-      if (tarjeta) {
-        const estaActivo = tarjeta.dataset.activo === "true";
-        if (!estaActivo) {
-          e.preventDefault();
-          e.stopPropagation();
-          alert("Este servicio no se encuentra activo en este momento.");
-        }
-      }
-    },
-    true,
-  );
-}
-
-// MODALES
+// GESTIÓN DE MODALES
 
 function inicializarModales() {
   // Botones que abren modales
@@ -110,6 +82,8 @@ function inicializarModales() {
       modal.classList.add("is-active");
     });
   });
+
+  // Botones que cierran modales
   document.querySelectorAll(".modal").forEach((modal) => {
     const cerrarModal = () => {
       modal.classList.remove("is-active");
@@ -208,7 +182,7 @@ async function cargarCocheras() {
   const contenedor = document.getElementById("contenedor-cocheras");
 
   try {
-    const respuesta = await fetch("http://localhost:3000/cocheras");
+    const respuesta = await fetch(`${API_URL}/cocheras`);
 
     if (!respuesta.ok) {
       throw new Error("No se pudieron obtener las cocheras");
@@ -321,17 +295,53 @@ async function registrarIngresoCochera() {
   }
 }
 
-async function cerrarSesion() {
-  try {
-    const respuesta = await fetch("http://localhost:3000/logout", {
-      method: "POST", // o GET dependiendo de cómo definas la ruta
-      credentials: "include",
-    });
+// BLOQUEO DE ACCIONES Y SERVICIOS
 
-    if (respuesta.ok) {
-      window.location.href = "inicio.html";
-    }
-  } catch (error) {
-    console.error("Error al cerrar sesión", error);
-  }
+function inicializarBloqueoAccionesRapidas() {
+  const menuAcciones = document.getElementById("acciones-rapidas");
+
+  if (!menuAcciones) return;
+
+  menuAcciones.addEventListener(
+    "click",
+    (e) => {
+      if (!vehiculoEnEsperaId) {
+        e.preventDefault();
+        e.stopPropagation();
+        alert("No hay un vehículo registrado para realizar esta acción.");
+      }
+    },
+    true,
+  );
+}
+
+function inicializarBloqueoServicios() {
+  const seccionServicios = document.getElementById("contenedor-servicios");
+
+  if (!seccionServicios) return;
+
+  seccionServicios.addEventListener(
+    "click",
+    (e) => {
+      // 1. Si no hay vehículo registrado, bloqueamos toda la sección
+      if (!vehiculoEnEsperaId) {
+        e.preventDefault();
+        e.stopPropagation();
+        alert("No hay un vehículo registrado para ver los servicios.");
+        return;
+      }
+
+      // 2. Si hay vehículo, verificamos si la tarjeta clickeada está inactiva
+      const tarjeta = e.target.closest(".servicios-tarjetas");
+      if (tarjeta) {
+        const estaActivo = tarjeta.dataset.activo === "true";
+        if (!estaActivo) {
+          e.preventDefault();
+          e.stopPropagation();
+          alert("Este servicio no se encuentra activo en este momento.");
+        }
+      }
+    },
+    true,
+  );
 }
