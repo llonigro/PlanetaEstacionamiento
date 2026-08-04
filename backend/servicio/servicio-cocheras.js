@@ -18,11 +18,11 @@ const VerCochera = async (id) => {
 
 // 3. POST
 const crear = async (datosCocheras) => {
-    const { numero, tipo, estado, clima } = datosCocheras;
-    // Es buena práctica usar RETURNING * para devolver el usuario recién creado
+    const { numero, tipo, clima } = datosCocheras;
+    // Es buena práctica usar RETURNING * para devolver la cochera recién creada
     const { rows } = await pool.query(
-        'INSERT INTO cocheras (numero, tipo, estado, clima) VALUES ($1, $2, $3, $4) RETURNING *',
-        [numero, tipo, estado, clima]
+        'INSERT INTO cocheras (numero, tipo, clima) VALUES ($1, $2, $3) RETURNING *',
+        [numero, tipo, clima]
     );
     return rows[0]; 
 };
@@ -30,7 +30,7 @@ const crear = async (datosCocheras) => {
 // 4. PATCH
 const actualizarParcial = async (id, datosCochera) => {
     // 1. Extraemos solo los campos permitidos. NO extraemos 'libre'.
-    const { numero, tipo, estado, clima } = datosCochera;
+    const { numero, tipo, clima } = datosCochera;
 
     // 2. Buscamos la cochera actual
     const cocheraRes = await pool.query('SELECT * FROM cocheras WHERE id = $1', [id]);
@@ -43,16 +43,14 @@ const actualizarParcial = async (id, datosCochera) => {
         UPDATE cocheras SET
             numero = $1,
             tipo = $2,
-            estado = $3,
-            clima = $4
-        WHERE id = $5 RETURNING *
+            clima = $3
+        WHERE id = $4 RETURNING *
     `;
 
     // Usamos los datos nuevos o mantenemos los viejos, pero 'libre' queda intacto
     const values = [
         numero !== undefined ? numero : cocheraBD.numero,
         tipo !== undefined ? tipo : cocheraBD.tipo,
-        estado !== undefined ? estado : cocheraBD.estado,
         clima !== undefined ? clima : cocheraBD.clima,
         id
     ];

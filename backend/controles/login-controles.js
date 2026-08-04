@@ -27,7 +27,7 @@ const login = async (req, res) => {
 //    res.status(200).json({ mensaje: 'Sesión cerrada correctamente' });
 // };
 
-module.exports = { login };
+module.exports = { login }; // agregar logout si es necesario
 
 
 

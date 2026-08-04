@@ -26,8 +26,6 @@ const validarId = [
 const validarCrearCochera = [
     // 1. Reglas de validación (lo que tenías en chequeos)
     body('numero')
-        .escape()
-        .trim()
         .notEmpty().withMessage('El numero es obligatorio')
         .isInt({min : 1}).withMessage('El numero debe ser un número entero válido'),
         // Verifica que email sea obligatorio y tenga formato correcto
@@ -37,22 +35,11 @@ const validarCrearCochera = [
         .notEmpty().withMessage('El tipo es obligatorio')
         .toLowerCase() // <-- Pasamos a minúsculas
         .isIn(['techado', 'descubierto']).withMessage('El tipo debe ser "techado" o "descubierto"'),
-    body('estado')
-        .escape()
-        .trim()
-        .notEmpty().withMessage('El estado es obligatorio')
-        .toLowerCase() // <-- Pasamos a minúsculas
-        .isIn(['mal estado', 'buen estado']).withMessage('El estado debe ser "mal estado" o "buen estado"'),
-//    body('libre')
-//        .escape()
-//       .trim()
-//        .notEmpty().withMessage('Este apartado es obligatorio')
-//        .isBoolean().withMessage('Debe ser true o false'),
         body('clima')
         .trim()
         .escape()
         .toLowerCase() // <-- Pasamos a minúsculas
-        .isIn(['frio', 'templado', 'caluroso']).withMessage('El clima debe ser "Frio", "templado" o "caluroso"'),
+        .isIn(['frio', 'nieve', 'templado', 'calor', 'calor extremo', 'lluvia', 'lluvia y granizo']).withMessage('El clima debe ser "frio", "nieve", "templado", "calor", "calor extremo", "lluvia" o "lluvia y granizo"'),
     // 2. Middleware para interceptar los errores
     verificarErrores
 ];
@@ -62,9 +49,7 @@ const validarCrearCochera = [
 const validarActualizarCochera = [
     // 1. Reglas de validación (lo que tenías en chequeos)
     body('numero')
-        .escape()
         .optional({ checkFalsy: true })
-        .trim()
         .notEmpty().withMessage('El numero es obligatorio')
         .isInt({min : 1}).withMessage('El numero debe ser un número entero válido'),
     body('tipo')
@@ -74,25 +59,12 @@ const validarActualizarCochera = [
         .notEmpty().withMessage('El tipo es obligatorio')
         .toLowerCase() // <-- Pasamos a minúsculas
         .isIn(['techado', 'descubierto']).withMessage('El tipo debe ser "techado" o "descubierto"'),
-    body('estado')
-        .escape()
-        .optional({ checkFalsy: true })
-        .trim()
-        .notEmpty().withMessage('El estado es obligatorio')
-        .toLowerCase() // <-- Pasamos a minúsculas
-        .isIn(['mal estado', 'buen estado']).withMessage('El estado debe ser "mal estado" o "buen estado"'),
-//    body('libre')
-//        .escape()
-//        .optional({ checkFalsy: true })
-//        .trim()
- //       .notEmpty().withMessage('Este apartado es obligatorio')
-   ///     .isBoolean().withMessage('Debe ser true o false'),
         body('clima')
         .trim()
         .escape()
         .optional({ checkFalsy: true })
         .toLowerCase() // <-- Pasamos a minúsculas
-        .isIn(['frio', 'templado', 'caluroso']).withMessage('El clima debe ser "Frio", "templado" o "caluroso"'),
+        .isIn(['frio', 'nieve', 'templado', 'calor', 'calor extremo', 'lluvia', 'lluvia y granizo']).withMessage('El clima debe ser "frio", "nieve", "templado", "calor", "calor extremo", "lluvia" o "lluvia y granizo"'),
     // 2. Middleware para interceptar los errores
     verificarErrores
 ];
@@ -115,6 +87,7 @@ const ValidarUnicoNumero = (error, res) => {
     }
     return false;
 };
+
 
 
 
