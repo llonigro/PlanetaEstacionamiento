@@ -36,7 +36,7 @@ CREATE TABLE cocheras (
     tipo VARCHAR(100) NOT NULL,
     estado VARCHAR(100) NOT NULL,
     libre BOOLEAN  DEFAULT true,
-    clima VARCHAR(100) NOT NULL,
+    clima VARCHAR(100) NOT NULL
 );
 
 ALTER TABLE cocheras
