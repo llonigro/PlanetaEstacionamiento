@@ -28,12 +28,13 @@ const validarCrearCatalogo = [
         .trim()
         .escape()
         .notEmpty().withMessage('El nombre es obligatorio')
-        .matches(/^[A-Za-zÀ-ÿ\s]+$/).withMessage('El nombre debe contener solo letras y espacios'),
+        .toLowerCase() // <-- Pasamos a minúsculas
+        .isIn(['valet', 'lavado', 'mecanico']).withMessage('El nombre debe ser "valet", "lavado" o "mecanico"'),    
     body("precio_base")
         .trim()
         .escape()
         .notEmpty().withMessage('El precio es obligatorio')
-        .isFloat({ min: 0 }).withMessage('El precio debe ser un número positivo')
+        .isFloat({ min: 1 }).withMessage('El precio debe ser un número positivo')
         .toFloat(),
     verificarErrores
 ];
@@ -46,13 +47,14 @@ const validarActualizarCatalogo = [
         .trim()
         .escape()
         .notEmpty().withMessage('El nombre es obligatorio')
-        .matches(/^[A-Za-zÀ-ÿ\s]+$/).withMessage('El nombre debe contener solo letras y espacios'),
+        .toLowerCase() // <-- Pasamos a minúsculas
+        .isIn(['valet', 'lavado', 'mecanico']).withMessage('El nombre debe ser "valet", "lavado" o "mecanico"'),
     body("precio_base")
     .optional({ checkFalsy: true })
         .trim()
         .escape()
         .notEmpty().withMessage('El precio es obligatorio')
-        .isFloat({ min: 0 }).withMessage('El precio debe ser un número positivo')
+        .isFloat({ min: 1 }).withMessage('El precio debe ser un número positivo')
         .toFloat(),
     verificarErrores
 ];
