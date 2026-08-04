@@ -102,11 +102,12 @@ async function iniciarSesion() {
   const contrasenia = document.getElementById("login-contrasenia").value;
 
   try {
-    const respuesta = await fetch("http://localhost:3000/usuarios", {
+    const respuesta = await fetch("http://localhost:3000/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: "include",
       body: JSON.stringify({
         email,
         contrasenia,
@@ -134,3 +135,14 @@ async function iniciarSesion() {
     alert("No se pudo conectar con el servidor");
   }
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  const formLogin = document.getElementById("form-login");
+
+  if (formLogin) {
+    formLogin.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      await iniciarSesion();
+    });
+  }
+});

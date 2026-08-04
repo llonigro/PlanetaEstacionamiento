@@ -3,6 +3,46 @@ let vehiculoEnEsperaId = null;
 const API_URL = "http://localhost:3000";
 const CAMPOS_VEHICULO = ["marca", "modelo", "año", "color", "patente"];
 
+document.addEventListener("DOMContentLoaded", () => {
+  inicializarModales();
+  inicializarBloqueoAccionesRapidas();
+  inicializarBloqueoServicios();
+
+  // Botón de guardar vehículo
+  document
+    .getElementById("btn-guardar-vehiculo")
+    .addEventListener("click", guardarVehiculo);
+
+  // Botón de confirmar registro de cochera
+  document
+    .getElementById("confirmar-registro-cochera")
+    .addEventListener("click", registrarIngresoCochera);
+
+  inicializarBotonCocheras();
+});
+
+async function obtenerDatosUsuarioActual() {
+  try {
+    const respuesta = await fetch("http://localhost:3000/perfil", {
+      method: "GET",
+      credentials: "include",
+    });
+
+    if (!respuesta.ok) {
+      // Si la sesión no es válida, redirigimos al inicio
+      // (por ejemplo, si la cookie no existe o ha expirado)
+      window.location.href = "inicio.html";
+      return;
+    }
+    const usuario = await respuesta.json();
+    const usuarioId = usuario.id;
+
+    window.usuarioLogueadoId = usuarioId;
+  } catch (error) {
+    console.error("Error al obtener la sesión:", error);
+  }
+}
+
 function inicializarBloqueoAccionesRapidas() {
   const menuAcciones = document.getElementById("acciones-rapidas");
 
@@ -51,24 +91,6 @@ function inicializarBloqueoServicios() {
     true,
   );
 }
-
-document.addEventListener("DOMContentLoaded", () => {
-  inicializarModales();
-  inicializarBloqueoAccionesRapidas();
-  inicializarBloqueoServicios();
-
-  // Botón de guardar vehículo
-  document
-    .getElementById("btn-guardar-vehiculo")
-    .addEventListener("click", guardarVehiculo);
-
-  // Botón de confirmar registro de cochera
-  document
-    .getElementById("confirmar-registro-cochera")
-    .addEventListener("click", registrarIngresoCochera);
-
-  inicializarBotonCocheras();
-});
 
 // MODALES
 
@@ -296,5 +318,20 @@ async function registrarIngresoCochera() {
   } catch (error) {
     console.error("Error al registrar el ingreso:", error);
     alert("Hubo un problema al registrar la cochera.");
+  }
+}
+
+async function cerrarSesion() {
+  try {
+    const respuesta = await fetch("http://localhost:3000/logout", {
+      method: "POST", // o GET dependiendo de cómo definas la ruta
+      credentials: "include",
+    });
+
+    if (respuesta.ok) {
+      window.location.href = "inicio.html";
+    }
+  } catch (error) {
+    console.error("Error al cerrar sesión", error);
   }
 }
