@@ -34,9 +34,8 @@ CREATE TABLE cocheras (
     id SERIAL PRIMARY KEY,
     numero INT UNIQUE NOT NULL,
     tipo VARCHAR(100) NOT NULL,
-    estado VARCHAR(100) NOT NULL,
-    libre BOOLEAN  DEFAULT true,
-    clima VARCHAR(100) NOT NULL,
+    libre BOOLEAN DEFAULT true,
+    clima VARCHAR(100) NOT NULL
 );
 
 ALTER TABLE cocheras
@@ -95,8 +94,8 @@ VALUES ('Santiago Quintana', 'santiago@gmail.com', '1234qwert', 'chofer', '12345
 INSERT INTO vehiculos (patente, marca, modelo, color, usuario_id, permitir_valet)
 VALUES ('ABC123', 'Toyota', 'Corolla', 'Rojo', 1, true);
 
-INSERT INTO cocheras (numero, tipo, estado, libre, clima)
-VALUES (1, 'Estándar', 'buen estado', true, 'Soleado');
+INSERT INTO cocheras (numero, tipo, libre, clima)
+VALUES (1, 'Estándar', true, 'Soleado');
 
 INSERT INTO registros (cochera_id, vehiculo_id, fecha_ingreso, fecha_egreso, precio_total, anulado)
 VALUES (1, 1, '2024-06-01 08:00:00', '2024-06-01 10:00:00', 20.00, false);

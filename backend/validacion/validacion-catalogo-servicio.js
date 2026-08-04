@@ -69,6 +69,14 @@ const ValidarForeignKeyServicio = (error, res) => {
     return false;
 };
 
+const ValidarNumeroUnico = (error, res) => {
+    if (error?.code === '42703' && error?.constraint === 'cocheras_numero_unique') {
+        res.status(400).json({ message: 'El numero de cochera ya existe' });
+        return true;
+    }
+    return false;
+};
+
 module.exports = {
     validarId,
     validarCrearCatalogo,
