@@ -30,7 +30,7 @@
     <div class="dashboard">
       <!-- HEADER: saludo y control de sesión -->
       <header class="header">
-        <h1>Hola, <span id="nombre-usuario">Usuario</span></h1>
+        <h1>Bienvenido!</h1>
 
         <button id="btn-cerrar-sesion" class="btn-cerrar-sesion">
           <i class="fas fa-right-from-bracket"></i>
@@ -67,7 +67,7 @@
 
               <div class="vehiculo-info">
                 <div class="vehiculo-identificacion">
-                  <h3 id="modelo-completo">[Nombre del vehículo]</h3>
+                  <h3 id="modelo-vehiculo">[Nombre del vehículo]</h3>
 
                   <span id="patente-vehiculo"> [ABC123] </span>
                 </div>
@@ -80,12 +80,12 @@
 
                   <div class="dato">
                     <span>Modelo</span>
-                    <strong id="modelo-vehiculo">[Modelo]</strong>
+                    <strong id="modelo-vehiculo-2">[Modelo]</strong>
                   </div>
 
                   <div class="dato">
-                    <span>Año</span>
-                    <strong id="año-vehiculo">[Año]</strong>
+                    <span>Permitir Valet</span>
+                    <strong id="permitir-valet-vehiculo">[Sí/No]</strong>
                   </div>
 
                   <div class="dato">
@@ -100,7 +100,10 @@
 
         <!-- SECCIÓN: Acciones rápidas / tarjetas -->
         <section class="tarjetas">
-          <article class="acciones-rapidas menu-bloqueado">
+          <article
+            class="acciones-rapidas menu-bloqueado"
+            id="contenedor-acciones-rapidas"
+          >
             <h3 class="title is-4 titulo-blanco">ACCIONES RÁPIDAS</h3>
 
             <div class="contenedor-botones">
@@ -171,7 +174,7 @@
                     <span class="monto">[ej: $2.500]</span>
                     <span class="etiqueta-precio">por servicio</span>
                   </div>
-                  <button class="btn-accion-servicio">
+                  <button class="btn-accion-servicio" id="btn-ver-lavado">
                     <span>Ver lavado</span>
                     <i class="fas fa-arrow-right"></i>
                   </button>
@@ -202,7 +205,10 @@
                     <span class="monto">[ej: $2.500]</span>
                     <span class="etiqueta-precio">por servicio</span>
                   </div>
-                  <button class="btn-accion-servicio btn-valet">
+                  <button
+                    class="btn-accion-servicio btn-valet"
+                    id="btn-ver-valet"
+                  >
                     <span>Ver valet</span>
                     <i class="fas fa-arrow-right"></i>
                   </button>
@@ -282,9 +288,6 @@
         </header>
 
         <section class="modal-card-body">
-          <!-- Campo oculto por si el backend requiere el ID de usuario -->
-          <input type="hidden" id="input-usuario-id" value="1" />
-
           <div class="field">
             <label class="label">Marca</label>
             <div class="control">
@@ -306,21 +309,6 @@
                 class="input"
                 type="text"
                 placeholder="Ej. Fiesta Kinetic"
-                required
-              />
-            </div>
-          </div>
-
-          <div class="field">
-            <label class="label">Año</label>
-            <div class="control">
-              <input
-                id="input-año"
-                class="input"
-                type="number"
-                min="1950"
-                max="2026"
-                placeholder="Ej. 2020"
                 required
               />
             </div>

@@ -1,5 +1,5 @@
 const dashboards = {
-  usuario: "dashboard.html",
+  cliente: "dashboard.html",
   gerente: "dashboard_gerente/dashboard-gerente.html",
 };
 
@@ -79,7 +79,6 @@ async function registrarUsuario() {
       }
     } else {
       alert("Usuario registrado con éxito");
-      console.log("Usuario registrado:", result);
       // Limpiar los campos del formulario después de un registro exitoso
       document.getElementById("nombre").value = "";
       document.getElementById("email").value = "";
@@ -121,7 +120,7 @@ async function iniciarSesion() {
       return;
     }
 
-    const rol = datos.rol;
+    const rol = datos.usuario.rol;
     const dashboard = dashboards[rol];
 
     if (!dashboard) {

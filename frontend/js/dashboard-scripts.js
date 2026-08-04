@@ -1,21 +1,62 @@
 // VARIABLES GLOBALES
-
-let vehiculoEnEsperaId = null;
+let vehiculoId = null; // id del vehículo del usuario en sesión
+let vehiculoEnCochera = false; // true cuando el vehículo tiene un registro de ingreso activo
+// Estado de confirmaciones de servicios
+let serviciosConfirmados = {
+  lavado: false,
+  valet: false,
+};
 
 const API_URL = "http://localhost:3000";
-const CAMPOS_VEHICULO = ["marca", "modelo", "año", "color", "patente"];
+const CAMPOS_VEHICULO = ["marca", "modelo", "color", "patente"];
 
 // INICIALIZACIÓN
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+  await obtenerDatosUsuarioActual();
+
   inicializarModales();
   inicializarBloqueoAccionesRapidas();
   inicializarBloqueoServicios();
+  inicializarBotonCerrarSesion();
+
+  // Mostrar datos guardados localmente de forma instantánea
+  cargarVehiculoDesdeLocalStorage();
+
+  await cargarVehiculoUsuario();
+  // Verificamos si el vehículo cargado tiene un registro activo (está dentro)
+  if (vehiculoId) {
+    const activo = await verificarRegistroActivo(vehiculoId);
+    vehiculoEnCochera = activo;
+  }
+
+  actualizarBloqueosSegunEstado();
 
   // Event listener de guardar vehículo
   document
     .getElementById("btn-guardar-vehiculo")
     .addEventListener("click", guardarVehiculo);
+
+  // Listeners de confirmación de servicios
+  const btnConfirmarLavado = document.getElementById("confirmar-lavado");
+  if (btnConfirmarLavado) {
+    btnConfirmarLavado.addEventListener("click", () => {
+      serviciosConfirmados.lavado = true;
+      guardarServiciosConfirmadosEnLocalStorage();
+      document.getElementById("modal-lavado").classList.remove("is-active");
+      actualizarBloqueosSegunEstado();
+    });
+  }
+
+  const btnConfirmarValet = document.getElementById("confirmar-valet");
+  if (btnConfirmarValet) {
+    btnConfirmarValet.addEventListener("click", () => {
+      serviciosConfirmados.valet = true;
+      guardarServiciosConfirmadosEnLocalStorage();
+      document.getElementById("modal-valet").classList.remove("is-active");
+      actualizarBloqueosSegunEstado();
+    });
+  }
 
   // Event listener de confirmar registro de cochera
   document
@@ -29,7 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 async function obtenerDatosUsuarioActual() {
   try {
-    const respuesta = await fetch(`${API_URL}/perfil`, {
+    const respuesta = await fetch(`${API_URL}/usuario`, {
       method: "GET",
       credentials: "include",
     });
@@ -37,6 +78,7 @@ async function obtenerDatosUsuarioActual() {
     if (!respuesta.ok) {
       // Si la sesión no es válida, redirigimos al inicio
       // (por ejemplo, si la cookie no existe o ha expirado)
+      alert("No hay sesión activa. Redirigiendo al inicio.");
       window.location.href = "inicio.html";
       return;
     }
@@ -112,17 +154,121 @@ function cargarDatosVehiculo() {
   });
 }
 
+// Persistencia local: guardar y cargar vehículo en localStorage
+function guardarVehiculoEnLocalStorage(vehiculo) {
+  try {
+    localStorage.setItem("vehiculo_datos", JSON.stringify(vehiculo));
+  } catch (e) {
+    console.warn("No se pudo guardar en localStorage:", e);
+  }
+}
+
+function cargarVehiculoDesdeLocalStorage() {
+  try {
+    const raw = localStorage.getItem("vehiculo_datos");
+    if (!raw) return false;
+
+    const vehiculo = JSON.parse(raw);
+
+    if (!vehiculo) return false;
+
+    vehiculoId = vehiculo.id || vehiculo.idVehiculo || null;
+
+    if (vehiculo.marca)
+      document.getElementById("marca-vehiculo").textContent = vehiculo.marca;
+    if (vehiculo.modelo) {
+      document.getElementById("modelo-vehiculo").textContent = vehiculo.modelo;
+      document.getElementById("modelo-vehiculo-2").textContent =
+        vehiculo.modelo;
+    }
+    if (vehiculo.color)
+      document.getElementById("color-vehiculo").textContent = vehiculo.color;
+    if (vehiculo.patente)
+      document.getElementById("patente-vehiculo").textContent =
+        vehiculo.patente;
+    if (typeof vehiculo.permitir_valet !== "undefined")
+      document.getElementById("permitir-valet-vehiculo").textContent =
+        vehiculo.permitir_valet ? "Sí" : "No";
+
+    // No desmontamos el bloqueo del contenedor aquí: el bloqueo depende
+    // de si el vehículo está realmente dentro de una cochera (vehiculoEnCochera).
+
+    // Cargamos el estado de confirmaciones de servicios
+    cargarServiciosConfirmadosDesdeLocalStorage();
+
+    return true;
+  } catch (e) {
+    console.warn("Error al cargar vehiculo desde localStorage:", e);
+    return false;
+  }
+}
+
+function limpiarVehiculoLocalStorage() {
+  try {
+    localStorage.removeItem("vehiculo_datos");
+    localStorage.removeItem("servicios_confirmados");
+  } catch (e) {
+    console.warn("No se pudo limpiar localStorage:", e);
+  }
+}
+
+function guardarServiciosConfirmadosEnLocalStorage() {
+  try {
+    localStorage.setItem(
+      "servicios_confirmados",
+      JSON.stringify(serviciosConfirmados),
+    );
+  } catch (e) {
+    console.warn("No se pudo guardar servicios_confirmados:", e);
+  }
+}
+
+function cargarServiciosConfirmadosDesdeLocalStorage() {
+  try {
+    const raw = localStorage.getItem("servicios_confirmados");
+    if (!raw) return false;
+    const datos = JSON.parse(raw);
+    if (!datos) return false;
+    serviciosConfirmados = Object.assign(serviciosConfirmados, datos);
+    return true;
+  } catch (e) {
+    console.warn("Error al cargar servicios_confirmados:", e);
+    return false;
+  }
+}
+
+// Manejo de cierre de sesión en cliente: limpia la copia local y redirige.
+function inicializarBotonCerrarSesion() {
+  const btn = document.getElementById("btn-cerrar-sesion");
+  if (!btn) return;
+
+  btn.addEventListener("click", async () => {
+    limpiarVehiculoLocalStorage();
+
+    // Intentamos llamar al endpoint logout
+    try {
+      await fetch(`${API_URL}/logout`, {
+        method: "POST",
+        credentials: "include",
+      });
+    } catch (e) {
+      // Ignoramos errores de red; igualmente redirigimos
+    }
+
+    window.location.href = "inicio.html";
+  });
+}
+
 async function guardarVehiculo() {
-  const usuarioId = localStorage.getItem("usuario_id");
+  const usuarioId = window.usuarioLogueadoId;
 
   const marca = document.getElementById("input-marca").value.trim();
   const modelo = document.getElementById("input-modelo").value.trim();
-  const año = document.getElementById("input-año").value.trim();
   const color = document.getElementById("input-color").value.trim();
   const patente = document.getElementById("input-patente").value.trim();
   const permitirValet = document.getElementById("input-permitir-valet").value;
 
-  if (!marca || !modelo || !año || !color || !patente) {
+  if (!marca || !modelo || !color || !patente) {
     alert("Por favor, completa todos los campos del vehículo.");
     return;
   }
@@ -130,7 +276,6 @@ async function guardarVehiculo() {
   const datosVehiculo = {
     marca,
     modelo,
-    año: Number(año),
     color,
     patente,
     usuario_id: Number(usuarioId),
@@ -141,30 +286,81 @@ async function guardarVehiculo() {
     const respuesta = await fetch(`${API_URL}/vehiculos`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      credentials: "include",
       body: JSON.stringify(datosVehiculo),
     });
 
     if (!respuesta.ok) {
-      const errorData = await respuesta.json();
-      throw new Error(errorData.message || "Error al guardar el vehículo");
+      alert(
+        respuesta.message || datos.mensaje || "Error al guardar el vehículo.",
+      );
+      return;
     }
 
     const vehiculoGuardado = await respuesta.json();
-    vehiculoEnEsperaId = vehiculoGuardado.id;
+
+    vehiculoId = vehiculoGuardado.id;
+
+    document.getElementById("marca-vehiculo").textContent =
+      vehiculoGuardado.marca;
+    document.getElementById("modelo-vehiculo").textContent =
+      vehiculoGuardado.modelo;
+    document.getElementById("permitir-valet-vehiculo").textContent =
+      vehiculoGuardado.permitir_valet ? "Sí" : "No";
+    document.getElementById("color-vehiculo").textContent =
+      vehiculoGuardado.color;
+    document.getElementById("patente-vehiculo").textContent =
+      vehiculoGuardado.patente;
+
+    // Guardar persistente en localStorage para que sobreviva recargas
+    guardarVehiculoEnLocalStorage(vehiculoGuardado);
+
+    // Limpiamos los campos del modal
 
     document.getElementById("input-marca").value = "";
     document.getElementById("input-modelo").value = "";
-    document.getElementById("input-año").value = "";
     document.getElementById("input-color").value = "";
     document.getElementById("input-patente").value = "";
 
-    document
-      .getElementById("contenedor-acciones-rapidas")
-      .classList.remove("menu-bloqueado");
+    // Actualizamos la UI según el estado (no liberamos el contenedor aquí)
+    actualizarBloqueosSegunEstado();
     document.getElementById("modal-vehiculo").classList.remove("is-active");
   } catch (error) {
     console.error("Error al guardar el vehículo:", error);
     alert("Hubo un problema al guardar el vehículo.");
+  }
+}
+
+async function cargarVehiculoUsuario() {
+  try {
+    const respuesta = await fetch(
+      `${API_URL}/vehiculos/usuario/${window.usuarioLogueadoId}`,
+      {
+        credentials: "include",
+      },
+    );
+
+    if (!respuesta.ok) {
+      return;
+    }
+
+    const vehiculo = await respuesta.json();
+
+    vehiculoId = vehiculo.id;
+
+    document.getElementById("marca-vehiculo").textContent = vehiculo.marca;
+    document.getElementById("modelo-vehiculo").textContent = vehiculo.modelo;
+    document.getElementById("color-vehiculo").textContent = vehiculo.color;
+    document.getElementById("patente-vehiculo").textContent = vehiculo.patente;
+
+    // Actualizamos la UI según el estado (las acciones seguirán bloqueadas
+    // hasta que el vehículo tenga un ingreso registrado en una cochera).
+    actualizarBloqueosSegunEstado();
+
+    // Actualizamos copia local
+    guardarVehiculoEnLocalStorage(vehiculo);
+  } catch (error) {
+    console.error("Error al cargar vehículo:", error);
   }
 }
 
@@ -230,7 +426,7 @@ async function cargarCocheras() {
 }
 
 function abrirModalRegistroCochera(cochera) {
-  if (!vehiculoEnEsperaId) {
+  if (!vehiculoId) {
     alert("No hay un vehículo registrado para asignar a la cochera.");
     return;
   }
@@ -265,15 +461,16 @@ async function registrarIngresoCochera() {
 
   const datosRegistro = {
     cochera_id: cocheraId,
-    vehiculo_id: vehiculoEnEsperaId,
+    vehiculo_id: vehiculoId,
     fechaEgreso: fechaEgreso,
   };
 
   try {
-    // 1. Hacemos el POST a tu ruta del backend
-    const respuesta = await fetch(`${API_URL}/registros`, {
+    // Hacemos el POST al endpoint de registros para asignar la cochera al vehículo
+    const respuesta = await fetch(`${API_URL}/registros/ingreso`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      credentials: "include",
       body: JSON.stringify(datosRegistro),
     });
 
@@ -289,6 +486,9 @@ async function registrarIngresoCochera() {
 
     // Volvemos a cargar las cocheras para que la pantalla se actualice y esta aparezca "Ocupada"
     await cargarCocheras();
+    // Marcar que ahora el vehículo está en cochera y actualizar bloqueos
+    vehiculoEnCochera = true;
+    actualizarBloqueosSegunEstado();
   } catch (error) {
     console.error("Error al registrar el ingreso:", error);
     alert("Hubo un problema al registrar la cochera.");
@@ -298,17 +498,23 @@ async function registrarIngresoCochera() {
 // BLOQUEO DE ACCIONES Y SERVICIOS
 
 function inicializarBloqueoAccionesRapidas() {
-  const menuAcciones = document.getElementById("acciones-rapidas");
+  const menuAcciones = document.getElementById("contenedor-acciones-rapidas");
 
   if (!menuAcciones) return;
 
   menuAcciones.addEventListener(
     "click",
     (e) => {
-      if (!vehiculoEnEsperaId) {
+      // Si el vehículo no está dentro (no hay ingreso registrado), bloqueamos
+      // todas las acciones excepto "ver-cocheras"
+      const boton = e.target.closest("button");
+      const esVerCocheras = boton && boton.id === "ver-cocheras";
+      if (!vehiculoEnCochera && !esVerCocheras) {
         e.preventDefault();
         e.stopPropagation();
-        alert("No hay un vehículo registrado para realizar esta acción.");
+        alert(
+          "Las acciones están bloqueadas hasta que el vehículo se guarde en una cochera.",
+        );
       }
     },
     true,
@@ -316,32 +522,121 @@ function inicializarBloqueoAccionesRapidas() {
 }
 
 function inicializarBloqueoServicios() {
-  const seccionServicios = document.getElementById("contenedor-servicios");
+  const seccionServicios = document.querySelector(".contenedor-tarjetas");
 
   if (!seccionServicios) return;
 
   seccionServicios.addEventListener(
     "click",
     (e) => {
-      // 1. Si no hay vehículo registrado, bloqueamos toda la sección
-      if (!vehiculoEnEsperaId) {
+      const tarjeta = e.target.closest(".servicios-tarjetas");
+      if (!tarjeta) return;
+
+      // Si el vehículo no está dentro, bloqueamos el acceso a servicios
+      if (!vehiculoEnCochera) {
         e.preventDefault();
         e.stopPropagation();
-        alert("No hay un vehículo registrado para ver los servicios.");
+        alert(
+          "Los servicios están bloqueados hasta que el vehículo se guarde en una cochera.",
+        );
         return;
       }
 
-      // 2. Si hay vehículo, verificamos si la tarjeta clickeada está inactiva
-      const tarjeta = e.target.closest(".servicios-tarjetas");
-      if (tarjeta) {
-        const estaActivo = tarjeta.dataset.activo === "true";
-        if (!estaActivo) {
-          e.preventDefault();
-          e.stopPropagation();
-          alert("Este servicio no se encuentra activo en este momento.");
-        }
+      // Verificamos si la tarjeta clickeada está inactiva
+      const estaActivo = tarjeta.dataset.activo === "true";
+      if (!estaActivo) {
+        e.preventDefault();
+        e.stopPropagation();
+        alert("Este servicio no se encuentra activo en este momento.");
+        return;
+      }
+
+      // Verificamos si la acción fue confirmada desde los botones (lavado/valet)
+      const modalRef = tarjeta.dataset.modal || "";
+      let clave = null;
+      if (modalRef.includes("lavado")) clave = "lavado";
+      else if (modalRef.includes("valet")) clave = "valet";
+
+      if (clave && !serviciosConfirmados[clave]) {
+        e.preventDefault();
+        e.stopPropagation();
+        const texto =
+          clave === "lavado" ? "Reservar lavado" : "Solicitar valet";
+        alert(
+          `Debes confirmar la acción desde el botón '${texto}' antes de usar este servicio.`,
+        );
       }
     },
     true,
   );
+}
+
+// Comprueba si existe un registro activo (sin fecha_egreso y no anulado) para el vehículo
+async function verificarRegistroActivo(vehiculoId) {
+  try {
+    const respuesta = await fetch(`${API_URL}/registros`, {
+      credentials: "include",
+    });
+    if (!respuesta.ok) return false;
+    const registros = await respuesta.json();
+
+    return registros.some(
+      (r) =>
+        (r.vehiculo_id === vehiculoId ||
+          Number(r.vehiculo_id) === Number(vehiculoId)) &&
+        !r.fecha_egreso &&
+        !r.anulado,
+    );
+  } catch (e) {
+    console.warn("No se pudo verificar registro activo:", e);
+    return false;
+  }
+}
+
+// Actualiza el estado visual y habilitación de botones según si el vehículo está en cochera
+function actualizarBloqueosSegunEstado() {
+  const contAcciones = document.getElementById("contenedor-acciones-rapidas");
+  // Actualizamos la clase del contenedor según si el vehículo está dentro de una cochera
+  if (contAcciones) {
+    if (vehiculoEnCochera) contAcciones.classList.remove("menu-bloqueado");
+    else contAcciones.classList.add("menu-bloqueado");
+  }
+  if (contAcciones) {
+    const botones = contAcciones.querySelectorAll("button");
+    botones.forEach((btn) => {
+      if (btn.id === "ver-cocheras") {
+        btn.disabled = false;
+        btn.classList.remove("inactivo");
+        return;
+      }
+
+      btn.disabled = !vehiculoEnCochera;
+      btn.classList.toggle("inactivo", !vehiculoEnCochera);
+    });
+  }
+
+  const contServ = document.querySelector(".contenedor-tarjetas");
+  if (contServ) {
+    const tarjetas = contServ.querySelectorAll(".servicios-tarjetas");
+    tarjetas.forEach((tarjeta) => {
+      const boton = tarjeta.querySelector(".btn-accion-servicio");
+      const tarjetaActiva = tarjeta.dataset.activo === "true";
+
+      if (boton) {
+        // Determinar clave de servicio (lavado / valet) por el modal o clase
+        const modalRef = tarjeta.dataset.modal || "";
+        let clave = null;
+        if (modalRef.includes("lavado")) clave = "lavado";
+        else if (modalRef.includes("valet")) clave = "valet";
+
+        const confirmado = clave ? !!serviciosConfirmados[clave] : true;
+
+        // Habilitamos solo si el vehículo está en cochera, la tarjeta es activa
+        // y la acción correspondiente fue previamente confirmada
+        const habilitado = vehiculoEnCochera && tarjetaActiva && confirmado;
+        boton.disabled = !habilitado;
+        tarjeta.classList.toggle("servicio-bloqueado", !habilitado);
+      }
+    });
+  }
 }
