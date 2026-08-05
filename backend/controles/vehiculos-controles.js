@@ -25,7 +25,8 @@ const VerVehiculoPorUsuario = async (req, res) => {
     const vehiculo = await VehiculosServicio.VerVehiculoPorUsuario(id);
 
     if (!vehiculo) {
-      return res.status(404).json({ message: "Vehículo no encontrado" });
+      // No hay vehículo para este usuario: devolvemos 204 No Content
+      return res.status(204).send();
     }
 
     res.json(vehiculo);

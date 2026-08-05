@@ -78,17 +78,29 @@
 
               <div class="vehiculo-info">
                 <div class="vehiculo-identificacion">
-                  <h3 id="modelo-vehiculo">[Nombre del vehículo]</h3>
+                  <div class="vehiculo-id-text">
+                    <h3 id="modelo-vehiculo">[Nombre del vehículo]</h3>
 
-                  <span id="patente-vehiculo"> [ABC123] </span>
+                    <span id="patente-vehiculo"> [ABC123] </span>
+                  </div>
+
+                  <!-- Sección visual: Cochera actual (a la derecha) -->
+                  <div id="cochera-actual" class="cochera-actual is-hidden">
+                    <div class="cochera-chip">
+                      <i class="fas fa-square-parking"></i>
+                      <div class="cochera-texto">
+                        <span>Tu vehículo está en</span>
+                        <strong id="cochera-actual-numero">--</strong>
+                        <div
+                          id="cochera-actual-fecha"
+                          class="cochera-fecha"
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
                 <div class="datos-vehiculo">
-                  <div class="dato">
-                    <span>Marca</span>
-                    <strong id="marca-vehiculo">[Marca]</strong>
-                  </div>
-
                   <div class="dato">
                     <span>Modelo</span>
                     <strong id="modelo-vehiculo-2">[Modelo]</strong>

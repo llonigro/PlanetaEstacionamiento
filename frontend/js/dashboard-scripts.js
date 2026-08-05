@@ -26,10 +26,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   cargarVehiculoDesdeLocalStorage();
 
   await cargarVehiculoUsuario();
-  // Verificamos si el vehículo cargado tiene un registro activo (está dentro)
+
+  // Actualizamos la UI de cochera actual y el estado vehiculoEnCochera
   if (vehiculoId) {
-    const activo = await verificarRegistroActivo(vehiculoId);
-    vehiculoEnCochera = activo;
+    await actualizarCocheraActual();
   }
 
   actualizarBloqueosSegunEstado();
@@ -252,13 +252,30 @@ function actualizarSeccionVehiculo(vehiculo) {
   vehiculoId = vehiculo.id ?? vehiculoId;
   vehiculoOriginal = normalizarVehiculo(vehiculo);
 
-  document.getElementById("marca-vehiculo").textContent = vehiculo.marca;
-  document.getElementById("modelo-vehiculo").textContent = vehiculo.modelo;
-  document.getElementById("modelo-vehiculo-2").textContent = vehiculo.modelo;
-  document.getElementById("color-vehiculo").textContent = vehiculo.color;
-  document.getElementById("patente-vehiculo").textContent = vehiculo.patente;
-  document.getElementById("permitir-valet-vehiculo").textContent =
-    vehiculo.permitir_valet ? "Sí" : "No";
+  const elMarca = document.getElementById("marca-vehiculo");
+  const elModelo = document.getElementById("modelo-vehiculo");
+  const elModelo2 = document.getElementById("modelo-vehiculo-2");
+  const elColor = document.getElementById("color-vehiculo");
+  const elPatente = document.getElementById("patente-vehiculo");
+  const elValet = document.getElementById("permitir-valet-vehiculo");
+
+  if (elMarca) elMarca.textContent = vehiculo.marca;
+  else console.warn("Elemento marca-vehiculo no encontrado en el DOM");
+
+  if (elModelo) elModelo.textContent = vehiculo.modelo;
+  else console.warn("Elemento modelo-vehiculo no encontrado en el DOM");
+
+  if (elModelo2) elModelo2.textContent = vehiculo.modelo;
+  else console.warn("Elemento modelo-vehiculo-2 no encontrado en el DOM");
+
+  if (elColor) elColor.textContent = vehiculo.color;
+  else console.warn("Elemento color-vehiculo no encontrado en el DOM");
+
+  if (elPatente) elPatente.textContent = vehiculo.patente;
+  else console.warn("Elemento patente-vehiculo no encontrado en el DOM");
+
+  if (elValet) elValet.textContent = vehiculo.permitir_valet ? "Sí" : "No";
+  else console.warn("Elemento permitir-valet-vehiculo no encontrado en el DOM");
 
   guardarVehiculoEnLocalStorage(normalizarVehiculo(vehiculo));
 }
@@ -277,13 +294,19 @@ function mostrarVehiculoSinRegistro() {
     seccionVehiculo.classList.add("vehiculo-sin-registro");
   }
 
-  document.getElementById("marca-vehiculo").textContent = "[Marca]";
-  document.getElementById("modelo-vehiculo").textContent =
-    "[Nombre del vehículo]";
-  document.getElementById("modelo-vehiculo-2").textContent = "[Modelo]";
-  document.getElementById("color-vehiculo").textContent = "[Color]";
-  document.getElementById("patente-vehiculo").textContent = "[ABC123]";
-  document.getElementById("permitir-valet-vehiculo").textContent = "[Sí/No]";
+  const elM = document.getElementById("marca-vehiculo");
+  const elMo = document.getElementById("modelo-vehiculo");
+  const elMo2 = document.getElementById("modelo-vehiculo-2");
+  const elC = document.getElementById("color-vehiculo");
+  const elP = document.getElementById("patente-vehiculo");
+  const elV = document.getElementById("permitir-valet-vehiculo");
+
+  if (elM) elM.textContent = "[Marca]";
+  if (elMo) elMo.textContent = "[Nombre del vehículo]";
+  if (elMo2) elMo2.textContent = "[Modelo]";
+  if (elC) elC.textContent = "[Color]";
+  if (elP) elP.textContent = "[ABC123]";
+  if (elV) elV.textContent = "[Sí/No]";
 
   limpiarVehiculoLocalStorage();
   actualizarBloqueosSegunEstado();
@@ -483,13 +506,23 @@ async function cargarVehiculoUsuario() {
       },
     );
 
+    // Si el backend responde 204 (sin contenido) o 404, consideramos que
+    // el usuario no tiene vehículo y mostramos la UI por defecto.
     if (!respuesta.ok) {
-      if (respuesta.status === 404) {
+      if (respuesta.status === 404 || respuesta.status === 204) {
         mostrarVehiculoSinRegistro();
         return;
       }
 
       throw new Error("No se pudo obtener el vehículo del usuario");
+    }
+
+    // Si el servidor devolvió 204 (No Content) la propiedad ok sería true
+    // (status 204) pero no hay cuerpo para parsear. Comprobamos y evitamos
+    // intentar parsear JSON vacío.
+    if (respuesta.status === 204) {
+      mostrarVehiculoSinRegistro();
+      return;
     }
 
     const vehiculo = await respuesta.json();
@@ -538,6 +571,15 @@ async function cargarCocheras() {
 
       tarjeta.dataset.estado = cochera.libre;
 
+      // Determinar si el objeto cochera trae información de registro/fecha_egreso
+      const fechaEgresoIso =
+        cochera.fecha_egreso ||
+        (cochera.registro && cochera.registro.fecha_egreso);
+
+      const fechaEgresoHtml = fechaEgresoIso
+        ? `<div class="cochera-egreso">Egreso: ${formatFecha(fechaEgresoIso)}</div>`
+        : "";
+
       tarjeta.innerHTML = `
         <strong>${cochera.numero}</strong>
 
@@ -546,13 +588,21 @@ async function cargarCocheras() {
         <span>
           ${cochera.libre ? "Libre" : "Ocupada"}
         </span>
+        ${fechaEgresoHtml}
       `;
 
-      // Solo permitimos seleccionar cocheras libres
+      // Solo permitimos seleccionar cocheras libres y sólo si el vehículo
+      // NO está ya asignado a otra cochera (bloqueo desde frontend)
       if (cochera.libre) {
-        tarjeta.addEventListener("click", () => {
-          abrirModalRegistroCochera(cochera);
-        });
+        if (!vehiculoEnCochera) {
+          tarjeta.addEventListener("click", () => {
+            abrirModalRegistroCochera(cochera);
+          });
+        } else {
+          // visualmente marcamos que no es seleccionable cuando ya hay un ingreso activo
+          tarjeta.classList.add("no-seleccionable");
+          tarjeta.title = "El vehículo ya está asignado a una cochera";
+        }
       }
 
       contenedor.appendChild(tarjeta);
@@ -574,6 +624,14 @@ function abrirModalRegistroCochera(cochera) {
     return;
   }
 
+  // Evitar abrir el modal si el vehículo ya tiene un ingreso activo
+  if (vehiculoEnCochera) {
+    alert(
+      "El vehículo ya está asignado a una cochera. No puede seleccionar otra.",
+    );
+    return;
+  }
+
   const modal = document.getElementById("modal-registro-cochera");
   if (!modal) return;
 
@@ -581,7 +639,14 @@ function abrirModalRegistroCochera(cochera) {
     cochera.numero;
 
   document.getElementById("registro-fecha-ingreso").value = "";
-  document.getElementById("registro-fecha-egreso").value = "";
+
+  // Si el objeto cochera trae una fecha de egreso conocida, la mostramos
+  const fechaEgresoIso =
+    cochera.fecha_egreso || (cochera.registro && cochera.registro.fecha_egreso);
+
+  document.getElementById("registro-fecha-egreso").value = fechaEgresoIso
+    ? isoToInputValue(fechaEgresoIso)
+    : "";
 
   const btnConfirmar = document.getElementById("confirmar-registro-cochera");
   btnConfirmar.dataset.cocheraId = cochera.id;
@@ -629,9 +694,8 @@ async function registrarIngresoCochera() {
 
     // Volvemos a cargar las cocheras para que la pantalla se actualice y esta aparezca "Ocupada"
     await cargarCocheras();
-    // Marcar que ahora el vehículo está en cochera y actualizar bloqueos
-    vehiculoEnCochera = true;
-    actualizarBloqueosSegunEstado();
+    // Actualizamos la UI de cochera actual desde los registros y bloqueos
+    await actualizarCocheraActual();
   } catch (error) {
     console.error("Error al registrar el ingreso:", error);
     alert("Hubo un problema al registrar la cochera.");
@@ -652,7 +716,13 @@ function inicializarBloqueoAccionesRapidas() {
       // todas las acciones excepto "ver-cocheras"
       const boton = e.target.closest("button");
       const esVerCocheras = boton && boton.id === "ver-cocheras";
-      if (!vehiculoEnCochera && !esVerCocheras) {
+      // Si no hay ningún vehículo agregado, también bloqueamos 'ver-cocheras'.
+      const hayVehiculo = Boolean(vehiculoId);
+
+      // Permitimos 'ver-cocheras' sólo si hay vehículo (aunque no esté en cochera).
+      const permitirVerCocheras = esVerCocheras && hayVehiculo;
+
+      if (!vehiculoEnCochera && !permitirVerCocheras) {
         e.preventDefault();
         e.stopPropagation();
         alert(
@@ -736,6 +806,104 @@ async function verificarRegistroActivo(vehiculoId) {
   }
 }
 
+// Helper: formatea una ISO a una cadena legible (fecha y hora local)
+function formatFecha(iso) {
+  try {
+    return new Date(iso).toLocaleString();
+  } catch (e) {
+    return iso;
+  }
+}
+
+// Helper: convierte ISO a valor para input datetime-local (YYYY-MM-DDTHH:MM)
+function isoToInputValue(iso) {
+  try {
+    const d = new Date(iso);
+    return d.toISOString().slice(0, 16);
+  } catch (e) {
+    return "";
+  }
+}
+
+// Obtiene el registro activo (objeto) para un vehículo, o null
+async function obtenerRegistroActivoObjeto(vehiculoId) {
+  try {
+    const respuesta = await fetch(`${API_URL}/registros`, {
+      credentials: "include",
+    });
+    if (!respuesta.ok) return null;
+    const registros = await respuesta.json();
+
+    return (
+      registros.find(
+        (r) =>
+          (r.vehiculo_id === vehiculoId ||
+            Number(r.vehiculo_id) === Number(vehiculoId)) &&
+          !r.fecha_egreso &&
+          !r.anulado,
+      ) || null
+    );
+  } catch (e) {
+    console.warn("No se pudo obtener registro activo:", e);
+    return null;
+  }
+}
+
+// Obtiene cochera por id
+async function obtenerCocheraPorId(id) {
+  try {
+    const respuesta = await fetch(`${API_URL}/cocheras/${id}`);
+    if (!respuesta.ok) return null;
+    return await respuesta.json();
+  } catch (e) {
+    console.warn("No se pudo obtener cochera:", e);
+    return null;
+  }
+}
+
+// Actualiza la sección visual que muestra en qué cochera está el vehículo
+async function actualizarCocheraActual() {
+  const cont = document.getElementById("cochera-actual");
+  const numeroElem = document.getElementById("cochera-actual-numero");
+  const fechaElem = document.getElementById("cochera-actual-fecha");
+
+  if (!cont || !numeroElem || !fechaElem) return;
+
+  if (!vehiculoId) {
+    cont.classList.add("is-hidden");
+    vehiculoEnCochera = false;
+    return;
+  }
+
+  const registro = await obtenerRegistroActivoObjeto(vehiculoId);
+
+  if (!registro) {
+    // No hay registro activo
+    cont.classList.add("is-hidden");
+    vehiculoEnCochera = false;
+    actualizarBloqueosSegunEstado();
+    return;
+  }
+
+  // Hay un registro activo: mostramos la cochera
+  let cochera = null;
+  if (registro.cochera_id) {
+    cochera = await obtenerCocheraPorId(registro.cochera_id);
+  }
+
+  const numero = cochera?.numero || registro.cochera_id || "--";
+  numeroElem.textContent = numero;
+
+  // Mostrar fecha de ingreso si viene
+  fechaElem.textContent = registro.fecha_ingreso
+    ? `Ingreso: ${formatFecha(registro.fecha_ingreso)}`
+    : "";
+
+  cont.classList.remove("is-hidden");
+  vehiculoEnCochera = true;
+  actualizarBloqueosSegunEstado();
+}
+
 // Actualiza el estado visual y habilitación de botones según si el vehículo está en cochera
 function actualizarBloqueosSegunEstado() {
   const contAcciones = document.getElementById("contenedor-acciones-rapidas");
@@ -746,11 +914,15 @@ function actualizarBloqueosSegunEstado() {
   }
   if (contAcciones) {
     const botones = contAcciones.querySelectorAll("button");
+
     botones.forEach((btn) => {
+      // Ver Cocheras
       if (btn.id === "ver-cocheras") {
         const habilitado = Boolean(vehiculoId);
+
         btn.disabled = !habilitado;
         btn.classList.toggle("inactivo", !habilitado);
+
         return;
       }
 
@@ -760,6 +932,7 @@ function actualizarBloqueosSegunEstado() {
   }
 
   const contServ = document.querySelector(".contenedor-tarjetas");
+
   if (contServ) {
     const tarjetas = contServ.querySelectorAll(".servicios-tarjetas");
     tarjetas.forEach((tarjeta) => {

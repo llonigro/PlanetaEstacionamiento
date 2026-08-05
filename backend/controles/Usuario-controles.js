@@ -107,6 +107,17 @@ const verificarToken = (req, res, next) => {
   }
 };
 
+const verificarRolGerente = (req, res, next) => {
+  if (req.usuario?.rol !== "gerente") {
+    return res.status(403).json({
+      message:
+        "Solo el gerente puede asignar o modificar el precio del registro.",
+    });
+  }
+
+  next();
+};
+
 module.exports = {
   VerUsuarios,
   VerUnicoUsuario,
@@ -114,4 +125,5 @@ module.exports = {
   ActualizarUsuario,
   eliminarUsuario,
   verificarToken,
+  verificarRolGerente,
 };

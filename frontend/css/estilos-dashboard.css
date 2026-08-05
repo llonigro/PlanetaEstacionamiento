@@ -207,6 +207,13 @@
 
 .vehiculo-identificacion {
   display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+}
+
+.vehiculo-id-text {
+  display: flex;
   flex-direction: column;
   gap: 0.3rem;
 }
@@ -358,6 +365,21 @@
   font-weight: bold;
 }
 
+/* Estilo adicional para botones deshabilitados: fondo tenue y color del ícono
+   para que el estado sea claramente visible incluso cuando no hay vehículo. */
+.accion.inactivo {
+  background-color: rgba(0, 0, 0, 0.04);
+  transform: none;
+  box-shadow: none;
+}
+
+.accion.inactivo i,
+.accion.inactivo span {
+  color: rgba(0, 0, 0, 0.45);
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
 /* SERVICIOS */
 
 .seccion-servicios {
@@ -469,6 +491,48 @@
   margin-top: 1.5rem;
   padding-top: 1rem;
   border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+/* Cochera actual: chip visual dentro de la sección del vehículo */
+.cochera-actual {
+  margin-top: 0.5rem;
+}
+
+.cochera-chip {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.8rem 1rem;
+  border-radius: 12px;
+  background-color: rgba(11, 176, 167, 0.08);
+  border: 1px solid rgba(11, 176, 167, 0.15);
+  max-width: 320px;
+}
+
+.cochera-chip i {
+  font-size: 1.6rem;
+  color: var(--turquesa);
+}
+
+.cochera-texto span {
+  display: block;
+  font-size: 0.85rem;
+  color: #556070;
+}
+
+.cochera-texto strong {
+  font-size: 1.4rem;
+  color: var(--azul-petroleo);
+}
+
+.cochera-fecha {
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+.no-seleccionable {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .precio-servicio {
@@ -958,14 +1022,14 @@
 .menu-bloqueado a,
 .menu-bloqueado button {
   opacity: 0.5;
-  cursor: not-allowed !important;
+  cursor: not-allowed;
   pointer-events: none;
 }
 
 /* Permitir específicamente ver-cocheras incluso cuando el contenedor
    está marcado como bloqueado. Esto mantiene el resto deshabilitado. */
 .menu-bloqueado button#ver-cocheras {
-  opacity: 1 !important;
-  cursor: pointer !important;
-  pointer-events: auto !important;
+  opacity: 1;
+  cursor: pointer;
+  pointer-events: auto;
 }

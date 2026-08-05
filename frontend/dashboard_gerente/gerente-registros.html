@@ -141,8 +141,21 @@
         </h3>
 
         <div class="precio-contenedor">
-          <span id="detalle-precio"> $2.500 </span>
+          <input
+            id="detalle-precio"
+            class="input precio-input"
+            type="number"
+            min="0"
+            step="0.01"
+            value="0"
+            readonly
+          />
         </div>
+
+        <p id="detalle-precio-ayuda" class="precio-ayuda">
+          Solo el gerente puede asignar o modificar el precio al cerrar un
+          registro.
+        </p>
       </div>
     </section>
 
