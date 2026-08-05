@@ -41,7 +41,7 @@
       <!-- MAIN: contenido principal de la página (vehículo, acciones, servicios, noticias) -->
       <main class="contenido">
         <!-- SECCIÓN: Información del vehículo registrado -->
-        <section class="seccion-vehiculo seccion-card">
+        <section class="seccion-vehiculo seccion-card vehiculo-sin-registro">
           <div class="vehiculo">
             <div class="vehiculo-cabecera">
               <h2 class="title is-4 titulo-turquesa">VEHÍCULO REGISTRADO</h2>
@@ -50,9 +50,20 @@
                 id="btn-editar-vehiculo"
                 class="btn-editar-vehiculo"
                 data-modal="modal-vehiculo"
+                data-vehiculo-modo="editar"
               >
                 <i class="fas fa-pen"></i>
                 Editar vehículo
+              </button>
+
+              <button
+                id="btn-agregar-vehiculo"
+                class="btn-agregar-vehiculo"
+                data-modal="modal-vehiculo"
+                data-vehiculo-modo="crear"
+              >
+                <i class="fas fa-circle-plus"></i>
+                <span>Agregar vehículo</span>
               </button>
             </div>
 
@@ -278,7 +289,9 @@
 
       <div class="modal-card">
         <header class="modal-card-head">
-          <p class="modal-card-title">Editar vehículo</p>
+          <p class="modal-card-title" id="modal-vehiculo-titulo">
+            Editar vehículo
+          </p>
 
           <button
             id="cerrar-modal-vehiculo"
@@ -372,7 +385,7 @@
             aria-label="Guardar cambios"
           >
             <i class="fas fa-save"></i>
-            <span>Guardar cambios</span>
+            <span id="btn-vehiculo-texto">Guardar cambios</span>
           </button>
         </footer>
       </div>

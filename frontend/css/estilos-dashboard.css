@@ -145,6 +145,34 @@
   transform: translateY(-2px);
 }
 
+.btn-agregar-vehiculo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  padding: 0.6rem 1rem;
+
+  border: 1px solid var(--turquesa);
+  border-radius: 10px;
+
+  background-color: var(--turquesa);
+  color: white;
+
+  font-weight: 600;
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    transform 0.2s;
+}
+
+.btn-agregar-vehiculo:hover {
+  background-color: white;
+  color: var(--turquesa);
+  transform: translateY(-2px);
+}
+
 .vehiculo-contenido {
   flex: 1;
 
@@ -228,6 +256,19 @@
 .dato strong {
   color: var(--azul-petroleo);
   font-size: 1rem;
+}
+
+.seccion-vehiculo.vehiculo-sin-registro .vehiculo-info,
+.seccion-vehiculo.vehiculo-sin-registro .btn-editar-vehiculo {
+  display: none;
+}
+
+.seccion-vehiculo:not(.vehiculo-sin-registro) .btn-agregar-vehiculo {
+  display: none;
+}
+
+.seccion-vehiculo.vehiculo-sin-registro .vehiculo-contenido {
+  justify-content: center;
 }
 
 /* ACCIONES RÁPIDAS */

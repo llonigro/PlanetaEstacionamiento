@@ -34,12 +34,7 @@ CREATE TABLE cocheras (
     id SERIAL PRIMARY KEY,
     numero INT UNIQUE NOT NULL,
     tipo VARCHAR(100) NOT NULL,
-<<<<<<< HEAD
-    estado VARCHAR(100) NOT NULL,
-    libre BOOLEAN  DEFAULT true,
-=======
     libre BOOLEAN DEFAULT true,
->>>>>>> origin/main
     clima VARCHAR(100) NOT NULL
 );
 

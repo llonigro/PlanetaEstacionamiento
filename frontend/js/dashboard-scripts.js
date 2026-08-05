@@ -1,6 +1,8 @@
 // VARIABLES GLOBALES
 let vehiculoId = null; // id del vehículo del usuario en sesión
 let vehiculoEnCochera = false; // true cuando el vehículo tiene un registro de ingreso activo
+let vehiculoOriginal = null;
+let modoVehiculoFormulario = "editar";
 // Estado de confirmaciones de servicios
 let serviciosConfirmados = {
   lavado: false,
@@ -118,7 +120,7 @@ function inicializarModales() {
       if (!modal) return;
 
       if (modal.id === "modal-vehiculo") {
-        cargarDatosVehiculo();
+        prepararModalVehiculo(boton.dataset.vehiculoModo || "editar");
       }
 
       modal.classList.add("is-active");
@@ -143,6 +145,46 @@ function inicializarModales() {
 
 // VEHICULO
 
+function normalizarVehiculo(vehiculo = {}) {
+  return {
+    id: vehiculo.id ?? vehiculo.idVehiculo ?? null,
+    marca: (vehiculo.marca ?? "").trim(),
+    modelo: (vehiculo.modelo ?? "").trim(),
+    color: (vehiculo.color ?? "").trim(),
+    patente: (vehiculo.patente ?? "").trim().toUpperCase(),
+    permitir_valet:
+      typeof vehiculo.permitir_valet === "boolean"
+        ? vehiculo.permitir_valet
+        : String(vehiculo.permitir_valet).toLowerCase() === "true",
+  };
+}
+
+function obtenerVehiculoDesdeVista() {
+  return normalizarVehiculo({
+    id: vehiculoId,
+    marca: document.getElementById("marca-vehiculo")?.textContent ?? "",
+    modelo: document.getElementById("modelo-vehiculo-2")?.textContent ?? "",
+    color: document.getElementById("color-vehiculo")?.textContent ?? "",
+    patente: document.getElementById("patente-vehiculo")?.textContent ?? "",
+    permitir_valet:
+      (
+        document.getElementById("permitir-valet-vehiculo")?.textContent ?? ""
+      ).trim() === "Sí",
+  });
+}
+
+function obtenerVehiculoDesdeFormulario() {
+  return normalizarVehiculo({
+    id: vehiculoId,
+    marca: document.getElementById("input-marca").value,
+    modelo: document.getElementById("input-modelo").value,
+    color: document.getElementById("input-color").value,
+    patente: document.getElementById("input-patente").value,
+    permitir_valet:
+      document.getElementById("input-permitir-valet").value === "true",
+  });
+}
+
 function cargarDatosVehiculo() {
   CAMPOS_VEHICULO.forEach((campo) => {
     const dato = document.getElementById(`${campo}-vehiculo`);
@@ -152,6 +194,99 @@ function cargarDatosVehiculo() {
       input.value = dato.textContent.trim();
     }
   });
+
+  const datoPermitirValet = document.getElementById("permitir-valet-vehiculo");
+  const inputPermitirValet = document.getElementById("input-permitir-valet");
+
+  if (datoPermitirValet && inputPermitirValet) {
+    inputPermitirValet.value =
+      datoPermitirValet.textContent.trim() === "Sí" ? "true" : "false";
+  }
+
+  vehiculoOriginal = obtenerVehiculoDesdeVista();
+}
+
+function prepararModalVehiculo(modo) {
+  const titulo = document.getElementById("modal-vehiculo-titulo");
+  const textoBoton = document.getElementById("btn-vehiculo-texto");
+  const botonEliminar = document.getElementById("btn-eliminar-vehiculo");
+
+  modoVehiculoFormulario = modo === "crear" ? "crear" : "editar";
+
+  if (modoVehiculoFormulario === "crear") {
+    vehiculoOriginal = null;
+    document.getElementById("input-marca").value = "";
+    document.getElementById("input-modelo").value = "";
+    document.getElementById("input-color").value = "";
+    document.getElementById("input-patente").value = "";
+    document.getElementById("input-permitir-valet").value = "true";
+
+    if (titulo) titulo.textContent = "Agregar vehículo";
+    if (textoBoton) textoBoton.textContent = "Agregar vehículo";
+    if (botonEliminar) botonEliminar.classList.add("is-hidden");
+    return;
+  }
+
+  cargarDatosVehiculo();
+
+  if (titulo) titulo.textContent = "Editar vehículo";
+  if (textoBoton) textoBoton.textContent = "Confirmar edición";
+  if (botonEliminar) botonEliminar.classList.remove("is-hidden");
+}
+
+function tieneCambiosVehiculo(original, actual) {
+  if (!original || !actual) return true;
+
+  return ["marca", "modelo", "color", "patente", "permitir_valet"].some(
+    (campo) => original[campo] !== actual[campo],
+  );
+}
+
+function actualizarSeccionVehiculo(vehiculo) {
+  const seccionVehiculo = document.querySelector(".seccion-vehiculo");
+
+  if (seccionVehiculo) {
+    seccionVehiculo.classList.remove("vehiculo-sin-registro");
+  }
+
+  vehiculoId = vehiculo.id ?? vehiculoId;
+  vehiculoOriginal = normalizarVehiculo(vehiculo);
+
+  document.getElementById("marca-vehiculo").textContent = vehiculo.marca;
+  document.getElementById("modelo-vehiculo").textContent = vehiculo.modelo;
+  document.getElementById("modelo-vehiculo-2").textContent = vehiculo.modelo;
+  document.getElementById("color-vehiculo").textContent = vehiculo.color;
+  document.getElementById("patente-vehiculo").textContent = vehiculo.patente;
+  document.getElementById("permitir-valet-vehiculo").textContent =
+    vehiculo.permitir_valet ? "Sí" : "No";
+
+  guardarVehiculoEnLocalStorage(normalizarVehiculo(vehiculo));
+}
+
+function mostrarVehiculoSinRegistro() {
+  vehiculoId = null;
+  vehiculoOriginal = null;
+  vehiculoEnCochera = false;
+  serviciosConfirmados = {
+    lavado: false,
+    valet: false,
+  };
+
+  const seccionVehiculo = document.querySelector(".seccion-vehiculo");
+  if (seccionVehiculo) {
+    seccionVehiculo.classList.add("vehiculo-sin-registro");
+  }
+
+  document.getElementById("marca-vehiculo").textContent = "[Marca]";
+  document.getElementById("modelo-vehiculo").textContent =
+    "[Nombre del vehículo]";
+  document.getElementById("modelo-vehiculo-2").textContent = "[Modelo]";
+  document.getElementById("color-vehiculo").textContent = "[Color]";
+  document.getElementById("patente-vehiculo").textContent = "[ABC123]";
+  document.getElementById("permitir-valet-vehiculo").textContent = "[Sí/No]";
+
+  limpiarVehiculoLocalStorage();
+  actualizarBloqueosSegunEstado();
 }
 
 // Persistencia local: guardar y cargar vehículo en localStorage
@@ -166,29 +301,19 @@ function guardarVehiculoEnLocalStorage(vehiculo) {
 function cargarVehiculoDesdeLocalStorage() {
   try {
     const raw = localStorage.getItem("vehiculo_datos");
-    if (!raw) return false;
+    if (!raw) {
+      mostrarVehiculoSinRegistro();
+      return false;
+    }
 
     const vehiculo = JSON.parse(raw);
 
-    if (!vehiculo) return false;
-
-    vehiculoId = vehiculo.id || vehiculo.idVehiculo || null;
-
-    if (vehiculo.marca)
-      document.getElementById("marca-vehiculo").textContent = vehiculo.marca;
-    if (vehiculo.modelo) {
-      document.getElementById("modelo-vehiculo").textContent = vehiculo.modelo;
-      document.getElementById("modelo-vehiculo-2").textContent =
-        vehiculo.modelo;
+    if (!vehiculo) {
+      mostrarVehiculoSinRegistro();
+      return false;
     }
-    if (vehiculo.color)
-      document.getElementById("color-vehiculo").textContent = vehiculo.color;
-    if (vehiculo.patente)
-      document.getElementById("patente-vehiculo").textContent =
-        vehiculo.patente;
-    if (typeof vehiculo.permitir_valet !== "undefined")
-      document.getElementById("permitir-valet-vehiculo").textContent =
-        vehiculo.permitir_valet ? "Sí" : "No";
+
+    actualizarSeccionVehiculo(normalizarVehiculo(vehiculo));
 
     // No desmontamos el bloqueo del contenedor aquí: el bloqueo depende
     // de si el vehículo está realmente dentro de una cochera (vehiculoEnCochera).
@@ -262,67 +387,85 @@ function inicializarBotonCerrarSesion() {
 async function guardarVehiculo() {
   const usuarioId = window.usuarioLogueadoId;
 
-  const marca = document.getElementById("input-marca").value.trim();
-  const modelo = document.getElementById("input-modelo").value.trim();
-  const color = document.getElementById("input-color").value.trim();
-  const patente = document.getElementById("input-patente").value.trim();
-  const permitirValet = document.getElementById("input-permitir-valet").value;
+  const datosFormulario = obtenerVehiculoDesdeFormulario();
 
-  if (!marca || !modelo || !color || !patente) {
+  if (
+    !datosFormulario.marca ||
+    !datosFormulario.modelo ||
+    !datosFormulario.color ||
+    !datosFormulario.patente
+  ) {
     alert("Por favor, completa todos los campos del vehículo.");
     return;
   }
 
   const datosVehiculo = {
-    marca,
-    modelo,
-    color,
-    patente,
+    marca: datosFormulario.marca,
+    modelo: datosFormulario.modelo,
+    color: datosFormulario.color,
+    patente: datosFormulario.patente,
     usuario_id: Number(usuarioId),
-    permitir_valet: permitirValet === "true",
+    permitir_valet: datosFormulario.permitir_valet,
   };
 
   try {
-    const respuesta = await fetch(`${API_URL}/vehiculos`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-      body: JSON.stringify(datosVehiculo),
-    });
+    const esEdicion = modoVehiculoFormulario === "editar" && vehiculoId;
+
+    if (esEdicion) {
+      const datosOriginales = normalizarVehiculo(
+        vehiculoOriginal || obtenerVehiculoDesdeVista(),
+      );
+      if (!tieneCambiosVehiculo(datosOriginales, datosFormulario)) {
+        document.getElementById("modal-vehiculo").classList.remove("is-active");
+        return;
+      }
+    }
+
+    const respuesta = await fetch(
+      esEdicion ? `${API_URL}/vehiculos/${vehiculoId}` : `${API_URL}/vehiculos`,
+      {
+        method: esEdicion ? "PATCH" : "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify(datosVehiculo),
+      },
+    );
 
     if (!respuesta.ok) {
-      alert(
-        respuesta.message || datos.mensaje || "Error al guardar el vehículo.",
-      );
+      let mensaje = "Error al guardar el vehículo.";
+
+      try {
+        const errorData = await respuesta.json();
+        const mensajesValidacion = Array.isArray(errorData?.errors)
+          ? errorData.errors.map((error) => error?.msg).filter(Boolean)
+          : [];
+
+        if (mensajesValidacion.length > 0) {
+          mensaje = mensajesValidacion.join("\n");
+        } else {
+          mensaje = errorData?.message || errorData?.mensaje || mensaje;
+        }
+      } catch (e) {
+        // Si la respuesta no es JSON, usamos el mensaje por defecto.
+      }
+
+      alert(mensaje);
       return;
     }
 
     const vehiculoGuardado = await respuesta.json();
 
-    vehiculoId = vehiculoGuardado.id;
+    actualizarSeccionVehiculo(normalizarVehiculo(vehiculoGuardado));
 
-    document.getElementById("marca-vehiculo").textContent =
-      vehiculoGuardado.marca;
-    document.getElementById("modelo-vehiculo").textContent =
-      vehiculoGuardado.modelo;
-    document.getElementById("permitir-valet-vehiculo").textContent =
-      vehiculoGuardado.permitir_valet ? "Sí" : "No";
-    document.getElementById("color-vehiculo").textContent =
-      vehiculoGuardado.color;
-    document.getElementById("patente-vehiculo").textContent =
-      vehiculoGuardado.patente;
+    if (!esEdicion) {
+      vehiculoEnCochera = false;
+      serviciosConfirmados = {
+        lavado: false,
+        valet: false,
+      };
+      guardarServiciosConfirmadosEnLocalStorage();
+    }
 
-    // Guardar persistente en localStorage para que sobreviva recargas
-    guardarVehiculoEnLocalStorage(vehiculoGuardado);
-
-    // Limpiamos los campos del modal
-
-    document.getElementById("input-marca").value = "";
-    document.getElementById("input-modelo").value = "";
-    document.getElementById("input-color").value = "";
-    document.getElementById("input-patente").value = "";
-
-    // Actualizamos la UI según el estado (no liberamos el contenedor aquí)
     actualizarBloqueosSegunEstado();
     document.getElementById("modal-vehiculo").classList.remove("is-active");
   } catch (error) {
@@ -341,17 +484,17 @@ async function cargarVehiculoUsuario() {
     );
 
     if (!respuesta.ok) {
-      return;
+      if (respuesta.status === 404) {
+        mostrarVehiculoSinRegistro();
+        return;
+      }
+
+      throw new Error("No se pudo obtener el vehículo del usuario");
     }
 
     const vehiculo = await respuesta.json();
 
-    vehiculoId = vehiculo.id;
-
-    document.getElementById("marca-vehiculo").textContent = vehiculo.marca;
-    document.getElementById("modelo-vehiculo").textContent = vehiculo.modelo;
-    document.getElementById("color-vehiculo").textContent = vehiculo.color;
-    document.getElementById("patente-vehiculo").textContent = vehiculo.patente;
+    actualizarSeccionVehiculo(normalizarVehiculo(vehiculo));
 
     // Actualizamos la UI según el estado (las acciones seguirán bloqueadas
     // hasta que el vehículo tenga un ingreso registrado en una cochera).
@@ -605,8 +748,9 @@ function actualizarBloqueosSegunEstado() {
     const botones = contAcciones.querySelectorAll("button");
     botones.forEach((btn) => {
       if (btn.id === "ver-cocheras") {
-        btn.disabled = false;
-        btn.classList.remove("inactivo");
+        const habilitado = Boolean(vehiculoId);
+        btn.disabled = !habilitado;
+        btn.classList.toggle("inactivo", !habilitado);
         return;
       }
 
