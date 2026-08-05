@@ -1,14 +1,8 @@
 const config = require("./config.js");
 const express = require("express");
-<<<<<<< HEAD
-const cors = require('cors');
-const cookieParser = require('cookie-parser');
-const {pool} = require("../db/db.js");
-=======
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const { pool } = require("../db/db.js");
->>>>>>> 9e477c78adada486447e268c4c3b3a08a265c88a
 ///////////////////////////////////////////////////////////////////////////
 const RutaUsuario = require("../rutas/Usuarios-ruta.js");
 const RutaVehiculos = require("../rutas/vehiculos-ruta.js");
@@ -34,17 +28,6 @@ app.use((req, res, next) => {
 app.use(cors(corsOptions));
 //app.use(config)
 app.use(express.json({ strict: false }));
-<<<<<<< HEAD
-app.use(cookieParser()); 
-app.use(RutaUsuario); 
-app.use(RutaVehiculos)
-app.use(RutaCocheras)
-app.use(RutaRegistros)
-app.use(RutaCatalogoServicios)
-// app.use(RutaRegistros)
-app.use(RutaServicios)
-app.use(RutaLogin)
-=======
 app.use(cookieParser());
 app.use(RutaUsuario);
 app.use(RutaVehiculos);
@@ -54,7 +37,6 @@ app.use(RutaCatalogoServicios);
 // app.use(RutaRegistros)
 app.use(RutaServicios);
 app.use(RutaLogin);
->>>>>>> 9e477c78adada486447e268c4c3b3a08a265c88a
 // si no existe la ruta devuelve un json ej / http://localhost:5000/dhdh
 app.use((req, res, next) => {
   res.status(404).json({
