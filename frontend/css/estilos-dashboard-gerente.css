@@ -414,10 +414,24 @@
   border-radius: 12px;
 }
 
-.precio-contenedor span {
-  color: white;
-  font-size: 1.8rem;
+.precio-input {
+  width: min(220px, 100%);
+  text-align: center;
+  font-size: 1.45rem;
   font-weight: 700;
+  color: var(--azul-oscuro);
+}
+
+.precio-input[readonly] {
+  background-color: #edf4f4;
+  color: var(--azul-oscuro);
+}
+
+.precio-ayuda {
+  margin-top: 0.7rem;
+  text-align: center;
+  color: #dce8e8;
+  font-size: 0.85rem;
 }
 
 /* FOOTER */

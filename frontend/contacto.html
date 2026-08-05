@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Contacto | Planeta Estacionamiento</title>
+
+    <link rel="icon" type="image/png" href="img/icono.png" />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+
+    <!-- Bulma -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css"
+    />
+
+    <!-- Estilos -->
+    <link rel="stylesheet" href="css/estilos.css" />
+    <link rel="stylesheet" href="css/estilos-navbar.css" />
+    <link rel="stylesheet" href="css/estilos-contacto.css" />
+  </head>
+
+  <body>
+    <!-- HEADER: navbar -->
+    <header class="header">
+      <div id="navbar-placeholder"></div>
+    </header>
+
+    <div class="navbar-spacer"></div>
+
+    <!-- HERO -->
+    <section class="hero-contacto">
+      <div class="container has-text-centered">
+        <h1 class="titulo-contacto">¿Necesitás ayuda?</h1>
+
+        <p class="subtitulo-contacto">
+          Estamos para responder tus consultas y ayudarte con Planeta
+          Estacionamiento.
+        </p>
+      </div>
+    </section>
+
+    <main class="main-contacto">
+      <section class="seccion-contacto">
+        <div class="contacto-contenedor">
+          <div class="contacto-card">
+            <div class="contacto-icono">
+              <i class="fab fa-github"></i>
+            </div>
+
+            <h2 class="titulo-contacto">¿Querés saber más?</h2>
+
+            <p class="texto-contacto">
+              Conocé más sobre Planeta Estacionamiento, nuestro proyecto y el
+              desarrollo de la aplicación en nuestro repositorio.
+            </p>
+
+            <a
+              href="https://github.com/llonigro/PlanetaEstacionamiento"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="boton-github"
+            >
+              <i class="fab fa-github"></i>
+              Ver proyecto en GitHub
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer footer-principal">
+      <div class="footer-marca">
+        <a
+          href="https://github.com/llonigro/PlanetaEstacionamiento"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <i class="fab fa-github fa-2x"></i>
+        </a>
+
+        <strong>Planeta Estacionamiento</strong>
+      </div>
+
+      <p class="footer-derechos">Todos los derechos reservados.</p>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script src="js/navbar-scripts.js"></script>
+    <script src="js/usuario-scripts.js"></script>
+
+    <script>
+      cargarNavbar();
+    </script>
+  </body>
+</html>

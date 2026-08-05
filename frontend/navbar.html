@@ -50,11 +50,6 @@
           Servicios
         </a>
 
-        <a class="navbar-item" aria-label="Tarifas" href="tarifas.html">
-          <i class="fas fa-dollar-sign" aria-hidden="true"></i>
-          Tarifas
-        </a>
-
         <div class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link"> Más </a>
 
@@ -215,51 +210,56 @@
         <hr />
       </div>
 
-      <!-- Email -->
-      <div class="field">
-        <label class="label">Email</label>
-        <div class="control has-icons-left">
-          <input
-            id="login-email"
-            class="input"
-            type="email"
-            placeholder="correo@ejemplo.com"
-          />
-          <span class="icon is-small is-left">
-            <i class="fas fa-solid fa-at"></i>
-          </span>
+      <form id="form-login">
+        <!-- Email -->
+        <div class="field">
+          <label class="label">Email</label>
+          <div class="control has-icons-left">
+            <input
+              id="login-email"
+              class="input"
+              type="email"
+              placeholder="correo@ejemplo.com"
+            />
+            <span class="icon is-small is-left">
+              <i class="fas fa-solid fa-at"></i>
+            </span>
+          </div>
         </div>
-      </div>
 
-      <!-- Contraseña -->
-      <div class="field">
-        <label class="label">Contraseña</label>
-        <div class="control has-icons-left has-icons-right">
-          <input
-            id="login-contrasenia"
-            class="input input-password"
-            type="password"
-            placeholder="**********"
-          />
+        <!-- Contraseña -->
+        <div class="field">
+          <label class="label">Contraseña</label>
+          <div class="control has-icons-left has-icons-right">
+            <input
+              id="login-contrasenia"
+              class="input input-password"
+              type="password"
+              placeholder="**********"
+            />
 
-          <span class="icon is-small is-left">
-            <i class="fa-solid fa-lock"></i>
-          </span>
+            <span class="icon is-small is-left">
+              <i class="fa-solid fa-lock"></i>
+            </span>
 
-          <span class="icon is-small is-right is-clickable boton-ojo">
-            <i class="fa-solid fa-eye icono-ojo"></i>
-          </span>
+            <span class="icon is-small is-right is-clickable boton-ojo">
+              <i class="fa-solid fa-eye icono-ojo"></i>
+            </span>
+          </div>
         </div>
-      </div>
 
-      <div class="buttons">
-        <button id="confirmar-sesion" class="button is-success is-rounded">
-          Confirmar
-        </button>
-        <button id="cancelar" class="button is-light is-rounded js-modal-close">
-          Cancelar
-        </button>
-      </div>
+        <div class="buttons">
+          <button id="confirmar-sesion" class="button is-success is-rounded">
+            Confirmar
+          </button>
+          <button
+            id="cancelar"
+            class="button is-light is-rounded js-modal-close"
+          >
+            Cancelar
+          </button>
+        </div>
+      </form>
     </div>
     <button class="modal-close is-large" aria-label="cerrar"></button>
   </div>
