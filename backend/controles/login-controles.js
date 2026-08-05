@@ -21,10 +21,75 @@ const login = async (req, res) => {
   }
 };
 
+<<<<<<< HEAD
 const logout = (req, res) => {
   // Para cerrar sesión, simplemente limpiamos la cookie
   res.clearCookie("token");
   res.status(200).json({ mensaje: "Sesión cerrada correctamente" });
 };
+=======
+// const logout = (req, res) => {
+//    // Para cerrar sesión, simplemente limpiamos la cookie
+//    res.clearCookie('token');
+//    res.status(200).json({ mensaje: 'Sesión cerrada correctamente' });
+// };
+
+module.exports = { login }; // agregar logout si es necesario
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+>>>>>>> 7533cd532b774ba17e4283ff0caebb583882a1da
 
 module.exports = { login, logout };
