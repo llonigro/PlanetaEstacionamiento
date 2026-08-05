@@ -145,6 +145,34 @@
   transform: translateY(-2px);
 }
 
+.btn-agregar-vehiculo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  padding: 0.6rem 1rem;
+
+  border: 1px solid var(--turquesa);
+  border-radius: 10px;
+
+  background-color: var(--turquesa);
+  color: white;
+
+  font-weight: 600;
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    transform 0.2s;
+}
+
+.btn-agregar-vehiculo:hover {
+  background-color: white;
+  color: var(--turquesa);
+  transform: translateY(-2px);
+}
+
 .vehiculo-contenido {
   flex: 1;
 
@@ -165,7 +193,7 @@
   height: 100%;
 
   object-fit: cover;
-  border-radius: 25px;
+  border-radius: 100px;
 }
 
 .vehiculo-info {
@@ -178,6 +206,13 @@
 }
 
 .vehiculo-identificacion {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+}
+
+.vehiculo-id-text {
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
@@ -228,6 +263,19 @@
 .dato strong {
   color: var(--azul-petroleo);
   font-size: 1rem;
+}
+
+.seccion-vehiculo.vehiculo-sin-registro .vehiculo-info,
+.seccion-vehiculo.vehiculo-sin-registro .btn-editar-vehiculo {
+  display: none;
+}
+
+.seccion-vehiculo:not(.vehiculo-sin-registro) .btn-agregar-vehiculo {
+  display: none;
+}
+
+.seccion-vehiculo.vehiculo-sin-registro .vehiculo-contenido {
+  justify-content: center;
 }
 
 /* ACCIONES RÁPIDAS */
@@ -317,12 +365,26 @@
   font-weight: bold;
 }
 
+/* Estilo adicional para botones deshabilitados: fondo tenue y color del ícono
+   para que el estado sea claramente visible incluso cuando no hay vehículo. */
+.accion.inactivo {
+  background-color: rgba(0, 0, 0, 0.04);
+  transform: none;
+  box-shadow: none;
+}
+
+.accion.inactivo i,
+.accion.inactivo span {
+  color: rgba(0, 0, 0, 0.45);
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
 /* SERVICIOS */
 
 .seccion-servicios {
   width: 100%;
   padding: 1.5rem;
-
   background-color: white;
 }
 
@@ -334,24 +396,20 @@
 
 .contenedor-tarjetas {
   display: flex;
-  gap: 1.1rem;
+  gap: 1.5rem;
 }
 
 .servicios-tarjetas {
   flex: 1;
-
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
 
-  gap: 1rem;
   padding: 1.5rem;
+  border: 1px solid rgba(11, 176, 167, 0.4);
+  border-radius: 25px;
 
-  min-height: 110px;
-
-  border: 1px solid rgba(0, 0, 0, 0.15);
-  border-radius: 30px;
-
-  background-color: rgba(0, 255, 242, 0.164);
+  background-color: rgba(11, 176, 167, 0.08);
 
   transition:
     transform 0.2s,
@@ -359,20 +417,36 @@
 }
 
 .servicios-tarjetas:hover {
-  transform: scale(1.02);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+  transform: scale(1.01);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 }
 
-.servicio-descripcion {
+/* Estado visual para tarjetas de servicio bloqueadas */
+.servicio-bloqueado {
+  opacity: 0.7;
+}
+
+.servicio-bloqueado .btn-accion-servicio {
+  opacity: 0.6;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+#btn-ver-lavado[disabled],
+#btn-ver-valet[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.servicio-contenido-principal {
   display: flex;
-  align-items: center;
-  gap: 1rem;
+  align-items: flex-start;
+  gap: 1.2rem;
 }
 
 .imagen-servicio {
   width: 70px;
   height: 70px;
-
   flex-shrink: 0;
 
   display: flex;
@@ -380,169 +454,154 @@
   justify-content: center;
 
   border-radius: 50%;
-  background-color: var(--azul-marino);
+  background-color: rgba(11, 176, 167, 0.2);
 }
 
 .imagen-servicio i {
-  color: white;
+  color: var(--turquesa);
   font-size: 2rem;
 }
 
 .titulo-servicio {
-  padding: 0.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
 }
 
-.titulo-servicio h1 {
+.titulo-servicio h3 {
   margin: 0;
-
   color: var(--azul-petroleo);
-
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   font-weight: 700;
 }
 
 .titulo-servicio p {
   margin: 0;
-
-  color: var(--turquesa);
-
-  font-size: 1.2rem;
-  font-weight: 500;
+  color: #556070;
+  font-size: 0.95rem;
+  line-height: 1.3;
 }
 
-/* LAVADO */
+/* Pie de la tarjeta (Precio y Botón) */
 
-.barra-progreso,
-.mensaje-servicio {
-  display: none;
-}
-
-.barra-progreso {
-  position: relative;
-  width: 100%;
-}
-
-.lineas {
-  position: absolute;
-
-  top: 15px;
-  left: 38px;
-  right: 20px;
-
-  height: 4px;
-}
-
-.linea-progreso,
-.linea-activa {
-  position: absolute;
-
-  top: 0;
-  left: 0;
-
-  height: 100%;
-}
-
-.linea-progreso {
-  width: 100%;
-  background-color: lightgrey;
-}
-
-.linea-activa {
-  width: 0%;
-
-  background-color: var(--azul-marino);
-
-  transition: width 0.3s ease;
-
-  z-index: 1;
-}
-
-.pasos {
+.servicio-pie {
   display: flex;
-  justify-content: space-between;
-
-  margin: 0 16px;
-
-  position: relative;
-  z-index: 2;
-}
-
-.paso {
-  display: flex;
-  flex-direction: column;
   align-items: center;
+  justify-content: space-between;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
 }
 
-.paso span {
-  width: 32px;
-  height: 32px;
-
-  border: 2px solid lightgrey;
-  border-radius: 50%;
-
-  background-color: lightgrey;
-}
-
-.paso.activo span {
-  background-color: var(--azul-marino);
-  border: 2px solid var(--turquesa);
-}
-
-.paso.activo p {
-  color: var(--turquesa);
-  font-weight: bold;
-}
-
-.mostrar {
-  display: block;
-}
-
-.mensaje-servicio {
-  margin: 0;
-
-  color: #718096;
-
-  font-size: 1rem;
-  font-weight: 500;
-
-  text-align: center;
-}
-
-/* VALET */
-
-.tarjeta-valet {
-  background-color: rgba(212, 211, 137, 0.18);
-}
-
-.info-valet {
-  display: flex;
-  gap: 2rem;
-
+/* Cochera actual: chip visual dentro de la sección del vehículo */
+.cochera-actual {
   margin-top: 0.5rem;
 }
 
-.dato-valet {
+.cochera-chip {
   display: flex;
   align-items: center;
-  gap: 0.7rem;
+  gap: 1rem;
+  padding: 0.8rem 1rem;
+  border-radius: 12px;
+  background-color: rgba(11, 176, 167, 0.08);
+  border: 1px solid rgba(11, 176, 167, 0.15);
+  max-width: 320px;
 }
 
-.dato-valet > i {
+.cochera-chip i {
+  font-size: 1.6rem;
+  color: var(--turquesa);
+}
+
+.cochera-texto span {
+  display: block;
+  font-size: 0.85rem;
+  color: #556070;
+}
+
+.cochera-texto strong {
+  font-size: 1.4rem;
   color: var(--azul-petroleo);
-  font-size: 1.3rem;
 }
 
-.dato-valet div {
+.cochera-fecha {
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+.no-seleccionable {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.precio-servicio {
   display: flex;
   flex-direction: column;
 }
 
-.dato-valet span {
-  color: #969371;
-  font-size: 0.85rem;
-  font-weight: 500;
+.precio-servicio .monto {
+  color: var(--azul-petroleo);
+  font-size: 1.6rem;
+  font-weight: 800;
+  line-height: 1;
 }
 
+.precio-servicio .etiqueta-precio {
+  color: #6b7280;
+  font-size: 0.8rem;
+  font-weight: 500;
+  margin-top: 0.2rem;
+}
+
+/* Botón interno de la tarjeta */
+
+.btn-accion-servicio {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+
+  padding: 0.6rem 1.2rem;
+
+  background-color: white;
+  border: 1px solid rgba(11, 176, 167, 0.3);
+  border-radius: 12px;
+
+  color: var(--azul-petroleo);
+  font-size: 0.95rem;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-accion-servicio:hover {
+  background-color: var(--turquesa);
+  color: white;
+  border-color: var(--turquesa);
+  transform: translateY(-2px);
+}
+
+/* ESTILOS ESPECÍFICOS: TARJETA VALET */
+
+.tarjeta-valet {
+  background-color: rgba(235, 215, 180, 0.15);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+.tarjeta-valet .imagen-servicio {
+  background-color: rgba(212, 175, 55, 0.2);
+}
+
+.tarjeta-valet .imagen-servicio i {
+  color: #c29b38;
+}
+
+.tarjeta-valet .btn-accion-servicio:hover {
+  background-color: #d4af37;
+  border-color: #d4af37;
+  color: white;
+}
 /* NOTICIAS */
 
 .seccion-noticias {
@@ -956,13 +1015,21 @@
 }
 
 .menu-bloqueado {
-  opacity: 0.5;
+  opacity: 0.8;
   cursor: not-allowed;
 }
 
 .menu-bloqueado a,
 .menu-bloqueado button {
   opacity: 0.5;
-  cursor: not-allowed !important;
+  cursor: not-allowed;
   pointer-events: none;
+}
+
+/* Permitir específicamente ver-cocheras incluso cuando el contenedor
+   está marcado como bloqueado. Esto mantiene el resto deshabilitado. */
+.menu-bloqueado button#ver-cocheras {
+  opacity: 1;
+  cursor: pointer;
+  pointer-events: auto;
 }

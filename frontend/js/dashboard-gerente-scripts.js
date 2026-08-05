@@ -2,6 +2,8 @@
 // nombreGerente.textContent = datos.nombre;
 
 let cocheraSeleccionada = null;
+let usuarioActual = null;
+let registroDetalleActualId = null;
 
 async function cargarSeccion(pagina, elementoActivo) {
   const respuesta = await fetch(pagina);
@@ -110,12 +112,10 @@ function actualizarResumenCocheras(cocheras) {
   const total = cocheras.length;
 
   const disponibles = cocheras.filter(
-    (cochera) => cochera.libre === "Disponible",
+    (cochera) => cochera.libre === true,
   ).length;
 
-  const ocupadas = cocheras.filter(
-    (cochera) => cochera.libre === "Ocupada",
-  ).length;
+  const ocupadas = cocheras.filter((cochera) => cochera.libre === false).length;
 
   document.getElementById("cocheras-total").textContent = total;
   document.getElementById("cocheras-disponibles").textContent = disponibles;
@@ -131,6 +131,17 @@ function crearTarjetaCochera(cochera) {
   tarjeta.querySelector(".js-numero").textContent = cochera.numero;
   tarjeta.querySelector(".js-tipo").textContent = cochera.tipo;
   tarjeta.querySelector(".js-clima").textContent = cochera.clima;
+
+  const estado = tarjeta.querySelector(".js-estado");
+  const esLibre = cochera.libre === true;
+
+  if (esLibre) {
+    estado.textContent = "Disponible";
+    estado.classList.add("is-success");
+  } else {
+    estado.textContent = "Ocupada";
+    estado.classList.add("is-danger");
+  }
 
   const btnDetalles = tarjeta.querySelector(".btn-detalles");
 
@@ -302,8 +313,34 @@ async function borrarCochera() {
   }
 }
 
+async function cargarDatosUsuarioActual() {
+  try {
+    const respuesta = await fetch("http://localhost:3000/usuario", {
+      method: "GET",
+      credentials: "include",
+    });
+
+    if (!respuesta.ok) {
+      usuarioActual = { rol: "empleado" };
+      return;
+    }
+
+    const datos = await respuesta.json();
+    usuarioActual = datos;
+  } catch (error) {
+    console.error("Error al obtener el usuario actual:", error);
+    usuarioActual = { rol: "empleado" };
+  }
+}
+
+function esGerente() {
+  return usuarioActual?.rol === "gerente";
+}
+
 async function cargarRegistros() {
-  const respuesta = await fetch("http://localhost:3000/registros");
+  const respuesta = await fetch("http://localhost:3000/registros", {
+    credentials: "include",
+  });
 
   const registros = await respuesta.json();
 
@@ -313,6 +350,8 @@ async function cargarRegistros() {
 
   registros.forEach((registro) => {
     const fila = document.createElement("tr");
+    const puedeRegistrarEgreso =
+      esGerente() && !registro.fecha_egreso && !registro.anulado;
 
     fila.innerHTML = `
             <td>${registro.id}</td>
@@ -334,12 +373,14 @@ async function cargarRegistros() {
 
                     <button
                         class="boton-accion egreso"
-                        ${registro.fecha_egreso || registro.anulado ? "disabled" : ""}
+                        ${puedeRegistrarEgreso ? "" : "disabled"}
                         onclick="registrarEgreso(${registro.id})"
                         title="${
                           registro.fecha_egreso
                             ? "El egreso ya fue registrado"
-                            : "Registrar egreso"
+                            : puedeRegistrarEgreso
+                              ? "Registrar egreso"
+                              : "Solo el gerente puede asignar el precio"
                         }"
                     >
                         <i class="fas fa-right-from-bracket"></i>
@@ -374,7 +415,9 @@ function formatearFecha(fecha) {
 
 async function verRegistro(id) {
   try {
-    const respuesta = await fetch(`http://localhost:3000/registros/${id}`);
+    const respuesta = await fetch(`http://localhost:3000/registros/${id}`, {
+      credentials: "include",
+    });
 
     const registro = await respuesta.json();
 
@@ -403,8 +446,17 @@ async function verRegistro(id) {
       registro.fecha_egreso,
     );
 
-    document.getElementById("detalle-precio").textContent =
-      `$${registro.precio_total}`;
+    const precioInput = document.getElementById("detalle-precio");
+    const precioAyuda = document.getElementById("detalle-precio-ayuda");
+
+    precioInput.value = registro.precio_total ?? 0;
+
+    const puedeEditarPrecio =
+      esGerente() && !registro.anulado && !registro.fecha_egreso;
+    precioInput.readOnly = !puedeEditarPrecio;
+    precioAyuda.textContent = puedeEditarPrecio
+      ? "El gerente puede asignar el precio al cerrar este registro."
+      : "Solo el gerente puede modificar el precio de un registro activo.";
 
     const estado = document.getElementById("detalle-estado");
 
@@ -419,11 +471,12 @@ async function verRegistro(id) {
 
     // Habilitar o deshabilitar el botón de egreso según el estado del registro
     const btnEgreso = document.getElementById("boton-egreso");
+    registroDetalleActualId = registro.id;
 
-    if (registro.fecha_egreso || registro.anulado) {
-      btnEgreso.disabled = true;
-    } else {
+    if (esGerente() && !registro.fecha_egreso && !registro.anulado) {
       btnEgreso.disabled = false;
+    } else {
+      btnEgreso.disabled = true;
     }
 
     document
@@ -432,6 +485,65 @@ async function verRegistro(id) {
   } catch (error) {
     console.error("Error al obtener registro:", error);
     alert("No se pudo obtener el registro.");
+  }
+}
+
+async function registrarEgreso(id) {
+  if (!esGerente()) {
+    alert("Solo el gerente puede registrar el egreso y asignar el precio.");
+    return;
+  }
+
+  const precioInput = document.getElementById("detalle-precio");
+  const precioTexto = precioInput?.value?.trim();
+  const precioNumero = Number(precioTexto);
+
+  if (!precioTexto || Number.isNaN(precioNumero) || precioNumero < 0) {
+    alert("Ingresá un precio válido mayor o igual a 0.");
+    return;
+  }
+
+  const confirmar = confirm(
+    "¿Querés registrar el egreso y cerrar este registro con el precio indicado?",
+  );
+
+  if (!confirmar) return;
+
+  try {
+    const respuesta = await fetch(
+      `http://localhost:3000/registros/egreso/${id}`,
+      {
+        method: "PATCH",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          fecha_egreso: new Date().toISOString(),
+          precio_total: precioNumero,
+        }),
+      },
+    );
+
+    const datos = await respuesta.json().catch(() => ({}));
+
+    if (!respuesta.ok) {
+      alert(
+        datos.message ||
+          datos.errors?.[0]?.msg ||
+          "No se pudo registrar el egreso.",
+      );
+      return;
+    }
+
+    alert("Egreso registrado correctamente.");
+    await cargarRegistros();
+    document
+      .getElementById("modal-detalle-registro")
+      .classList.remove("is-active");
+  } catch (error) {
+    console.error("Error al registrar el egreso:", error);
+    alert("Ocurrió un error al registrar el egreso.");
   }
 }
 
@@ -479,13 +591,21 @@ function inicializarModalRegistro() {
       modal.classList.remove("is-active");
     });
 
+  document.getElementById("boton-egreso").addEventListener("click", () => {
+    if (registroDetalleActualId) {
+      registrarEgreso(registroDetalleActualId);
+    }
+  });
+
   modal.querySelector(".modal-background").addEventListener("click", () => {
     modal.classList.remove("is-active");
   });
 }
 
 // Cargar la sección de inicio al cargar la página
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
+  await cargarDatosUsuarioActual();
+
   const dashboard = document.querySelector(".menu-item");
 
   cargarSeccion("gerente-inicio.html", dashboard);

@@ -1,5 +1,5 @@
 const dashboards = {
-  usuario: "dashboard.html",
+  cliente: "dashboard.html",
   gerente: "dashboard_gerente/dashboard-gerente.html",
 };
 
@@ -79,7 +79,6 @@ async function registrarUsuario() {
       }
     } else {
       alert("Usuario registrado con éxito");
-      console.log("Usuario registrado:", result);
       // Limpiar los campos del formulario después de un registro exitoso
       document.getElementById("nombre").value = "";
       document.getElementById("email").value = "";
@@ -102,11 +101,12 @@ async function iniciarSesion() {
   const contrasenia = document.getElementById("login-contrasenia").value;
 
   try {
-    const respuesta = await fetch("http://localhost:3000/usuarios", {
+    const respuesta = await fetch("http://localhost:3000/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: "include",
       body: JSON.stringify({
         email,
         contrasenia,
@@ -120,7 +120,7 @@ async function iniciarSesion() {
       return;
     }
 
-    const rol = datos.rol;
+    const rol = datos.usuario.rol;
     const dashboard = dashboards[rol];
 
     if (!dashboard) {
@@ -134,3 +134,14 @@ async function iniciarSesion() {
     alert("No se pudo conectar con el servidor");
   }
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  const formLogin = document.getElementById("form-login");
+
+  if (formLogin) {
+    formLogin.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      await iniciarSesion();
+    });
+  }
+});

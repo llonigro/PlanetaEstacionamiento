@@ -30,7 +30,7 @@
     <div class="dashboard">
       <!-- HEADER: saludo y control de sesión -->
       <header class="header">
-        <h1>Hola, <span id="nombre-usuario">Usuario</span></h1>
+        <h1>Bienvenido!</h1>
 
         <button id="btn-cerrar-sesion" class="btn-cerrar-sesion">
           <i class="fas fa-right-from-bracket"></i>
@@ -41,7 +41,7 @@
       <!-- MAIN: contenido principal de la página (vehículo, acciones, servicios, noticias) -->
       <main class="contenido">
         <!-- SECCIÓN: Información del vehículo registrado -->
-        <section class="seccion-vehiculo seccion-card">
+        <section class="seccion-vehiculo seccion-card vehiculo-sin-registro">
           <div class="vehiculo">
             <div class="vehiculo-cabecera">
               <h2 class="title is-4 titulo-turquesa">VEHÍCULO REGISTRADO</h2>
@@ -50,16 +50,27 @@
                 id="btn-editar-vehiculo"
                 class="btn-editar-vehiculo"
                 data-modal="modal-vehiculo"
+                data-vehiculo-modo="editar"
               >
                 <i class="fas fa-pen"></i>
                 Editar vehículo
+              </button>
+
+              <button
+                id="btn-agregar-vehiculo"
+                class="btn-agregar-vehiculo"
+                data-modal="modal-vehiculo"
+                data-vehiculo-modo="crear"
+              >
+                <i class="fas fa-circle-plus"></i>
+                <span>Agregar vehículo</span>
               </button>
             </div>
 
             <div class="vehiculo-contenido">
               <div class="vehiculo-imagen">
                 <img
-                  src="https://picsum.photos/350/350"
+                  src="img/dashboard-vehiculo.webp"
                   alt="Imagen del vehículo"
                   class="imagen-vehiculo"
                 />
@@ -67,25 +78,37 @@
 
               <div class="vehiculo-info">
                 <div class="vehiculo-identificacion">
-                  <h3 id="modelo-completo">[Nombre del vehículo]</h3>
+                  <div class="vehiculo-id-text">
+                    <h3 id="modelo-vehiculo">[Nombre del vehículo]</h3>
 
-                  <span id="patente-vehiculo"> [ABC123] </span>
+                    <span id="patente-vehiculo"> [ABC123] </span>
+                  </div>
+
+                  <!-- Sección visual: Cochera actual (a la derecha) -->
+                  <div id="cochera-actual" class="cochera-actual is-hidden">
+                    <div class="cochera-chip">
+                      <i class="fas fa-square-parking"></i>
+                      <div class="cochera-texto">
+                        <span>Tu vehículo está en</span>
+                        <strong id="cochera-actual-numero">--</strong>
+                        <div
+                          id="cochera-actual-fecha"
+                          class="cochera-fecha"
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
                 <div class="datos-vehiculo">
                   <div class="dato">
-                    <span>Marca</span>
-                    <strong id="marca-vehiculo">[Marca]</strong>
-                  </div>
-
-                  <div class="dato">
                     <span>Modelo</span>
-                    <strong id="modelo-vehiculo">[Modelo]</strong>
+                    <strong id="modelo-vehiculo-2">[Modelo]</strong>
                   </div>
 
                   <div class="dato">
-                    <span>Año</span>
-                    <strong id="año-vehiculo">[Año]</strong>
+                    <span>Permitir Valet</span>
+                    <strong id="permitir-valet-vehiculo">[Sí/No]</strong>
                   </div>
 
                   <div class="dato">
@@ -100,7 +123,10 @@
 
         <!-- SECCIÓN: Acciones rápidas / tarjetas -->
         <section class="tarjetas">
-          <article class="acciones-rapidas menu-bloqueado">
+          <article
+            class="acciones-rapidas menu-bloqueado"
+            id="contenedor-acciones-rapidas"
+          >
             <h3 class="title is-4 titulo-blanco">ACCIONES RÁPIDAS</h3>
 
             <div class="contenedor-botones">
@@ -140,95 +166,75 @@
           </article>
         </section>
 
-        <!-- SECCIÓN: Servicios activos y progreso de servicios -->
+        <!-- SECCIÓN: Servicios y sus modales -->
+        <!-- SECCIÓN: Servicios y sus modales -->
         <section class="seccion-servicios seccion-card">
           <div class="servicios">
-            <h2 class="title is-4 titulo-turquesa">SERVICIOS ACTIVOS</h2>
+            <h2 class="title is-4 titulo-turquesa">SERVICIOS DESTACADOS</h2>
 
             <div class="contenedor-tarjetas">
-              <!-- Tarjeta de servicio (cambiar estado)-->
-              <div class="servicios-tarjetas" data-servicio="lavado">
-                <div class="servicio-descripcion">
+              <!-- Tarjeta de Lavado -->
+              <div
+                class="servicios-tarjetas"
+                data-modal="modal-detalle-lavado"
+                data-activo="true"
+              >
+                <div class="servicio-contenido-principal">
                   <div class="imagen-servicio">
                     <i class="fas fa-car-side"></i>
                   </div>
 
                   <div class="titulo-servicio">
-                    <h1>Lavado</h1>
-
+                    <h3>Lavado</h3>
                     <p>
-                      <span class="estado-texto"></span>
+                      Dejá tu auto impecable con nuestro servicio de lavado.
                     </p>
                   </div>
                 </div>
 
-                <!-- BARRA DE PROGRESO -->
-                <div class="barra-progreso">
-                  <div class="lineas">
-                    <div class="linea-progreso"></div>
-                    <div class="linea-activa"></div>
+                <div class="servicio-pie">
+                  <div class="precio-servicio">
+                    <span class="monto">[ej: $2.500]</span>
+                    <span class="etiqueta-precio">por servicio</span>
                   </div>
-
-                  <div class="pasos">
-                    <div class="paso" data-paso="espera">
-                      <span></span>
-                      <p>En espera</p>
-                    </div>
-
-                    <div class="paso" data-paso="lavando">
-                      <span></span>
-                      <p>Lavando</p>
-                    </div>
-
-                    <div class="paso" data-paso="listo">
-                      <span></span>
-                      <p>Listo</p>
-                    </div>
-                  </div>
+                  <button class="btn-accion-servicio" id="btn-ver-lavado">
+                    <span>Ver lavado</span>
+                    <i class="fas fa-arrow-right"></i>
+                  </button>
                 </div>
-
-                <!-- MENSAJE -->
-                <p class="mensaje-servicio">
-                  No tenés servicios activos en este momento.
-                </p>
               </div>
 
+              <!-- Tarjeta de Valet -->
               <div
                 class="servicios-tarjetas tarjeta-valet"
-                data-servicio="valet"
+                data-modal="modal-detalle-valet"
+                data-activo="false"
               >
-                <div class="servicio-descripcion">
-                  <div class="imagen-servicio">
+                <div class="servicio-contenido-principal">
+                  <div class="imagen-servicio imagen-valet">
                     <i class="fas fa-concierge-bell"></i>
                   </div>
 
                   <div class="titulo-servicio">
-                    <h1>Valet</h1>
+                    <h3>Valet</h3>
                     <p>
-                      Estado:
-                      <span id="estado-valet"></span>
+                      Olvidate de buscar lugar. Nosotros estacionamos por vos.
                     </p>
                   </div>
                 </div>
 
-                <div class="info-valet">
-                  <div class="dato-valet">
-                    <i class="fas fa-location-dot"></i>
-
-                    <div>
-                      <span>Distancia</span>
-                      <strong id="distancia-valet"></strong>
-                    </div>
+                <div class="servicio-pie">
+                  <div class="precio-servicio">
+                    <span class="monto">[ej: $2.500]</span>
+                    <span class="etiqueta-precio">por servicio</span>
                   </div>
-
-                  <div class="dato-valet">
-                    <i class="fas fa-clock"></i>
-
-                    <div>
-                      <span>Tiempo estimado</span>
-                      <strong id="tiempo-valet"></strong>
-                    </div>
-                  </div>
+                  <button
+                    class="btn-accion-servicio btn-valet"
+                    id="btn-ver-valet"
+                  >
+                    <span>Ver valet</span>
+                    <i class="fas fa-arrow-right"></i>
+                  </button>
                 </div>
               </div>
             </div>
@@ -295,7 +301,9 @@
 
       <div class="modal-card">
         <header class="modal-card-head">
-          <p class="modal-card-title">Editar vehículo</p>
+          <p class="modal-card-title" id="modal-vehiculo-titulo">
+            Editar vehículo
+          </p>
 
           <button
             id="cerrar-modal-vehiculo"
@@ -308,35 +316,67 @@
           <div class="field">
             <label class="label">Marca</label>
             <div class="control">
-              <input id="input-marca" class="input" type="text" />
+              <input
+                id="input-marca"
+                class="input"
+                type="text"
+                placeholder="Ej. Ford"
+                required
+              />
             </div>
           </div>
 
           <div class="field">
             <label class="label">Modelo</label>
             <div class="control">
-              <input id="input-modelo" class="input" type="text" />
-            </div>
-          </div>
-
-          <div class="field">
-            <label class="label">Año</label>
-            <div class="control">
-              <input id="input-año" class="input" type="number" />
+              <input
+                id="input-modelo"
+                class="input"
+                type="text"
+                placeholder="Ej. Fiesta Kinetic"
+                required
+              />
             </div>
           </div>
 
           <div class="field">
             <label class="label">Color</label>
             <div class="control">
-              <input id="input-color" class="input" type="text" />
+              <input
+                id="input-color"
+                class="input"
+                type="text"
+                placeholder="Ej. Blanco"
+                required
+              />
             </div>
           </div>
 
           <div class="field">
             <label class="label">Patente</label>
             <div class="control">
-              <input id="input-patente" class="input" type="text" />
+              <!-- pattern para ayudar a evitar caracteres raros o corchetes -->
+              <input
+                id="input-patente"
+                class="input"
+                type="text"
+                placeholder="Ej. AB123CD o ABC123"
+                style="text-transform: uppercase"
+                required
+              />
+            </div>
+          </div>
+
+          <!-- Campo requerido por el backend sobre el servicio de valet -->
+          <div class="field">
+            <label class="label">¿Permitir servicio de Valet?</label>
+            <div class="control">
+              <div class="select is-fullwidth">
+                <select id="input-permitir-valet">
+                  <option value="true" selected>Sí</option>
+                  <option value="false">No</option>
+                </select>
+              </div>
             </div>
           </div>
         </section>
@@ -357,7 +397,7 @@
             aria-label="Guardar cambios"
           >
             <i class="fas fa-save"></i>
-            <span>Guardar cambios</span>
+            <span id="btn-vehiculo-texto">Guardar cambios</span>
           </button>
         </footer>
       </div>
