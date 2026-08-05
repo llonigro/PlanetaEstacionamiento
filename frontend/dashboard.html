@@ -167,7 +167,6 @@
         </section>
 
         <!-- SECCIÓN: Servicios y sus modales -->
-        <!-- SECCIÓN: Servicios y sus modales -->
         <section class="seccion-servicios seccion-card">
           <div class="servicios">
             <h2 class="title is-4 titulo-turquesa">SERVICIOS DESTACADOS</h2>
@@ -176,7 +175,7 @@
               <!-- Tarjeta de Lavado -->
               <div
                 class="servicios-tarjetas"
-                data-modal="modal-detalle-lavado"
+                data-modal="modal-ver-lavado"
                 data-activo="true"
               >
                 <div class="servicio-contenido-principal">
@@ -197,7 +196,11 @@
                     <span class="monto">[ej: $2.500]</span>
                     <span class="etiqueta-precio">por servicio</span>
                   </div>
-                  <button class="btn-accion-servicio" id="btn-ver-lavado">
+                  <button
+                    class="btn-accion-servicio"
+                    id="btn-ver-lavado"
+                    data-modal="modal-ver-lavado"
+                  >
                     <span>Ver lavado</span>
                     <i class="fas fa-arrow-right"></i>
                   </button>
@@ -207,7 +210,7 @@
               <!-- Tarjeta de Valet -->
               <div
                 class="servicios-tarjetas tarjeta-valet"
-                data-modal="modal-detalle-valet"
+                data-modal="modal-ver-valet"
                 data-activo="false"
               >
                 <div class="servicio-contenido-principal">
@@ -231,62 +234,11 @@
                   <button
                     class="btn-accion-servicio btn-valet"
                     id="btn-ver-valet"
+                    data-modal="modal-ver-valet"
                   >
                     <span>Ver valet</span>
                     <i class="fas fa-arrow-right"></i>
                   </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- SECCIÓN: Noticias y promociones -->
-        <section class="seccion-noticias seccion-card">
-          <div class="noticias">
-            <h2 class="title is-4 titulo-blanco">NOTICIAS</h2>
-
-            <div class="contenedor-noticias">
-              <div class="noticia">
-                <div class="icono-noticia">
-                  <i
-                    class="fa-solid fa-triangle-exclamation"
-                    style="color: gold"
-                  ></i>
-                </div>
-
-                <div class="contenido-noticia">
-                  <div class="cabecera-noticia">
-                    <h3 class="title is-5">Nuevo servicio de valet</h3>
-
-                    <p class="fecha-noticia">
-                      Fecha: <span id="fecha-noticia-1">01/01/2026</span>
-                    </p>
-                  </div>
-                  <p class="descripcion-noticia">
-                    Ahora ofrecemos un servicio de valet para tu comodidad.
-                    ¡Reservá tu turno!
-                  </p>
-                </div>
-              </div>
-
-              <div class="noticia">
-                <div class="icono-noticia">
-                  <i class="fa-solid fa-percent" style="color: lightgreen"></i>
-                </div>
-
-                <div class="contenido-noticia">
-                  <div class="cabecera-noticia">
-                    <h3 class="title is-5">Promoción especial de lavado</h3>
-
-                    <p class="fecha-noticia">
-                      Fecha: <span id="fecha-noticia-2">01/01/2026</span>
-                    </p>
-                  </div>
-                  <p class="descripcion-noticia">
-                    Durante este mes, todos los lavados tienen un 20% de
-                    descuento. ¡Aprovechá!
-                  </p>
                 </div>
               </div>
             </div>
@@ -674,6 +626,237 @@
             <i class="fas fa-check"></i>
             Registrar ingreso
           </button>
+        </footer>
+      </div>
+    </div>
+
+    <!-- MODAL: VER LAVADO -->
+    <div id="modal-ver-lavado" class="modal">
+      <div class="modal-background"></div>
+
+      <div class="modal-card">
+        <!-- HEADER -->
+        <header class="modal-card-head">
+          <div>
+            <p class="modal-card-title">
+              <i class="fa-solid fa-car-side"></i>
+              Lavado
+            </p>
+
+            <p class="modal-subtitulo">Servicio de lavado de vehículo</p>
+          </div>
+
+          <button
+            id="cerrar-modal-lavado"
+            class="delete"
+            aria-label="close"
+          ></button>
+        </header>
+
+        <!-- BODY -->
+        <section class="modal-card-body">
+          <!-- ESTADO -->
+          <div class="estado-servicio estado-lavado">
+            <div class="estado-icono">
+              <i class="fa-solid fa-soap"></i>
+            </div>
+
+            <div>
+              <p class="estado-label">ESTADO DEL SERVICIO</p>
+
+              <p id="estado-lavado" class="estado-titulo">En proceso</p>
+
+              <p id="descripcion-estado-lavado" class="estado-descripcion">
+                Tu vehículo se encuentra siendo lavado.
+              </p>
+            </div>
+          </div>
+
+          <!-- INFORMACIÓN DEL VEHÍCULO -->
+          <div class="informacion-servicio">
+            <h4>Vehículo</h4>
+
+            <div class="datos-servicio">
+              <div class="dato-servicio">
+                <span>Marca y modelo</span>
+                <strong id="lavado-vehiculo"> Toyota Corolla </strong>
+              </div>
+
+              <div class="dato-servicio">
+                <span>Patente</span>
+                <strong id="lavado-patente"> ABC123 </strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- INFORMACIÓN DEL SERVICIO -->
+          <div class="informacion-servicio">
+            <h4>Información del servicio</h4>
+
+            <div class="datos-servicio">
+              <div class="dato-servicio">
+                <span>Solicitud</span>
+                <strong id="lavado-fecha"> 05/08/2026 · 14:32 </strong>
+              </div>
+
+              <div class="dato-servicio">
+                <span>Precio</span>
+                <strong id="lavado-precio"> $2.500 </strong>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="modal-card-foot is-justify-content-flex-end">
+          <button id="cerrar-modal-lavado-footer" class="button">Cerrar</button>
+        </footer>
+      </div>
+    </div>
+
+    <!-- MODAL VER VALET -->
+    <div id="modal-ver-valet" class="modal">
+      <div class="modal-background"></div>
+
+      <div class="modal-card">
+        <!-- HEADER -->
+        <header class="modal-card-head">
+          <div>
+            <p class="modal-card-title">
+              <i class="fa-solid fa-bell-concierge"></i>
+              Valet
+            </p>
+
+            <p class="modal-subtitulo">Traslado de tu vehículo</p>
+          </div>
+
+          <button
+            id="cerrar-modal-valet"
+            class="delete"
+            aria-label="close"
+          ></button>
+        </header>
+
+        <!-- BODY -->
+        <section class="modal-card-body">
+          <!-- ESTADO -->
+          <div class="estado-servicio estado-valet">
+            <div class="estado-icono">
+              <i class="fa-solid fa-car"></i>
+            </div>
+
+            <div>
+              <p class="estado-label">ESTADO DEL SERVICIO</p>
+
+              <p id="estado-valet" class="estado-titulo">En camino</p>
+
+              <p id="descripcion-estado-valet" class="estado-descripcion">
+                Tu vehículo está siendo trasladado hasta tu ubicación.
+              </p>
+            </div>
+          </div>
+
+          <!-- PROGRESO -->
+          <div class="progreso-valet">
+            <div class="paso completado">
+              <span class="paso-circulo">
+                <i class="fa-solid fa-check"></i>
+              </span>
+
+              <span>Solicitud</span>
+            </div>
+
+            <div class="linea-progreso"></div>
+
+            <div class="paso completado">
+              <span class="paso-circulo">
+                <i class="fa-solid fa-check"></i>
+              </span>
+
+              <span>Asignado</span>
+            </div>
+
+            <div class="linea-progreso"></div>
+
+            <div class="paso activo">
+              <span class="paso-circulo">
+                <i class="fa-solid fa-car"></i>
+              </span>
+
+              <span>En camino</span>
+            </div>
+
+            <div class="linea-progreso"></div>
+
+            <div class="paso">
+              <span class="paso-circulo">
+                <i class="fa-solid fa-flag-checkered"></i>
+              </span>
+
+              <span>Entregado</span>
+            </div>
+          </div>
+
+          <!-- VEHÍCULO -->
+          <div class="informacion-servicio">
+            <h4>Vehículo</h4>
+
+            <div class="datos-servicio">
+              <div class="dato-servicio">
+                <span>Marca y modelo</span>
+                <strong id="valet-vehiculo"> Toyota Corolla </strong>
+              </div>
+
+              <div class="dato-servicio">
+                <span>Patente</span>
+                <strong id="valet-patente"> ABC123 </strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- DESTINO -->
+          <div class="informacion-servicio">
+            <h4>Destino</h4>
+
+            <div class="destino-valet">
+              <i class="fa-solid fa-location-dot"></i>
+
+              <span id="valet-destino"> Av. Corrientes 1234 </span>
+            </div>
+          </div>
+
+          <!-- PERSONA ASIGNADA -->
+          <div id="valet-persona-contenedor" class="informacion-servicio">
+            <h4>Persona asignada</h4>
+
+            <div class="persona-valet">
+              <div class="persona-icono">
+                <i class="fa-solid fa-user"></i>
+              </div>
+
+              <div>
+                <strong id="valet-persona"> Santiago Quintana </strong>
+
+                <p>Realiza el traslado de tu vehículo.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- PRECIO -->
+          <div class="compensacion-valet">
+            <div>
+              <span>Compensación</span>
+
+              <small> Por realizar el traslado </small>
+            </div>
+
+            <strong id="valet-precio"> $1.500 </strong>
+          </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="modal-card-foot is-justify-content-flex-end">
+          <button id="cerrar-modal-valet-footer" class="button">Cerrar</button>
         </footer>
       </div>
     </div>

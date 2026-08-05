@@ -94,6 +94,27 @@ function inicializarScriptsNavbar() {
   });
 }
 
+function inicializarModalRegistro() {
+  const boton = document.getElementById("btn-comenzar");
+  const modal = document.getElementById("menu-registro");
+
+  boton.addEventListener("click", () => {
+    modal.classList.add("is-active");
+  });
+
+  modal.querySelector(".modal-background").addEventListener("click", () => {
+    modal.classList.remove("is-active");
+  });
+
+  modal.querySelector(".modal-close").addEventListener("click", () => {
+    modal.classList.remove("is-active");
+  });
+
+  modal.querySelector(".js-modal-close").addEventListener("click", () => {
+    modal.classList.remove("is-active");
+  });
+}
+
 async function cargarNavbar() {
   try {
     const respuesta = await fetch("navbar.html");
@@ -103,6 +124,7 @@ async function cargarNavbar() {
 
     inicializarScriptsNavbar();
     inicializarScriptsUsuario();
+    inicializarModalRegistro();
   } catch (error) {
     console.error("Error al cargar los scripts:", error);
   }

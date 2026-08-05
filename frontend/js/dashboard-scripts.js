@@ -763,22 +763,6 @@ function inicializarBloqueoServicios() {
         alert("Este servicio no se encuentra activo en este momento.");
         return;
       }
-
-      // Verificamos si la acción fue confirmada desde los botones (lavado/valet)
-      const modalRef = tarjeta.dataset.modal || "";
-      let clave = null;
-      if (modalRef.includes("lavado")) clave = "lavado";
-      else if (modalRef.includes("valet")) clave = "valet";
-
-      if (clave && !serviciosConfirmados[clave]) {
-        e.preventDefault();
-        e.stopPropagation();
-        const texto =
-          clave === "lavado" ? "Reservar lavado" : "Solicitar valet";
-        alert(
-          `Debes confirmar la acción desde el botón '${texto}' antes de usar este servicio.`,
-        );
-      }
     },
     true,
   );
@@ -946,12 +930,10 @@ function actualizarBloqueosSegunEstado() {
         if (modalRef.includes("lavado")) clave = "lavado";
         else if (modalRef.includes("valet")) clave = "valet";
 
-        const confirmado = clave ? !!serviciosConfirmados[clave] : true;
+        const habilitado = vehiculoEnCochera && tarjetaActiva;
 
-        // Habilitamos solo si el vehículo está en cochera, la tarjeta es activa
-        // y la acción correspondiente fue previamente confirmada
-        const habilitado = vehiculoEnCochera && tarjetaActiva && confirmado;
         boton.disabled = !habilitado;
+
         tarjeta.classList.toggle("servicio-bloqueado", !habilitado);
       }
     });
