@@ -1,0 +1,61 @@
+<!-- CONTENIDO DE SERVICIOS PARA GERENTE -->
+<div class="servicios-gerente-container">
+  <!-- HEADER DE LA SECCIÓN -->
+  <header class="dashboard-header">
+    <h1 class="title is-2 has-text-white">Gestión de Servicios y Precios</h1>
+    <p class="subtitle is-5 has-text-grey-light">
+      Administrá las tarifas base del catálogo y modificá el estado o precio
+      final de las solicitudes.
+    </p>
+  </header>
+
+  <!-- SECCIÓN 1: CATÁLOGO Y PRECIOS BASE -->
+  <section class="mb-6">
+    <h2 class="title is-4 has-text-white mb-3">
+      <i class="fa-solid fa-tags mr-2 text-turquesa"></i>1. Precios Base
+      (Catálogo)
+    </h2>
+    <div class="tabla-registros">
+      <table class="table is-fullwidth is-striped is-hoverable is-bordered">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Servicio</th>
+            <th>Descripción</th>
+            <th>Precio Base</th>
+            <th>Acción</th>
+          </tr>
+        </thead>
+        <tbody id="tbody-catalogo">
+          <!-- Carga dinámicamente -->
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- SECCIÓN 2: SOLICITUDES DE CLIENTES -->
+  <section>
+    <h2 class="title is-4 has-text-white mb-3">
+      <i class="fa-solid fa-list-check mr-2 text-turquesa"></i>2. Solicitudes de
+      Servicios
+    </h2>
+    <div class="tabla-registros">
+      <table class="table is-fullwidth is-striped is-hoverable is-bordered">
+        <thead>
+          <tr>
+            <th># ID</th>
+            <th>Vehículo ID</th>
+            <th>Servicio</th>
+            <th>Fecha Solicitud</th>
+            <th>Estado</th>
+            <th>Precio Final</th>
+            <th>Acción</th>
+          </tr>
+        </thead>
+        <tbody id="tbody-solicitudes">
+          <!-- Carga dinámicamente -->
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
