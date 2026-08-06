@@ -12,8 +12,16 @@ const RutaCatalogoServicios = require("../rutas/catalogo-servicio-ruta.js");
 const RutaServicios = require("../rutas/servicio-ruta.js");
 const RutaLogin = require("../rutas/login-ruta.js");
 
+const allowedOrigins = ["http://localhost:5500", "http://127.0.0.1:5500"];
+
 const corsOptions = {
-  origin: "http://localhost:5500",
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Origen no permitido por CORS"));
+    }
+  },
   credentials: true,
   optionsSuccessStatus: 200,
 };

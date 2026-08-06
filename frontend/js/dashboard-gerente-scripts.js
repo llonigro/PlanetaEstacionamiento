@@ -33,6 +33,7 @@ function inicializarScriptsSeccion(pagina) {
   }
 
   if (pagina === "gerente-registros.html") {
+    inicializarModal();
     inicializarModalRegistro();
     cargarRegistros();
   }

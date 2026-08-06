@@ -14,8 +14,12 @@ const VerRegistros = async (req, res) => {
         if (error.code ==='42P01') { // Código de error de PostgreSQL para tabla no encontrada
             return res.status(500).json({ message: "Error de base de datos: Tabla 'registros' no encontrada" });
         }
-        console.error(error);
-        res.status(500).json({ message: "Algo salió mal en el servidor" });
+        console.error("Error en VerRegistros:", error.stack || error);
+        res.status(500).json({
+            message: "Algo salió mal en el servidor",
+            error: error.message,
+            detail: error.stack,
+        });
     }
 };
 
@@ -31,8 +35,12 @@ const VerUnicoRegistro = async (req, res, next) => {
         if (error.code ==='42P01') { // Código de error de PostgreSQL para tabla no encontrada
             return res.status(500).json({ message: "Error de base de datos: Tabla 'registros' no encontrada" });
         }
-        console.error(error);
-        res.status(500).json({ message: "Algo salió mal en el servidor" }); 
+        console.error("Error en VerUnicoRegistro:", error.stack || error);
+        res.status(500).json({
+            message: "Algo salió mal en el servidor",
+            error: error.message,
+            detail: error.stack,
+        }); 
     }
 };
 
@@ -53,8 +61,12 @@ const CrearIngreso = async (req, res) => {
         // Si es un error de PostgreSQL (Llaves foráneas)
         if (validarForaneasRegistro(error, res)) return;
 
-        console.error(error);
-        res.status(500).json({ message: 'Algo salió mal en el servidor' });
+        console.error("Error en CrearIngreso:", error.stack || error);
+        res.status(500).json({
+            message: 'Algo salió mal en el servidor',
+            error: error.message,
+            detail: error.stack,
+        });
     }
 };
 
@@ -72,8 +84,12 @@ const CrearEgreso = async (req, res) => {
         if (error.status) {
             return res.status(error.status).json({ message: error.message });
         }
-        console.error(error);
-        res.status(500).json({ message: 'Algo salió mal en el servidor' });
+        console.error("Error en CrearEgreso:", error.stack || error);
+        res.status(500).json({
+            message: 'Algo salió mal en el servidor',
+            error: error.message,
+            detail: error.stack,
+        });
     }
 };
 
@@ -91,8 +107,12 @@ const EliminarRegistro = async (req, res) => {
         if (error.status) {
             return res.status(error.status).json({ message: error.message });
         }
-        console.error(error);
-        res.status(500).json({ message: 'Algo salió mal en el servidor al intentar eliminar el registro' });
+        console.error("Error en EliminarRegistro:", error.stack || error);
+        res.status(500).json({
+            message: 'Algo salió mal en el servidor al intentar eliminar el registro',
+            error: error.message,
+            detail: error.stack,
+        });
     }
 };
 
