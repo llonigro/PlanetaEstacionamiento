@@ -21,10 +21,6 @@ const corsOptions = {
 const PORT = 3000;
 
 const app = express();
-app.use((req, res, next) => {
-  console.log("ORIGIN RECIBIDO:", req.headers.origin);
-  next();
-});
 app.use(cors(corsOptions));
 //app.use(config)
 app.use(express.json({ strict: false }));

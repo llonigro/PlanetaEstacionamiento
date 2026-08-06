@@ -641,8 +641,8 @@ async function cargarTablaCatalogo() {
       .map(
         (s) => `
       <tr>
-        <td><strong>#${s.id}</strong></td>
-        <td><strong>${s.nombre}</strong></td>
+        <td>#${s.id}</td>
+        <td>${s.nombre}</td>
         <td>${s.descripcion}</td>
         <td>
           <div class="field has-addons" style="justify-content: center;">
@@ -688,7 +688,7 @@ async function cargarTablaSolicitudes() {
       .map(
         (item) => `
       <tr>
-        <td><strong>#${item.id}</strong></td>
+        <td>#${item.id}</td>
         <td>Vehículo #${item.vehiculo_id}</td>
         <td>${item.servicio_nombre || `Servicio #${item.servicio_id}`}</td>
         <td>${formatearFecha(item.fecha_solicitud)}</td>
