@@ -75,14 +75,24 @@ CREATE TABLE servicios(
     id SERIAL PRIMARY KEY,
     vehiculo_id INT NOT NULL,
     servicio_id INT NOT NULL,
-    estado VARCHAR(50) DEFAULT 'En Espera', 
+    usuario_valet_id INT,
+    direccion_entrega VARCHAR(255),
+    estado VARCHAR(50) DEFAULT 'En Espera',
     precio_final DECIMAL(10, 2) NOT NULL,
     fecha_solicitud TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     notificado_cliente BOOLEAN DEFAULT false, -- Controla el envío de alertas/mensajes
     FOREIGN KEY(vehiculo_id) REFERENCES vehiculos(id),
-    FOREIGN KEY(servicio_id) REFERENCES catalogo_servicios(id)
+    FOREIGN KEY(servicio_id) REFERENCES catalogo_servicios(id),
+    FOREIGN KEY(usuario_valet_id) REFERENCES usuarios(id)
 );
 
+<<<<<<< HEAD
+=======
+INSERT INTO catalogo_servicios (nombre, descripcion, precio_base)
+VALUES ('Valet', 'Servicio de valet parking', 5000.00),
+('Lavado', 'Lavado completo del vehículo', 2500.00);
+
+>>>>>>> 5f52598892e023690cc382113d892537934f3b7b
 ALTER TABLE servicios
 DROP COLUMN notificado_cliente;
 

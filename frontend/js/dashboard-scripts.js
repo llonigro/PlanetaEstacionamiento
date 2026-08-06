@@ -3,12 +3,10 @@ let vehiculoId = null; // id del vehículo del usuario en sesión
 let vehiculoEnCochera = false; // true cuando el vehículo tiene un registro de ingreso activo
 let vehiculoOriginal = null;
 let modoVehiculoFormulario = "editar";
-// Estado de confirmaciones de servicios
-let serviciosConfirmados = {
-  lavado: false,
-  valet: false,
-};
+let catalogoPrecios = {}; // { servicioId: precio } para mostrar en la UI y bloquear servicios reservados
 
+const LAVADO_SERVICIO_ID = 2; // ID del servicio de lavado en la base de datos
+const VALET_SERVICIO_ID = 1; // ID del servicio de valet en la base de datos
 const API_URL = "http://localhost:3000";
 const CAMPOS_VEHICULO = ["marca", "modelo", "color", "patente"];
 
@@ -18,8 +16,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   await obtenerDatosUsuarioActual();
 
   inicializarModales();
+  inicializarModalLavado();
+  inicializarModalVerLavado();
+  inicializarModalValet();
+  inicializarModalVerValet();
   inicializarBloqueoAccionesRapidas();
-  inicializarBloqueoServicios();
   inicializarBotonCerrarSesion();
 
   // Mostrar datos guardados localmente de forma instantánea
@@ -27,43 +28,48 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   await cargarVehiculoUsuario();
 
+  // Cargar el catálogo de precios
+  await cargarCatalogoServicios();
+
   // Actualizamos la UI de cochera actual y el estado vehiculoEnCochera
   if (vehiculoId) {
     await actualizarCocheraActual();
   }
 
-  actualizarBloqueosSegunEstado();
+  await actualizarBloqueosSegunEstado();
 
   // Event listener de guardar vehículo
-  document
-    .getElementById("btn-guardar-vehiculo")
-    .addEventListener("click", guardarVehiculo);
-
-  // Listeners de confirmación de servicios
-  const btnConfirmarLavado = document.getElementById("confirmar-lavado");
-  if (btnConfirmarLavado) {
-    btnConfirmarLavado.addEventListener("click", () => {
-      serviciosConfirmados.lavado = true;
-      guardarServiciosConfirmadosEnLocalStorage();
-      document.getElementById("modal-lavado").classList.remove("is-active");
-      actualizarBloqueosSegunEstado();
-    });
-  }
-
-  const btnConfirmarValet = document.getElementById("confirmar-valet");
-  if (btnConfirmarValet) {
-    btnConfirmarValet.addEventListener("click", () => {
-      serviciosConfirmados.valet = true;
-      guardarServiciosConfirmadosEnLocalStorage();
-      document.getElementById("modal-valet").classList.remove("is-active");
-      actualizarBloqueosSegunEstado();
-    });
+  const btnGuardarVehiculo = document.getElementById("btn-guardar-vehiculo");
+  if (btnGuardarVehiculo) {
+    btnGuardarVehiculo.addEventListener("click", guardarVehiculo);
   }
 
   // Event listener de confirmar registro de cochera
-  document
-    .getElementById("confirmar-registro-cochera")
-    .addEventListener("click", registrarIngresoCochera);
+  const btnConfirmarRegistroCochera = document.getElementById(
+    "confirmar-registro-cochera",
+  );
+  if (btnConfirmarRegistroCochera) {
+    btnConfirmarRegistroCochera.addEventListener(
+      "click",
+      registrarIngresoCochera,
+    );
+  }
+  // 1. Intentamos cargar el vehículo desde LocalStorage
+  const tieneVehiculo = cargarVehiculoDesdeLocalStorage();
+
+  // 2. Si se cargó correctamente, asignamos el vehiculoId y verificamos la API
+  if (tieneVehiculo) {
+    const vehiculoGuardado = JSON.parse(localStorage.getItem("vehiculo_datos"));
+
+    if (vehiculoGuardado && vehiculoGuardado.id) {
+      vehiculoId = Number(vehiculoGuardado.id);
+
+      // 3. Consultamos el estado a la API para bloquear botones si hay un servicio activo
+      if (typeof verificarEstadoServiciosYBloquear === "function") {
+        await verificarEstadoServiciosYBloquear();
+      }
+    }
+  }
 
   inicializarBotonCocheras();
 });
@@ -93,21 +99,6 @@ async function obtenerDatosUsuarioActual() {
   }
 }
 
-//async function cerrarSesion() {
-//  try {
-//    const respuesta = await fetch(`${API_URL}/logout`, {
-//      method: "POST",
-//      credentials: "include",
-//    });
-//
-//    if (respuesta.ok) {
-//      window.location.href = "inicio.html";
-//    }
-//  } catch (error) {
-//    console.error("Error al cerrar sesión", error);
-//  }
-//}
-
 // GESTIÓN DE MODALES
 
 function inicializarModales() {
@@ -118,6 +109,15 @@ function inicializarModales() {
       const modal = document.getElementById(modalId);
 
       if (!modal) return;
+
+      if (
+        modalId === "modal-lavado" ||
+        modalId === "modal-valet" ||
+        modalId === "modal-ver-lavado" ||
+        modalId === "modal-ver-valet"
+      ) {
+        return;
+      }
 
       if (modal.id === "modal-vehiculo") {
         prepararModalVehiculo(boton.dataset.vehiculoModo || "editar");
@@ -284,10 +284,6 @@ function mostrarVehiculoSinRegistro() {
   vehiculoId = null;
   vehiculoOriginal = null;
   vehiculoEnCochera = false;
-  serviciosConfirmados = {
-    lavado: false,
-    valet: false,
-  };
 
   const seccionVehiculo = document.querySelector(".seccion-vehiculo");
   if (seccionVehiculo) {
@@ -338,12 +334,6 @@ function cargarVehiculoDesdeLocalStorage() {
 
     actualizarSeccionVehiculo(normalizarVehiculo(vehiculo));
 
-    // No desmontamos el bloqueo del contenedor aquí: el bloqueo depende
-    // de si el vehículo está realmente dentro de una cochera (vehiculoEnCochera).
-
-    // Cargamos el estado de confirmaciones de servicios
-    cargarServiciosConfirmadosDesdeLocalStorage();
-
     return true;
   } catch (e) {
     console.warn("Error al cargar vehiculo desde localStorage:", e);
@@ -354,34 +344,8 @@ function cargarVehiculoDesdeLocalStorage() {
 function limpiarVehiculoLocalStorage() {
   try {
     localStorage.removeItem("vehiculo_datos");
-    localStorage.removeItem("servicios_confirmados");
   } catch (e) {
     console.warn("No se pudo limpiar localStorage:", e);
-  }
-}
-
-function guardarServiciosConfirmadosEnLocalStorage() {
-  try {
-    localStorage.setItem(
-      "servicios_confirmados",
-      JSON.stringify(serviciosConfirmados),
-    );
-  } catch (e) {
-    console.warn("No se pudo guardar servicios_confirmados:", e);
-  }
-}
-
-function cargarServiciosConfirmadosDesdeLocalStorage() {
-  try {
-    const raw = localStorage.getItem("servicios_confirmados");
-    if (!raw) return false;
-    const datos = JSON.parse(raw);
-    if (!datos) return false;
-    serviciosConfirmados = Object.assign(serviciosConfirmados, datos);
-    return true;
-  } catch (e) {
-    console.warn("Error al cargar servicios_confirmados:", e);
-    return false;
   }
 }
 
@@ -479,15 +443,6 @@ async function guardarVehiculo() {
     const vehiculoGuardado = await respuesta.json();
 
     actualizarSeccionVehiculo(normalizarVehiculo(vehiculoGuardado));
-
-    if (!esEdicion) {
-      vehiculoEnCochera = false;
-      serviciosConfirmados = {
-        lavado: false,
-        valet: false,
-      };
-      guardarServiciosConfirmadosEnLocalStorage();
-    }
 
     actualizarBloqueosSegunEstado();
     document.getElementById("modal-vehiculo").classList.remove("is-active");
@@ -735,53 +690,71 @@ function inicializarBloqueoAccionesRapidas() {
 }
 
 function inicializarBloqueoServicios() {
-  const seccionServicios = document.querySelector(".contenedor-tarjetas");
+  const contenedorServicios = document.getElementById("seccion-servicios");
 
-  if (!seccionServicios) return;
+  if (!contenedorServicios) return;
 
-  seccionServicios.addEventListener(
+  contenedorServicios.addEventListener(
     "click",
     (e) => {
-      const tarjeta = e.target.closest(".servicios-tarjetas");
-      if (!tarjeta) return;
+      const boton = e.target.closest("button");
+      if (!boton) return;
 
-      // Si el vehículo no está dentro, bloqueamos el acceso a servicios
+      // Si el vehículo no está dentro (no hay ingreso registrado), bloqueamos
+      // todas las acciones de servicios.
       if (!vehiculoEnCochera) {
         e.preventDefault();
         e.stopPropagation();
         alert(
           "Los servicios están bloqueados hasta que el vehículo se guarde en una cochera.",
         );
-        return;
-      }
-
-      // Verificamos si la tarjeta clickeada está inactiva
-      const estaActivo = tarjeta.dataset.activo === "true";
-      if (!estaActivo) {
-        e.preventDefault();
-        e.stopPropagation();
-        alert("Este servicio no se encuentra activo en este momento.");
-        return;
-      }
-
-      // Verificamos si la acción fue confirmada desde los botones (lavado/valet)
-      const modalRef = tarjeta.dataset.modal || "";
-      let clave = null;
-      if (modalRef.includes("lavado")) clave = "lavado";
-      else if (modalRef.includes("valet")) clave = "valet";
-
-      if (clave && !serviciosConfirmados[clave]) {
-        e.preventDefault();
-        e.stopPropagation();
-        const texto =
-          clave === "lavado" ? "Reservar lavado" : "Solicitar valet";
-        alert(
-          `Debes confirmar la acción desde el botón '${texto}' antes de usar este servicio.`,
-        );
       }
     },
     true,
   );
+}
+
+// Cuando el usuario selecciona o cambia de vehículo:
+function seleccionarVehiculo(id) {
+  vehiculoId = id;
+  localStorage.setItem("vehiculoSeleccionadoId", id); // <--- Guardar en storage
+  verificarEstadoServiciosYBloquear();
+}
+
+async function actualizarBloqueoServiciosCliente() {
+  if (!vehiculoId) return;
+
+  try {
+    const res = await fetch(`${API_URL}/servicios`, { credentials: "include" });
+    if (!res.ok) return;
+
+    const solicitudes = await res.json();
+
+    // Obtener IDs de servicios activos para el vehículo actual (excluyendo cancelados)
+    const serviciosActivosIds = solicitudes
+      .filter(
+        (s) =>
+          Number(s.vehiculo_id) === Number(vehiculoId) &&
+          s.estado !== "Cancelado",
+      )
+      .map((s) => Number(s.servicio_id));
+
+    // Recorrer las tarjetas y bloquear/desbloquear
+    document.querySelectorAll("[data-servicio-id]").forEach((tarjeta) => {
+      const servicioId = Number(tarjeta.dataset.servicioId);
+      const estaReservado = serviciosActivosIds.includes(servicioId);
+
+      tarjeta.classList.toggle("servicio-reservado", estaReservado);
+
+      const btn = tarjeta.querySelector("button");
+      if (btn) {
+        btn.disabled = estaReservado;
+        if (estaReservado) btn.textContent = "Reservado";
+      }
+    });
+  } catch (e) {
+    console.warn("Error al verificar estado de servicios:", e);
+  }
 }
 
 // Comprueba si existe un registro activo (sin fecha_egreso y no anulado) para el vehículo
@@ -907,53 +880,502 @@ async function actualizarCocheraActual() {
 // Actualiza el estado visual y habilitación de botones según si el vehículo está en cochera
 function actualizarBloqueosSegunEstado() {
   const contAcciones = document.getElementById("contenedor-acciones-rapidas");
-  // Actualizamos la clase del contenedor según si el vehículo está dentro de una cochera
+  const contServicios = document.getElementById("seccion-servicios");
+
   if (contAcciones) {
     if (vehiculoEnCochera) contAcciones.classList.remove("menu-bloqueado");
     else contAcciones.classList.add("menu-bloqueado");
   }
+
   if (contAcciones) {
     const botones = contAcciones.querySelectorAll("button");
-
     botones.forEach((btn) => {
-      // Ver Cocheras
       if (btn.id === "ver-cocheras") {
         const habilitado = Boolean(vehiculoId);
-
         btn.disabled = !habilitado;
         btn.classList.toggle("inactivo", !habilitado);
-
         return;
       }
-
       btn.disabled = !vehiculoEnCochera;
       btn.classList.toggle("inactivo", !vehiculoEnCochera);
     });
   }
+}
 
-  const contServ = document.querySelector(".contenedor-tarjetas");
+// Funciones simples para controlar la visibilidad
+function abrirModalLavado() {
+  const modal = document.getElementById("modal-lavado");
+  if (modal) modal.classList.add("is-active");
+}
 
-  if (contServ) {
-    const tarjetas = contServ.querySelectorAll(".servicios-tarjetas");
-    tarjetas.forEach((tarjeta) => {
-      const boton = tarjeta.querySelector(".btn-accion-servicio");
-      const tarjetaActiva = tarjeta.dataset.activo === "true";
+function cerrarModalLavado() {
+  const modal = document.getElementById("modal-lavado");
+  if (modal) modal.classList.remove("is-active");
+}
 
-      if (boton) {
-        // Determinar clave de servicio (lavado / valet) por el modal o clase
-        const modalRef = tarjeta.dataset.modal || "";
-        let clave = null;
-        if (modalRef.includes("lavado")) clave = "lavado";
-        else if (modalRef.includes("valet")) clave = "valet";
+function inicializarModalLavado() {
+  const btnAbrir = document.getElementById("reservar-lavado");
+  const btnCerrar = document.getElementById("cerrar-modal-lavado");
+  const btnCancelar = document.getElementById("cancelar-lavado");
+  const btnConfirmar = document.getElementById("confirmar-lavado");
 
-        const confirmado = clave ? !!serviciosConfirmados[clave] : true;
+  btnAbrir?.addEventListener("click", () => {
+    if (!vehiculoId) {
+      alert("Debes seleccionar un vehículo primero.");
+      return;
+    }
+    abrirModalLavado();
+  });
 
-        // Habilitamos solo si el vehículo está en cochera, la tarjeta es activa
-        // y la acción correspondiente fue previamente confirmada
-        const habilitado = vehiculoEnCochera && tarjetaActiva && confirmado;
-        boton.disabled = !habilitado;
-        tarjeta.classList.toggle("servicio-bloqueado", !habilitado);
+  btnCerrar?.addEventListener("click", cerrarModalLavado);
+  btnCancelar?.addEventListener("click", cerrarModalLavado);
+
+  btnConfirmar?.addEventListener("click", async () => {
+    if (!vehiculoId) return;
+
+    // Tomamos el precio del objeto global
+    const precioFinal = catalogoPrecios[LAVADO_SERVICIO_ID] || 2500;
+
+    const datosReserva = {
+      servicio_id: LAVADO_SERVICIO_ID,
+      vehiculo_id: vehiculoId,
+      precio_final: precioFinal,
+    };
+
+    try {
+      const res = await fetch(`${API_URL}/servicios`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(datosReserva),
+        credentials: "include",
+      });
+
+      if (res.ok) {
+        alert("¡Reserva de lavado realizada con éxito!");
+        verificarEstadoServiciosYBloquear();
+        cerrarModalLavado();
+
+        if (typeof actualizarEstadoServiciosDisponibles === "function") {
+          await actualizarEstadoServiciosDisponibles();
+        }
+      } else {
+        const err = await res.json();
+        const mensajeError = Array.isArray(err)
+          ? err[0]?.msg
+          : err.mensaje || "Error al procesar la reserva";
+        alert(`Error al reservar: ${mensajeError}`);
       }
+    } catch (error) {
+      console.error("Error al procesar la reserva de lavado:", error);
+    }
+  });
+}
+
+async function cargarCatalogoServicios() {
+  try {
+    const res = await fetch(`${API_URL}/catalogo`, {
+      credentials: "include",
     });
+    if (res.ok) {
+      const data = await res.json();
+      const lista = Array.isArray(data) ? data : [data];
+
+      // Guardamos en el objeto global
+      lista.forEach((serv) => {
+        const id = serv.id ?? serv.servicio_id;
+        const precio =
+          serv.precio_base ?? serv.precio ?? serv.precio_final ?? 0;
+        catalogoPrecios[id] = Number(precio);
+      });
+
+      // Tomamos el precio del lavado o 2500 por defecto
+      const precioLavado = catalogoPrecios[LAVADO_SERVICIO_ID] || 2500;
+      const precioFormateado = `$${precioLavado.toLocaleString("es-AR")}`;
+
+      // Tomamos el precio del valet o 5000 por defecto
+      const precioValet = catalogoPrecios[VALET_SERVICIO_ID] || 5000;
+      const precioValetFormateado = `$${precioValet.toLocaleString("es-AR")}`;
+
+      // Actualizamos el precio en "Ver lavado" (Tarjeta/Modal principal)
+      const elemVer = document.getElementById("precio-ver-lavado");
+      if (elemVer) elemVer.textContent = precioFormateado;
+
+      // Actualizamos el precio en "Ver valet" (Tarjeta/Modal principal)
+      const elemVerValet = document.getElementById("precio-ver-valet");
+      if (elemVerValet) elemVerValet.textContent = precioValetFormateado;
+
+      // Actualizamos el precio en "Reservar lavado" (Modal de confirmación)
+      const elemReservar = document.getElementById("precio-reservar-lavado");
+      if (elemReservar) elemReservar.textContent = precioFormateado;
+
+      // Actualizamos el precio en "Reservar valet" (Modal de confirmación)
+      const elemReservarValet = document.getElementById(
+        "precio-reservar-valet",
+      );
+      if (elemReservarValet)
+        elemReservarValet.textContent = precioValetFormateado;
+    }
+  } catch (e) {
+    console.warn("Error al cargar catálogo de servicios:", e);
+  }
+}
+
+// VER LAVADO
+
+async function abrirModalVerLavado() {
+  await cargarDatosModalVerLavado();
+  const modal = document.getElementById("modal-ver-lavado");
+  if (modal) modal.classList.add("is-active");
+}
+
+function cerrarModalVerLavado() {
+  const modal = document.getElementById("modal-ver-lavado");
+  if (modal) modal.classList.remove("is-active");
+}
+
+function inicializarModalVerLavado() {
+  const btnAbrir = document.getElementById("btn-ver-lavado");
+
+  // Buscar botones de cierre dentro del mismo modal
+  const modal = document.getElementById("modal-ver-lavado");
+  const btnCerrar = modal?.querySelector(".delete, #cerrar-modal-ver-lavado");
+  const btnFondo = modal?.querySelector(".modal-background");
+  const btnCancelar = modal?.querySelector(".btn-modal-cancelar");
+
+  // Evento para abrir
+  btnAbrir?.addEventListener("click", abrirModalVerLavado);
+
+  // Eventos para cerrar
+  btnCerrar?.addEventListener("click", cerrarModalVerLavado);
+  btnFondo?.addEventListener("click", cerrarModalVerLavado);
+  btnCancelar?.addEventListener("click", cerrarModalVerLavado);
+}
+
+async function cargarDatosModalVerLavado() {
+  if (!vehiculoId) return;
+
+  try {
+    const res = await fetch(`${API_URL}/servicios`, { credentials: "include" });
+    if (!res.ok) return;
+
+    const data = await res.json();
+    const lista = Array.isArray(data) ? data : [];
+
+    // 1. Buscamos el servicio usando exactamente las columnas de la BD
+    const reserva = lista.find((s) => {
+      return (
+        Number(s.vehiculo_id) === Number(vehiculoId) &&
+        Number(s.servicio_id) === LAVADO_SERVICIO_ID &&
+        s.estado !== "Cancelado"
+      );
+    });
+
+    if (!reserva) return;
+
+    // 2. ESTADO Y DESCRIPCIÓN (columna: estado)
+    const estadoTxt = reserva.estado || "En Espera";
+    const elemEstado = document.getElementById("estado-lavado");
+    const elemDesc = document.getElementById("descripcion-estado-lavado");
+
+    if (elemEstado) elemEstado.textContent = estadoTxt;
+    if (elemDesc) {
+      const estLower = estadoTxt.toLowerCase();
+      if (estLower === "en espera") {
+        elemDesc.textContent =
+          "Tu solicitud de lavado fue recibida y está en espera.";
+      } else if (estLower === "en proceso") {
+        elemDesc.textContent =
+          "Tu vehículo se encuentra siendo lavado en este momento.";
+      } else {
+        elemDesc.textContent = `Estado actual: ${estadoTxt}`;
+      }
+    }
+
+    // 3. DATOS DEL VEHÍCULO (extraido de los elementos del HTML)
+    const vehiculoTexto =
+      document.getElementById("modelo-vehiculo")?.textContent ||
+      document.getElementById("nombre-vehiculo")?.textContent ||
+      "Vehículo seleccionado";
+
+    const patenteTexto =
+      document.getElementById("patente-actual")?.textContent ||
+      document.getElementById("patente-vehiculo")?.textContent ||
+      "---";
+
+    const elemVehiculo = document.getElementById("lavado-vehiculo");
+    const elemPatente = document.getElementById("lavado-patente");
+
+    if (elemVehiculo) elemVehiculo.textContent = vehiculoTexto;
+    if (elemPatente) elemPatente.textContent = patenteTexto;
+
+    // 4. DATOS DEL SERVICIO (columnas: fecha_solicitud y precio_final)
+    const elemFecha = document.getElementById("lavado-fecha");
+    const elemPrecio = document.getElementById("lavado-precio");
+
+    if (elemFecha && reserva.fecha_solicitud) {
+      const f = new Date(reserva.fecha_solicitud);
+      elemFecha.textContent = `${f.toLocaleDateString("es-AR")} · ${f.toLocaleTimeString("es-AR", { hour: "2-digit", minute: "2-digit" })}`;
+    }
+
+    if (elemPrecio) {
+      const precio =
+        reserva.precio_final ?? catalogoPrecios[LAVADO_SERVICIO_ID] ?? 2500;
+      elemPrecio.textContent = `$${Number(precio).toLocaleString("es-AR")}`;
+    }
+  } catch (error) {
+    console.error("Error al cargar datos en modal ver lavado:", error);
+  }
+}
+// VALET
+
+function abrirModalValet() {
+  const modal = document.getElementById("modal-valet");
+  if (modal) modal.classList.add("is-active");
+}
+
+function cerrarModalValet() {
+  const modal = document.getElementById("modal-valet");
+  if (modal) modal.classList.remove("is-active");
+}
+
+function inicializarModalValet() {
+  const btnAbrir = document.getElementById("solicitar-valet");
+  const btnCerrar = document.getElementById("cerrar-modal-valet");
+  const btnCancelar = document.getElementById("cancelar-valet");
+  const btnConfirmar = document.getElementById("confirmar-valet");
+  const inputDireccion = document.getElementById("ubicacion-valet");
+
+  btnAbrir?.addEventListener("click", () => {
+    if (!vehiculoId) {
+      alert("Debes seleccionar un vehículo primero.");
+      return;
+    }
+    abrirModalValet();
+  });
+
+  btnCerrar?.addEventListener("click", cerrarModalValet);
+  btnCancelar?.addEventListener("click", cerrarModalValet);
+
+  btnConfirmar?.addEventListener("click", async () => {
+    if (!vehiculoId) return;
+
+    // Capturamos la dirección ingresada en el modal (si aplica)
+    const direccion = inputDireccion?.value?.trim() || "";
+
+    if (!direccion) {
+      alert("Por favor, ingresa una dirección de entrega.");
+      return;
+    }
+
+    // Tomamos el precio del catálogo o fallback a 5000
+    const precioFinal = catalogoPrecios[VALET_SERVICIO_ID] || 5000;
+
+    const datosReserva = {
+      servicio_id: VALET_SERVICIO_ID,
+      vehiculo_id: vehiculoId,
+      usuario_valet_id: window.usuarioLogueadoId,
+      direccion_entrega: direccion,
+      precio_final: precioFinal,
+    };
+
+    try {
+      const res = await fetch(`${API_URL}/servicios`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(datosReserva),
+        credentials: "include",
+      });
+
+      if (res.ok) {
+        alert("¡Solicitud de Valet realizada con éxito!");
+        if (inputDireccion) inputDireccion.value = ""; // Limpia el input
+        verificarEstadoServiciosYBloquear();
+        cerrarModalValet();
+
+        if (typeof actualizarEstadoServiciosDisponibles === "function") {
+          await actualizarEstadoServiciosDisponibles();
+        }
+      } else {
+        const err = await res.json();
+        const mensajeError = Array.isArray(err)
+          ? err[0]?.msg
+          : err.mensaje || "Error al procesar la solicitud";
+        alert(`Error al solicitar valet: ${mensajeError}`);
+      }
+    } catch (error) {
+      console.error("Error al procesar la reserva de valet:", error);
+    }
+  });
+}
+
+// VER VALET
+async function abrirModalVerValet() {
+  await cargarDatosModalVerValet();
+  const modal = document.getElementById("modal-ver-valet");
+  if (modal) modal.classList.add("is-active");
+}
+
+function cerrarModalVerValet() {
+  const modal = document.getElementById("modal-ver-valet");
+  if (modal) modal.classList.remove("is-active");
+}
+
+function inicializarModalVerValet() {
+  const btnAbrir = document.getElementById("btn-ver-valet");
+
+  // Buscar botones de cierre dentro del mismo modal
+  const modal = document.getElementById("modal-ver-valet");
+  const btnCerrar = modal?.querySelector(".delete, #cerrar-modal-ver-valet");
+  const btnFondo = modal?.querySelector(".modal-background");
+  const btnCancelar = modal?.querySelector(".btn-modal-cancelar");
+
+  // Evento para abrir
+  btnAbrir?.addEventListener("click", abrirModalVerValet);
+
+  // Eventos para cerrar
+  btnCerrar?.addEventListener("click", cerrarModalVerValet);
+  btnFondo?.addEventListener("click", cerrarModalVerValet);
+  btnCancelar?.addEventListener("click", cerrarModalVerValet);
+}
+
+async function cargarDatosModalVerValet() {
+  if (!vehiculoId) return;
+
+  try {
+    const res = await fetch(`${API_URL}/servicios`, { credentials: "include" });
+    if (!res.ok) return;
+
+    const data = await res.json();
+    const lista = Array.isArray(data) ? data : [];
+
+    // 1. Buscamos el servicio activo de Valet para este vehículo
+    const reserva = lista.find((s) => {
+      return (
+        Number(s.vehiculo_id) === Number(vehiculoId) &&
+        Number(s.servicio_id) === VALET_SERVICIO_ID &&
+        s.estado !== "Cancelado"
+      );
+    });
+
+    if (!reserva) return;
+
+    // 2. ESTADO Y DESCRIPCIÓN
+    const estadoTxt = reserva.estado || "En Espera";
+    const elemEstado = document.getElementById("estado-valet");
+    const elemDesc = document.getElementById("descripcion-estado-valet");
+
+    if (elemEstado) elemEstado.textContent = estadoTxt;
+    if (elemDesc) {
+      const estLower = estadoTxt.toLowerCase();
+      if (estLower === "en espera") {
+        elemDesc.textContent =
+          "Tu solicitud de valet fue recibida y está en espera.";
+      } else if (estLower === "en proceso" || estLower === "en camino") {
+        elemDesc.textContent = "Tu vehículo está siendo trasladado.";
+      } else if (estLower === "finalizado") {
+        elemDesc.textContent = "El servicio de traslado fue completado.";
+      } else {
+        elemDesc.textContent = `Estado actual: ${estadoTxt}`;
+      }
+    }
+
+    // 3. DATOS DEL VEHÍCULO Y DESTINO
+    const m = document.getElementById("marca-vehiculo")?.textContent || "";
+    const mod =
+      document.getElementById("modelo-vehiculo-2")?.textContent ||
+      document.getElementById("modelo-vehiculo")?.textContent ||
+      "";
+    const pat =
+      document.getElementById("patente-vehiculo")?.textContent ||
+      document.getElementById("patente-actual")?.textContent ||
+      "---";
+
+    const elemVehiculo = document.getElementById("valet-vehiculo");
+    const elemPatente = document.getElementById("valet-patente");
+    const elemDestino = document.getElementById("valet-destino");
+
+    if (elemVehiculo)
+      elemVehiculo.textContent =
+        `${m} ${mod}`.trim() || "Vehículo seleccionado";
+    if (elemPatente) elemPatente.textContent = pat;
+    if (elemDestino)
+      elemDestino.textContent =
+        reserva.direccion_entrega || "Sin dirección registrada";
+
+    // --- DENTRO DE cargarDatosModalVerValet ---
+
+    const elemLabelMonto = document.getElementById("valet-monto-label");
+    const elemSubtituloMonto = document.getElementById("valet-monto-subtitulo");
+    const elemPrecio = document.getElementById("valet-precio");
+
+    // En la vista del cliente que solicita el servicio, SIEMPRE se muestra como Precio
+    if (elemLabelMonto) {
+      elemLabelMonto.textContent = "Precio";
+    }
+
+    if (elemSubtituloMonto) {
+      elemSubtituloMonto.textContent = "Por el servicio de traslado";
+    }
+
+    if (elemPrecio) {
+      const precio = reserva
+        ? (reserva.precio_final ?? catalogoPrecios[VALET_SERVICIO_ID] ?? 5000)
+        : 0;
+
+      elemPrecio.textContent = `$${Number(precio).toLocaleString("es-AR")}`;
+    }
+  } catch (error) {
+    console.error("Error al cargar datos en modal ver valet:", error);
+  }
+}
+
+function actualizarEstadoBotonesAccion(hayServicioEnCurso) {
+  // Seleccionamos todos los botones de acción rápida (por clase o ID)
+  const botones = document.querySelectorAll(
+    ".btn-accion-rapida, #solicitar-valet, #reservar-lavado",
+  );
+
+  botones.forEach((btn) => {
+    btn.disabled = hayServicioEnCurso;
+
+    if (hayServicioEnCurso) {
+      btn.classList.add("disabled", "is-disabled");
+    } else {
+      btn.classList.remove("disabled", "is-disabled");
+      btn.removeAttribute("title");
+    }
+  });
+}
+
+async function verificarEstadoServiciosYBloquear() {
+  if (!vehiculoId) return;
+
+  try {
+    const res = await fetch(`${API_URL}/servicios`, { credentials: "include" });
+    if (!res.ok) return;
+
+    const data = await res.json();
+    const lista = Array.isArray(data) ? data : [];
+
+    // Buscamos si existe CUALQUIER servicio activo para este auto
+    const servicioEnCurso = lista.find((s) => {
+      const mismoVehiculo = Number(s.vehiculo_id) === Number(vehiculoId);
+
+      // Normalizamos el string limpiando espacios y pasándolo a minúsculas
+      const estadoLimpio = String(s.estado || "")
+        .trim()
+        .toLowerCase();
+
+      // Si NO es ni finalizado ni cancelado, el servicio sigue activo
+      const estaActivo =
+        estadoLimpio !== "finalizado" && estadoLimpio !== "cancelado";
+
+      return mismoVehiculo && estaActivo;
+    });
+
+    // Pasamos true si hay un servicio en curso (bloquea), o false si está todo libre (desbloquea)
+    actualizarEstadoBotonesAccion(Boolean(servicioEnCurso));
+  } catch (error) {
+    console.error("Error al verificar estado de botones:", error);
   }
 }

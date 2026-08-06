@@ -43,6 +43,7 @@ function inicializarScriptsSeccion(pagina) {
 
   if (pagina === "gerente-servicios.html") {
     inicializarModal();
+    cargarServicios();
   }
 }
 
@@ -85,7 +86,7 @@ function agregarCochera() {
 
       cargarCocheras();
     } else {
-      alert("Error al agregar la cochera: " + resultado.error);
+      alert("Error al agregar la cochera: " + resultado.message);
     }
   });
 }
@@ -429,11 +430,24 @@ async function verRegistro(id) {
     document.getElementById("detalle-id").textContent =
       `Registro #${registro.id}`;
 
-    document.getElementById("detalle-patente").textContent = registro.patente;
+    // Pedir detalles del vehículo a la API de vehículos
+    const resVehiculo = await fetch(
+      `http://localhost:3000/vehiculos/${registro.vehiculo_id}`,
+      {
+        credentials: "include",
+      },
+    );
 
-    document.getElementById("detalle-marca").textContent = registro.marca;
+    const vehiculo = await resVehiculo.json();
 
-    document.getElementById("detalle-modelo").textContent = registro.modelo;
+    document.getElementById("detalle-patente").textContent =
+      vehiculo.patente || "Error al obtener patente";
+    document.getElementById("detalle-marca").textContent =
+      vehiculo.marca || "Error al obtener marca";
+    document.getElementById("detalle-modelo").textContent =
+      vehiculo.modelo || "Error al obtener modelo";
+    document.getElementById("detalle-permite-valet").textContent =
+      vehiculo.permite_valet ? "Sí" : "No";
 
     document.getElementById("detalle-cochera").textContent =
       registro.cochera_id;
@@ -602,9 +616,220 @@ function inicializarModalRegistro() {
   });
 }
 
+// Carga simultánea de Catálogo y Solicitudes
+async function cargarServicios() {
+  await Promise.all([cargarTablaCatalogo(), cargarTablaSolicitudes()]);
+}
+
+// Cargar Catálogo (Precios Base)
+async function cargarTablaCatalogo() {
+  const tbody = document.getElementById("tbody-catalogo");
+  if (!tbody) return;
+
+  try {
+    const res = await fetch("http://localhost:3000/catalogo", {
+      credentials: "include",
+    });
+    const servicios = await res.json();
+
+    if (!res.ok || !Array.isArray(servicios)) {
+      tbody.innerHTML = `<tr><td colspan="5" class="has-text-danger has-text-centered">Error al cargar el catálogo</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = servicios
+      .map(
+        (s) => `
+      <tr>
+        <td><strong>#${s.id}</strong></td>
+        <td><strong>${s.nombre}</strong></td>
+        <td>${s.descripcion}</td>
+        <td>
+          <div class="field has-addons" style="justify-content: center;">
+            <p class="control"><a class="button is-static">$</a></p>
+            <p class="control">
+              <input class="input" type="number" id="precio-base-${s.id}" value="${s.precio_base}" style="width: 120px; text-align: center;">
+            </p>
+          </div>
+        </td>
+        <td>
+          <div class="acciones-registro">
+            <button class="boton-accion egreso" title="Guardar Precio Base" onclick="guardarPrecioBase(${s.id})">
+              <i class="fas fa-save"></i>
+            </button>
+          </div>
+        </td>
+      </tr>
+    `,
+      )
+      .join("");
+  } catch (err) {
+    console.error("Error al cargar catálogo:", err);
+  }
+}
+
+// Cargar Solicitudes de Clientes
+async function cargarTablaSolicitudes() {
+  const tbody = document.getElementById("tbody-solicitudes");
+  if (!tbody) return;
+
+  try {
+    const res = await fetch("http://localhost:3000/servicios", {
+      credentials: "include",
+    });
+    const solicitudes = await res.json();
+
+    if (!res.ok || !Array.isArray(solicitudes)) {
+      tbody.innerHTML = `<tr><td colspan="7" class="has-text-danger has-text-centered">Error al cargar solicitudes</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = solicitudes
+      .map(
+        (item) => `
+      <tr>
+        <td><strong>#${item.id}</strong></td>
+        <td>Vehículo #${item.vehiculo_id}</td>
+        <td>${item.servicio_nombre || `Servicio #${item.servicio_id}`}</td>
+        <td>${formatearFecha(item.fecha_solicitud)}</td>
+        <td>
+          <div class="select is-small">
+            <select id="estado-${item.id}">
+              <option value="En Espera" ${item.estado === "en espera" ? "selected" : ""}>En Espera</option>
+              <option value="En Proceso" ${item.estado === "en Proceso" ? "selected" : ""}>En Proceso</option>
+              <option value="Finalizado" ${item.estado === "finalizado" ? "selected" : ""}>Finalizado</option>
+            </select>
+          </div>
+        </td>
+        <td>
+          <div class="field has-addons" style="justify-content: center;">
+            <p class="control"><a class="button is-static">$</a></p>
+            <p class="control">
+              <input class="input" type="number" id="precio-final-${item.id}" value="${item.precio_final ?? 0}" style="width: 110px; text-align: center;">
+            </p>
+          </div>
+        </td>
+        <td>
+          <div class="acciones-registro">
+            <button class="boton-accion egreso" title="Guardar Cambios" onclick="actualizarServicioCliente(${item.id})">
+              <i class="fas fa-check"></i>
+            </button>
+            <button class="boton-accion eliminar" title="Eliminar Solicitud" onclick="eliminarServicioCliente(${item.id})">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        </td>
+      </tr>
+    `,
+      )
+      .join("");
+  } catch (err) {
+    console.error("Error al cargar solicitudes:", err);
+  }
+}
+
+// Guardar Modificación de Precio Base en el Catálogo
+async function guardarPrecioBase(id) {
+  const estadoActual = document.getElementById(`estado-${id}`);
+  const precioInput = document.getElementById(`precio-base-${id}`);
+  const precioBase = Number(precioInput.value);
+
+  if (isNaN(precioBase) || precioBase < 0) {
+    alert("Ingresá un precio base válido.");
+    return;
+  }
+
+  try {
+    const res = await fetch(`http://localhost:3000/catalogo/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({
+        estado: estadoActual,
+        precio_base: precioBase,
+      }),
+    });
+
+    if (res.ok) {
+      alert("Precio base actualizado correctamente.");
+    } else {
+      const err = await res.json();
+      alert("Error al actualizar: " + (err.message || err.error));
+    }
+  } catch (err) {
+    console.error(err);
+    alert("Ocurrió un error al intentar actualizar el precio base.");
+  }
+}
+
+// Guardar Modificación de Estado y Precio Final en Solicitudes
+async function actualizarServicioCliente(id) {
+  const estado = document.getElementById(`estado-${id}`).value;
+  const precioInput = document.getElementById(`precio-final-${id}`);
+  const precioFinal = Number(precioInput.value);
+
+  if (isNaN(precioFinal) || precioFinal < 0) {
+    alert("Ingresá un precio final válido.");
+    return;
+  }
+
+  console.log("Enviando a backend:", { estado, precio_final: precioFinal });
+
+  try {
+    const res = await fetch(`http://localhost:3000/servicios/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({
+        estado: estado,
+        precio_final: precioFinal,
+      }),
+    });
+
+    if (res.ok) {
+      alert("Servicio actualizado correctamente.");
+    } else {
+      const err = await res.json();
+      alert("Error al actualizar: " + (err.message || err.error));
+    }
+  } catch (err) {
+    console.error(err);
+    alert("Ocurrió un error al actualizar la solicitud.");
+  }
+}
+
+async function eliminarServicioCliente(id) {
+  const confirmar = confirm(
+    "¿Estás seguro de que querés eliminar esta solicitud de servicio?",
+  );
+
+  if (!confirmar) return;
+
+  try {
+    const res = await fetch(`http://localhost:3000/servicios/${id}`, {
+      method: "DELETE",
+      credentials: "include",
+    });
+
+    if (res.ok) {
+      alert("Solicitud eliminada correctamente.");
+      await cargarTablaSolicitudes();
+    } else {
+      const err = await res.json();
+      alert("Error al eliminar: " + (err.message || err.error));
+    }
+  } catch (err) {
+    console.error(err);
+    alert("Ocurrió un error al intentar eliminar la solicitud.");
+  }
+}
+
 // Cargar la sección de inicio al cargar la página
 document.addEventListener("DOMContentLoaded", async function () {
   await cargarDatosUsuarioActual();
+
+  await cargarTablaCatalogo();
+  await cargarTablaSolicitudes();
 
   const dashboard = document.querySelector(".menu-item");
 

@@ -102,6 +102,10 @@
 
                 <div class="datos-vehiculo">
                   <div class="dato">
+                    <span>Marca</span>
+                    <strong id="marca-vehiculo">[Marca]</strong>
+                  </div>
+                  <div class="dato">
                     <span>Modelo</span>
                     <strong id="modelo-vehiculo-2">[Modelo]</strong>
                   </div>
@@ -146,29 +150,28 @@
                 <i class="fas fa-droplet" style="color: lightskyblue"></i>
                 <span>Reservar lavado</span>
               </button>
-              <button
+              <!-- <button
                 id="reportar-danio"
                 class="accion"
                 data-modal="modal-danio"
               >
                 <i class="fas fa-warning" style="color: lightcoral"></i>
                 <span>Reportar daño</span>
-              </button>
+              </button> -->
               <button
                 id="solicitar-valet"
                 class="accion"
                 data-modal="modal-valet"
               >
                 <i class="fas fa-concierge-bell" style="color: orange"></i>
-                <span>Solicitar valet</span>
+                <span>Solicitar traslado</span>
               </button>
             </div>
           </article>
         </section>
 
         <!-- SECCIÓN: Servicios y sus modales -->
-        <!-- SECCIÓN: Servicios y sus modales -->
-        <section class="seccion-servicios seccion-card">
+        <section class="seccion-servicios seccion-card" id="seccion-servicios">
           <div class="servicios">
             <h2 class="title is-4 titulo-turquesa">SERVICIOS DESTACADOS</h2>
 
@@ -176,8 +179,8 @@
               <!-- Tarjeta de Lavado -->
               <div
                 class="servicios-tarjetas"
-                data-modal="modal-detalle-lavado"
-                data-activo="true"
+                data-modal="modal-ver-lavado"
+                data-servicio-id="1"
               >
                 <div class="servicio-contenido-principal">
                   <div class="imagen-servicio">
@@ -194,10 +197,14 @@
 
                 <div class="servicio-pie">
                   <div class="precio-servicio">
-                    <span class="monto">[ej: $2.500]</span>
-                    <span class="etiqueta-precio">por servicio</span>
+                    <span class="monto" id="precio-ver-lavado">$2.500</span>
+                    <span class="etiqueta-precio">base por servicio</span>
                   </div>
-                  <button class="btn-accion-servicio" id="btn-ver-lavado">
+                  <button
+                    class="btn-accion-servicio"
+                    id="btn-ver-lavado"
+                    data-modal="modal-ver-lavado"
+                  >
                     <span>Ver lavado</span>
                     <i class="fas fa-arrow-right"></i>
                   </button>
@@ -207,8 +214,8 @@
               <!-- Tarjeta de Valet -->
               <div
                 class="servicios-tarjetas tarjeta-valet"
-                data-modal="modal-detalle-valet"
-                data-activo="false"
+                data-modal="modal-ver-valet"
+                data-servicio-id="2"
               >
                 <div class="servicio-contenido-principal">
                   <div class="imagen-servicio imagen-valet">
@@ -216,77 +223,26 @@
                   </div>
 
                   <div class="titulo-servicio">
-                    <h3>Valet</h3>
+                    <h3>Traslado</h3>
                     <p>
-                      Olvidate de buscar lugar. Nosotros estacionamos por vos.
+                      Solicitá el traslado de tu vehículo hasta tu ubicación.
                     </p>
                   </div>
                 </div>
 
                 <div class="servicio-pie">
                   <div class="precio-servicio">
-                    <span class="monto">[ej: $2.500]</span>
-                    <span class="etiqueta-precio">por servicio</span>
+                    <span class="monto" id="precio-ver-valet">$2.500</span>
+                    <span class="etiqueta-precio">base por servicio</span>
                   </div>
                   <button
                     class="btn-accion-servicio btn-valet"
                     id="btn-ver-valet"
+                    data-modal="modal-ver-valet"
                   >
                     <span>Ver valet</span>
                     <i class="fas fa-arrow-right"></i>
                   </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- SECCIÓN: Noticias y promociones -->
-        <section class="seccion-noticias seccion-card">
-          <div class="noticias">
-            <h2 class="title is-4 titulo-blanco">NOTICIAS</h2>
-
-            <div class="contenedor-noticias">
-              <div class="noticia">
-                <div class="icono-noticia">
-                  <i
-                    class="fa-solid fa-triangle-exclamation"
-                    style="color: gold"
-                  ></i>
-                </div>
-
-                <div class="contenido-noticia">
-                  <div class="cabecera-noticia">
-                    <h3 class="title is-5">Nuevo servicio de valet</h3>
-
-                    <p class="fecha-noticia">
-                      Fecha: <span id="fecha-noticia-1">01/01/2026</span>
-                    </p>
-                  </div>
-                  <p class="descripcion-noticia">
-                    Ahora ofrecemos un servicio de valet para tu comodidad.
-                    ¡Reservá tu turno!
-                  </p>
-                </div>
-              </div>
-
-              <div class="noticia">
-                <div class="icono-noticia">
-                  <i class="fa-solid fa-percent" style="color: lightgreen"></i>
-                </div>
-
-                <div class="contenido-noticia">
-                  <div class="cabecera-noticia">
-                    <h3 class="title is-5">Promoción especial de lavado</h3>
-
-                    <p class="fecha-noticia">
-                      Fecha: <span id="fecha-noticia-2">01/01/2026</span>
-                    </p>
-                  </div>
-                  <p class="descripcion-noticia">
-                    Durante este mes, todos los lavados tienen un 20% de
-                    descuento. ¡Aprovechá!
-                  </p>
                 </div>
               </div>
             </div>
@@ -360,7 +316,7 @@
                 id="input-patente"
                 class="input"
                 type="text"
-                placeholder="Ej. AB123CD o ABC123"
+                placeholder="Ej. ABC123"
                 style="text-transform: uppercase"
                 required
               />
@@ -420,24 +376,12 @@
 
         <section class="modal-card-body">
           <p class="modal-descripcion">
-            Seleccioná cuándo querés realizar el lavado.
+            ¿Deseás solicitar el servicio de lavado para tu vehículo por
+            <strong id="precio-reservar-lavado">$2.500</strong>?
           </p>
-
-          <div class="field">
-            <label class="label">Fecha</label>
-
-            <div class="control">
-              <input id="fecha-lavado" class="input" type="date" />
-            </div>
-          </div>
-
-          <div class="field">
-            <label class="label">Horario</label>
-
-            <div class="control">
-              <input id="hora-lavado" class="input" type="time" />
-            </div>
-          </div>
+          <p class="help">
+            El personal de la cochera iniciará el servicio a la brevedad.
+          </p>
         </section>
 
         <footer class="modal-card-foot">
@@ -463,7 +407,7 @@
     </div>
 
     <!-- MODAL: Reportar daño -->
-    <div id="modal-danio" class="modal">
+    <!-- <div id="modal-danio" class="modal">
       <div class="modal-background"></div>
 
       <div class="modal-card">
@@ -516,7 +460,7 @@
           </button>
         </footer>
       </div>
-    </div>
+    </div> -->
 
     <!-- MODAL: Solicitar Valet -->
     <div id="modal-valet" class="modal">
@@ -673,6 +617,185 @@
           >
             <i class="fas fa-check"></i>
             Registrar ingreso
+          </button>
+        </footer>
+      </div>
+    </div>
+
+    <!-- MODAL: VER LAVADO -->
+    <div id="modal-ver-lavado" class="modal">
+      <div class="modal-background"></div>
+
+      <div class="modal-card">
+        <!-- HEADER -->
+        <header class="modal-card-head">
+          <div>
+            <p class="modal-card-title">
+              <i class="fa-solid fa-car-side"></i>
+              Lavado
+            </p>
+
+            <p class="modal-subtitulo">Servicio de lavado de vehículo</p>
+          </div>
+
+          <button
+            id="cerrar-modal-ver-lavado"
+            class="delete"
+            aria-label="close"
+          ></button>
+        </header>
+
+        <!-- BODY -->
+        <section class="modal-card-body">
+          <!-- ESTADO -->
+          <div class="estado-servicio estado-lavado">
+            <div class="estado-icono">
+              <i class="fa-solid fa-soap"></i>
+            </div>
+
+            <div>
+              <p class="estado-label">ESTADO DEL SERVICIO</p>
+
+              <p id="estado-lavado" class="estado-titulo">Inactivo</p>
+            </div>
+          </div>
+
+          <!-- INFORMACIÓN DEL VEHÍCULO -->
+          <div class="informacion-servicio">
+            <h4>Vehículo</h4>
+
+            <div class="datos-servicio">
+              <div class="dato-servicio">
+                <span>Modelo</span>
+                <strong id="lavado-vehiculo"> </strong>
+              </div>
+
+              <div class="dato-servicio">
+                <span>Patente</span>
+                <strong id="lavado-patente"> </strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- INFORMACIÓN DEL SERVICIO -->
+          <div class="informacion-servicio">
+            <h4>Información del servicio</h4>
+
+            <div class="datos-servicio">
+              <div class="dato-servicio">
+                <span>Solicitud</span>
+                <strong id="lavado-fecha"> </strong>
+              </div>
+
+              <div class="dato-servicio">
+                <span>Precio</span>
+                <strong id="lavado-precio"> </strong>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="modal-card-foot is-justify-content-flex-end">
+          <button
+            id="cerrar-modal-ver-lavado-footer"
+            class="button btn-modal-cancelar"
+          >
+            Cerrar
+          </button>
+        </footer>
+      </div>
+    </div>
+
+    <!-- MODAL VER VALET -->
+    <div id="modal-ver-valet" class="modal">
+      <div class="modal-background"></div>
+
+      <div class="modal-card">
+        <!-- HEADER -->
+        <header class="modal-card-head">
+          <div>
+            <p class="modal-card-title">
+              <i class="fa-solid fa-bell-concierge"></i>
+              Valet
+            </p>
+
+            <p class="modal-subtitulo">Traslado de tu vehículo</p>
+          </div>
+
+          <button
+            id="cerrar-modal-ver-valet"
+            class="delete"
+            aria-label="close"
+          ></button>
+        </header>
+
+        <!-- BODY -->
+        <section class="modal-card-body">
+          <!-- ESTADO -->
+          <div class="estado-servicio estado-valet">
+            <div class="estado-icono">
+              <i class="fa-solid fa-car"></i>
+            </div>
+
+            <div>
+              <p class="estado-label">ESTADO DEL SERVICIO</p>
+
+              <p id="estado-valet" class="estado-titulo">Inactivo</p>
+
+              <p id="descripcion-estado-valet" class="estado-descripcion"></p>
+            </div>
+          </div>
+
+          <!-- VEHÍCULO -->
+          <div class="informacion-servicio">
+            <h4>Vehículo</h4>
+
+            <div class="datos-servicio">
+              <div class="dato-servicio">
+                <span>Marca y modelo</span>
+                <strong id="valet-vehiculo"> </strong>
+              </div>
+
+              <div class="dato-servicio">
+                <span>Patente</span>
+                <strong id="valet-patente"> </strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- DESTINO -->
+          <div class="informacion-servicio">
+            <h4>Destino</h4>
+
+            <div class="destino-valet">
+              <i class="fa-solid fa-location-dot"></i>
+
+              <span id="valet-destino"> </span>
+            </div>
+          </div>
+
+          <!-- PRECIO / COMPENSACIÓN -->
+          <div class="compensacion-valet">
+            <div>
+              <span id="valet-monto-label">Precio</span>
+
+              <small id="valet-monto-subtitulo"
+                >Por el servicio de traslado</small
+              >
+            </div>
+
+            <strong id="valet-precio"></strong>
+          </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="modal-card-foot is-justify-content-flex-end">
+          <button
+            id="cerrar-modal-ver-valet-footer"
+            class="button btn-modal-cancelar"
+          >
+            Cerrar
           </button>
         </footer>
       </div>
