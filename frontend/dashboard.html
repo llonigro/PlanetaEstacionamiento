@@ -102,6 +102,10 @@
 
                 <div class="datos-vehiculo">
                   <div class="dato">
+                    <span>Marca</span>
+                    <strong id="marca-vehiculo">[Marca]</strong>
+                  </div>
+                  <div class="dato">
                     <span>Modelo</span>
                     <strong id="modelo-vehiculo-2">[Modelo]</strong>
                   </div>
@@ -193,8 +197,8 @@
 
                 <div class="servicio-pie">
                   <div class="precio-servicio">
-                    <span class="monto">[ej: $2.500]</span>
-                    <span class="etiqueta-precio">por servicio</span>
+                    <span class="monto">$2.500</span>
+                    <span class="etiqueta-precio">base por servicio</span>
                   </div>
                   <button
                     class="btn-accion-servicio"
@@ -228,8 +232,8 @@
 
                 <div class="servicio-pie">
                   <div class="precio-servicio">
-                    <span class="monto">[ej: $2.500]</span>
-                    <span class="etiqueta-precio">por servicio</span>
+                    <span class="monto">$2.500</span>
+                    <span class="etiqueta-precio">base por servicio</span>
                   </div>
                   <button
                     class="btn-accion-servicio btn-valet"
@@ -647,7 +651,7 @@
           </div>
 
           <button
-            id="cerrar-modal-lavado"
+            id="cerrar-modal-ver-lavado"
             class="delete"
             aria-label="close"
           ></button>
@@ -709,7 +713,12 @@
 
         <!-- FOOTER -->
         <footer class="modal-card-foot is-justify-content-flex-end">
-          <button id="cerrar-modal-lavado-footer" class="button">Cerrar</button>
+          <button
+            id="cerrar-modal-ver-lavado-footer"
+            class="button btn-modal-cancelar"
+          >
+            Cerrar
+          </button>
         </footer>
       </div>
     </div>
@@ -731,7 +740,7 @@
           </div>
 
           <button
-            id="cerrar-modal-valet"
+            id="cerrar-modal-ver-valet"
             class="delete"
             aria-label="close"
           ></button>
@@ -856,7 +865,9 @@
 
         <!-- FOOTER -->
         <footer class="modal-card-foot is-justify-content-flex-end">
-          <button id="cerrar-modal-valet-footer" class="button">Cerrar</button>
+          <button id="cerrar-modal-ver-valet-footer" class="button">
+            Cerrar
+          </button>
         </footer>
       </div>
     </div>

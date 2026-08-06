@@ -636,6 +636,7 @@
 }
 
 .modal-card-head .delete {
+  margin-left: auto;
   background-color: rgba(255, 255, 255, 0.15);
 
   transition:
@@ -779,6 +780,10 @@
   background-color: white;
 
   border: 1px solid rgba(0, 0, 0, 0.15);
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    transform 0.2s;
 }
 
 .btn-modal-cancelar:hover {

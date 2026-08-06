@@ -41,12 +41,28 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Listeners de confirmación de servicios
   const btnConfirmarLavado = document.getElementById("confirmar-lavado");
+
   if (btnConfirmarLavado) {
     btnConfirmarLavado.addEventListener("click", () => {
       serviciosConfirmados.lavado = true;
+
       guardarServiciosConfirmadosEnLocalStorage();
+
       document.getElementById("modal-lavado").classList.remove("is-active");
+
+      actualizarEstadoLavado();
+
       actualizarBloqueosSegunEstado();
+    });
+  }
+
+  const btnVerLavado = document.getElementById("btn-ver-lavado");
+
+  if (btnVerLavado) {
+    btnVerLavado.addEventListener("click", () => {
+      actualizarDatosModalLavado();
+
+      document.getElementById("modal-ver-lavado").classList.add("is-active");
     });
   }
 
@@ -92,21 +108,6 @@ async function obtenerDatosUsuarioActual() {
     console.error("Error al obtener la sesión:", error);
   }
 }
-
-//async function cerrarSesion() {
-//  try {
-//    const respuesta = await fetch(`${API_URL}/logout`, {
-//      method: "POST",
-//      credentials: "include",
-//    });
-//
-//    if (respuesta.ok) {
-//      window.location.href = "inicio.html";
-//    }
-//  } catch (error) {
-//    console.error("Error al cerrar sesión", error);
-//  }
-//}
 
 // GESTIÓN DE MODALES
 
@@ -937,5 +938,53 @@ function actualizarBloqueosSegunEstado() {
         tarjeta.classList.toggle("servicio-bloqueado", !habilitado);
       }
     });
+  }
+}
+
+function actualizarEstadoLavado() {
+  const btnReservar = document.getElementById("btn-reservar-lavado");
+  const btnVer = document.getElementById("btn-ver-lavado");
+
+  if (!btnReservar || !btnVer) return;
+
+  if (serviciosConfirmados.lavado) {
+    btnReservar.disabled = true;
+    btnReservar.classList.add("inactivo");
+
+    btnVer.disabled = false;
+    btnVer.classList.remove("inactivo");
+  } else {
+    btnReservar.disabled = false;
+    btnReservar.classList.remove("inactivo");
+
+    btnVer.disabled = true;
+    btnVer.classList.add("inactivo");
+  }
+}
+
+function actualizarDatosModalLavado() {
+  const vehiculo = obtenerVehiculoDesdeVista();
+
+  const vehiculoElemento = document.getElementById("lavado-vehiculo");
+  const patenteElemento = document.getElementById("lavado-patente");
+  const estadoElemento = document.getElementById("estado-lavado");
+  const descripcionElemento = document.getElementById(
+    "descripcion-estado-lavado",
+  );
+
+  if (vehiculoElemento) {
+    vehiculoElemento.textContent = `${vehiculo.marca} ${vehiculo.modelo}`;
+  }
+
+  if (patenteElemento) {
+    patenteElemento.textContent = vehiculo.patente;
+  }
+
+  if (estadoElemento) {
+    estadoElemento.textContent = "Reservado";
+  }
+
+  if (descripcionElemento) {
+    descripcionElemento.textContent = "Tu lavado fue reservado correctamente.";
   }
 }
