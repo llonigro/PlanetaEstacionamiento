@@ -42,10 +42,6 @@ const validarActualizarServicio = [
         .trim().escape()
         .toLowerCase() 
         .isIn(['en espera ', 'en proceso','finalizado' ]).withMessage('El estado debe ser "en espera" , "en proceso" o "finalizado"'),
-    body('notificado_cliente')
-        .optional({ checkFalsy: true })
-        .trim().escape()
-        .isBoolean().withMessage('El valor de notificación debe ser true o false'),
     verificarErrores
 ];
 

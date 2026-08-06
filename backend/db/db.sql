@@ -83,6 +83,8 @@ CREATE TABLE servicios(
     FOREIGN KEY(servicio_id) REFERENCES catalogo_servicios(id)
 );
 
+ALTER TABLE servicios
+DROP COLUMN notificado_cliente;
 
 -- ==========================================
 -- DATOS DE PRUEBA (INSERCIONES)

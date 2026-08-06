@@ -34,8 +34,7 @@ const actualizarParcial = async (id, datos) => {
     // Consulta dinámica para actualizar solo lo que se envía (PATCH)
     const result = await pool.query(
         `UPDATE servicios SET 
-            estado = COALESCE($1, estado), 
-            notificado_cliente = COALESCE($2, notificado_cliente) 
+            estado = COALESCE($1, estado)
          WHERE id = $3 RETURNING *`,
         [estado, notificado_cliente, id]
     );
