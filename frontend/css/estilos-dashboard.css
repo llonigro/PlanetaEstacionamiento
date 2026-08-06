@@ -1309,3 +1309,19 @@
     justify-content: flex-start;
   }
 }
+
+/* Bloqueo visual completo para la tarjeta reservada */
+.servicios-tarjetas.servicio-reservado {
+  opacity: 0.5 !important;
+  filter: grayscale(100%) !important;
+  cursor: not-allowed !important;
+  pointer-events: none !important; /* Desactiva todos los clics e interacciones */
+}
+
+/* Cambia la apariencia del botón */
+.servicios-tarjetas.servicio-reservado .btn-accion-servicio {
+  background-color: #dbdbdb !important;
+  color: #7a7a7a !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}

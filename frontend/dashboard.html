@@ -171,7 +171,7 @@
         </section>
 
         <!-- SECCIÓN: Servicios y sus modales -->
-        <section class="seccion-servicios seccion-card">
+        <section class="seccion-servicios seccion-card" id="seccion-servicios">
           <div class="servicios">
             <h2 class="title is-4 titulo-turquesa">SERVICIOS DESTACADOS</h2>
 
@@ -180,7 +180,7 @@
               <div
                 class="servicios-tarjetas"
                 data-modal="modal-ver-lavado"
-                data-activo="true"
+                data-servicio-id="1"
               >
                 <div class="servicio-contenido-principal">
                   <div class="imagen-servicio">
@@ -197,7 +197,7 @@
 
                 <div class="servicio-pie">
                   <div class="precio-servicio">
-                    <span class="monto">$2.500</span>
+                    <span class="monto" id="precio-ver-lavado">$2.500</span>
                     <span class="etiqueta-precio">base por servicio</span>
                   </div>
                   <button
@@ -215,7 +215,7 @@
               <div
                 class="servicios-tarjetas tarjeta-valet"
                 data-modal="modal-ver-valet"
-                data-activo="false"
+                data-servicio-id="2"
               >
                 <div class="servicio-contenido-principal">
                   <div class="imagen-servicio imagen-valet">
@@ -232,7 +232,7 @@
 
                 <div class="servicio-pie">
                   <div class="precio-servicio">
-                    <span class="monto">$2.500</span>
+                    <span class="monto" id="precio-reservar-valet">$2.500</span>
                     <span class="etiqueta-precio">base por servicio</span>
                   </div>
                   <button
@@ -316,7 +316,7 @@
                 id="input-patente"
                 class="input"
                 type="text"
-                placeholder="Ej. AB123CD o ABC123"
+                placeholder="Ej. ABC123"
                 style="text-transform: uppercase"
                 required
               />
@@ -376,24 +376,12 @@
 
         <section class="modal-card-body">
           <p class="modal-descripcion">
-            Seleccioná cuándo querés realizar el lavado.
+            ¿Deseás solicitar el servicio de lavado para tu vehículo por
+            <strong id="precio-reservar-lavado">$2.500</strong>?
           </p>
-
-          <div class="field">
-            <label class="label">Fecha</label>
-
-            <div class="control">
-              <input id="fecha-lavado" class="input" type="date" />
-            </div>
-          </div>
-
-          <div class="field">
-            <label class="label">Horario</label>
-
-            <div class="control">
-              <input id="hora-lavado" class="input" type="time" />
-            </div>
-          </div>
+          <p class="help">
+            El personal de la cochera iniciará el servicio a la brevedad.
+          </p>
         </section>
 
         <footer class="modal-card-foot">
@@ -669,10 +657,6 @@
               <p class="estado-label">ESTADO DEL SERVICIO</p>
 
               <p id="estado-lavado" class="estado-titulo">En proceso</p>
-
-              <p id="descripcion-estado-lavado" class="estado-descripcion">
-                Tu vehículo se encuentra siendo lavado.
-              </p>
             </div>
           </div>
 
@@ -682,7 +666,7 @@
 
             <div class="datos-servicio">
               <div class="dato-servicio">
-                <span>Marca y modelo</span>
+                <span>Modelo</span>
                 <strong id="lavado-vehiculo"> Toyota Corolla </strong>
               </div>
 
