@@ -17,8 +17,12 @@ const VerUsuarios = async (req, res) => {
 
     res.status(200).json(usuarios);
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "Algo salió mal en el servidor" });
+    console.error("Error en VerUsuarios:", error.stack || error);
+    return res.status(500).json({
+      message: "Algo salió mal en el servidor",
+      error: error.message,
+      detail: error.stack,
+    });
   }
 };
 
@@ -32,8 +36,12 @@ const VerUnicoUsuario = async (req, res) => {
 
     res.json(usuario);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Algo salió mal en el servidor" });
+    console.error("Error en VerUnicoUsuario:", error.stack || error);
+    res.status(500).json({
+      message: "Algo salió mal en el servidor",
+      error: error.message,
+      detail: error.stack,
+    });
   }
 };
 
