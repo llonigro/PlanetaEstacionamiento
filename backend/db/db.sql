@@ -86,13 +86,10 @@ CREATE TABLE servicios(
     FOREIGN KEY(usuario_valet_id) REFERENCES usuarios(id)
 );
 
-<<<<<<< HEAD
-=======
 INSERT INTO catalogo_servicios (nombre, descripcion, precio_base)
 VALUES ('Valet', 'Servicio de valet parking', 5000.00),
 ('Lavado', 'Lavado completo del vehículo', 2500.00);
 
->>>>>>> 5f52598892e023690cc382113d892537934f3b7b
 ALTER TABLE servicios
 DROP COLUMN notificado_cliente;
 

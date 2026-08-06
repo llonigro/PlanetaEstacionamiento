@@ -53,15 +53,6 @@ const validarCrearServicio = [
 ];
 
 const validarActualizarServicio = [
-<<<<<<< HEAD
-    
-    body('estado')
-        .optional({ checkFalsy: true })
-        .trim().escape()
-        .toLowerCase() 
-        .isIn(['en espera ', 'en proceso','finalizado' ]).withMessage('El estado debe ser "en espera" , "en proceso" o "finalizado"'),
-    verificarErrores
-=======
   body("estado")
     .optional({ checkFalsy: true })
     .trim()
@@ -86,7 +77,6 @@ const validarActualizarServicio = [
     .isLength({ min: 5 })
     .withMessage("La dirección de entrega debe tener al menos 5 caracteres"),
   verificarErrores,
->>>>>>> 5f52598892e023690cc382113d892537934f3b7b
 ];
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
