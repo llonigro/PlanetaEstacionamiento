@@ -446,6 +446,8 @@ async function verRegistro(id) {
       vehiculo.marca || "Error al obtener marca";
     document.getElementById("detalle-modelo").textContent =
       vehiculo.modelo || "Error al obtener modelo";
+    document.getElementById("detalle-permite-valet").textContent =
+      vehiculo.permite_valet ? "Sí" : "No";
 
     document.getElementById("detalle-cochera").textContent =
       registro.cochera_id;

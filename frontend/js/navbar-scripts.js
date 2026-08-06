@@ -98,21 +98,34 @@ function inicializarModalRegistro() {
   const boton = document.getElementById("btn-comenzar");
   const modal = document.getElementById("menu-registro");
 
+  if (!boton || !modal) {
+    return;
+  }
+
   boton.addEventListener("click", () => {
     modal.classList.add("is-active");
   });
 
-  modal.querySelector(".modal-background").addEventListener("click", () => {
-    modal.classList.remove("is-active");
-  });
+  const modalBackground = modal.querySelector(".modal-background");
+  if (modalBackground) {
+    modalBackground.addEventListener("click", () => {
+      modal.classList.remove("is-active");
+    });
+  }
 
-  modal.querySelector(".modal-close").addEventListener("click", () => {
-    modal.classList.remove("is-active");
-  });
+  const modalClose = modal.querySelector(".modal-close");
+  if (modalClose) {
+    modalClose.addEventListener("click", () => {
+      modal.classList.remove("is-active");
+    });
+  }
 
-  modal.querySelector(".js-modal-close").addEventListener("click", () => {
-    modal.classList.remove("is-active");
-  });
+  const modalCancel = modal.querySelector(".js-modal-close");
+  if (modalCancel) {
+    modalCancel.addEventListener("click", () => {
+      modal.classList.remove("is-active");
+    });
+  }
 }
 
 async function cargarNavbar() {

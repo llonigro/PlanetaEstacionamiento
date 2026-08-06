@@ -150,21 +150,21 @@
                 <i class="fas fa-droplet" style="color: lightskyblue"></i>
                 <span>Reservar lavado</span>
               </button>
-              <button
+              <!-- <button
                 id="reportar-danio"
                 class="accion"
                 data-modal="modal-danio"
               >
                 <i class="fas fa-warning" style="color: lightcoral"></i>
                 <span>Reportar daño</span>
-              </button>
+              </button> -->
               <button
                 id="solicitar-valet"
                 class="accion"
                 data-modal="modal-valet"
               >
                 <i class="fas fa-concierge-bell" style="color: orange"></i>
-                <span>Solicitar valet</span>
+                <span>Solicitar traslado</span>
               </button>
             </div>
           </article>
@@ -223,7 +223,7 @@
                   </div>
 
                   <div class="titulo-servicio">
-                    <h3>Valet</h3>
+                    <h3>Traslado</h3>
                     <p>
                       Solicitá el traslado de tu vehículo hasta tu ubicación.
                     </p>
@@ -407,7 +407,7 @@
     </div>
 
     <!-- MODAL: Reportar daño -->
-    <div id="modal-danio" class="modal">
+    <!-- <div id="modal-danio" class="modal">
       <div class="modal-background"></div>
 
       <div class="modal-card">
@@ -460,7 +460,7 @@
           </button>
         </footer>
       </div>
-    </div>
+    </div> -->
 
     <!-- MODAL: Solicitar Valet -->
     <div id="modal-valet" class="modal">
@@ -775,15 +775,17 @@
             </div>
           </div>
 
-          <!-- PRECIO -->
+          <!-- PRECIO / COMPENSACIÓN -->
           <div class="compensacion-valet">
             <div>
-              <span>Compensación</span>
+              <span id="valet-monto-label">Precio</span>
 
-              <small> Por realizar el traslado </small>
+              <small id="valet-monto-subtitulo"
+                >Por el servicio de traslado</small
+              >
             </div>
 
-            <strong id="valet-precio"> </strong>
+            <strong id="valet-precio"></strong>
           </div>
         </section>
 

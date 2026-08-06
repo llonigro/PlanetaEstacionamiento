@@ -334,6 +334,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  width: 100%;
 
   gap: 1rem;
 
@@ -1233,4 +1234,11 @@
   color: #7a7a7a !important;
   border-color: transparent !important;
   box-shadow: none !important;
+}
+
+/* Estilo para botones deshabilitados */
+.is-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none; /* Impide clics aunque el elemento no sea un <button> */
 }

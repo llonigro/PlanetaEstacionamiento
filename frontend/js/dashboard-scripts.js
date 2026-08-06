@@ -5,8 +5,8 @@ let vehiculoOriginal = null;
 let modoVehiculoFormulario = "editar";
 let catalogoPrecios = {}; // { servicioId: precio } para mostrar en la UI y bloquear servicios reservados
 
-const LAVADO_SERVICIO_ID = 1; // ID del servicio de lavado en la base de datos
-const VALET_SERVICIO_ID = 2; // ID del servicio de valet en la base de datos
+const LAVADO_SERVICIO_ID = 2; // ID del servicio de lavado en la base de datos
+const VALET_SERVICIO_ID = 1; // ID del servicio de valet en la base de datos
 const API_URL = "http://localhost:3000";
 const CAMPOS_VEHICULO = ["marca", "modelo", "color", "patente"];
 
@@ -53,6 +53,22 @@ document.addEventListener("DOMContentLoaded", async () => {
       "click",
       registrarIngresoCochera,
     );
+  }
+  // 1. Intentamos cargar el vehículo desde LocalStorage
+  const tieneVehiculo = cargarVehiculoDesdeLocalStorage();
+
+  // 2. Si se cargó correctamente, asignamos el vehiculoId y verificamos la API
+  if (tieneVehiculo) {
+    const vehiculoGuardado = JSON.parse(localStorage.getItem("vehiculo_datos"));
+
+    if (vehiculoGuardado && vehiculoGuardado.id) {
+      vehiculoId = Number(vehiculoGuardado.id);
+
+      // 3. Consultamos el estado a la API para bloquear botones si hay un servicio activo
+      if (typeof verificarEstadoServiciosYBloquear === "function") {
+        await verificarEstadoServiciosYBloquear();
+      }
+    }
   }
 
   inicializarBotonCocheras();
@@ -698,6 +714,13 @@ function inicializarBloqueoServicios() {
   );
 }
 
+// Cuando el usuario selecciona o cambia de vehículo:
+function seleccionarVehiculo(id) {
+  vehiculoId = id;
+  localStorage.setItem("vehiculoSeleccionadoId", id); // <--- Guardar en storage
+  verificarEstadoServiciosYBloquear();
+}
+
 async function actualizarBloqueoServiciosCliente() {
   if (!vehiculoId) return;
 
@@ -911,7 +934,7 @@ function inicializarModalLavado() {
     if (!vehiculoId) return;
 
     // Tomamos el precio del objeto global
-    const precioFinal = catalogoPrecios[1] || 2500;
+    const precioFinal = catalogoPrecios[LAVADO_SERVICIO_ID] || 2500;
 
     const datosReserva = {
       servicio_id: LAVADO_SERVICIO_ID,
@@ -929,6 +952,7 @@ function inicializarModalLavado() {
 
       if (res.ok) {
         alert("¡Reserva de lavado realizada con éxito!");
+        verificarEstadoServiciosYBloquear();
         cerrarModalLavado();
 
         if (typeof actualizarEstadoServiciosDisponibles === "function") {
@@ -964,12 +988,12 @@ async function cargarCatalogoServicios() {
         catalogoPrecios[id] = Number(precio);
       });
 
-      // Tomamos el precio del lavado (ID: 1) o 2500 por defecto
-      const precioLavado = catalogoPrecios[1] || 2500;
+      // Tomamos el precio del lavado o 2500 por defecto
+      const precioLavado = catalogoPrecios[LAVADO_SERVICIO_ID] || 2500;
       const precioFormateado = `$${precioLavado.toLocaleString("es-AR")}`;
 
-      // Tomamos el precio del valet (ID: 2) o 5000 por defecto
-      const precioValet = catalogoPrecios[2] || 5000;
+      // Tomamos el precio del valet o 5000 por defecto
+      const precioValet = catalogoPrecios[VALET_SERVICIO_ID] || 5000;
       const precioValetFormateado = `$${precioValet.toLocaleString("es-AR")}`;
 
       // Actualizamos el precio en "Ver lavado" (Tarjeta/Modal principal)
@@ -1094,7 +1118,8 @@ async function cargarDatosModalVerLavado() {
     }
 
     if (elemPrecio) {
-      const precio = reserva.precio_final ?? catalogoPrecios[1] ?? 2500;
+      const precio =
+        reserva.precio_final ?? catalogoPrecios[LAVADO_SERVICIO_ID] ?? 2500;
       elemPrecio.textContent = `$${Number(precio).toLocaleString("es-AR")}`;
     }
   } catch (error) {
@@ -1142,8 +1167,8 @@ function inicializarModalValet() {
       return;
     }
 
-    // Tomamos el precio del catálogo (ID: 2) o fallback a 5000
-    const precioFinal = catalogoPrecios[2] || 5000;
+    // Tomamos el precio del catálogo o fallback a 5000
+    const precioFinal = catalogoPrecios[VALET_SERVICIO_ID] || 5000;
 
     const datosReserva = {
       servicio_id: VALET_SERVICIO_ID,
@@ -1164,6 +1189,7 @@ function inicializarModalValet() {
       if (res.ok) {
         alert("¡Solicitud de Valet realizada con éxito!");
         if (inputDireccion) inputDireccion.value = ""; // Limpia el input
+        verificarEstadoServiciosYBloquear();
         cerrarModalValet();
 
         if (typeof actualizarEstadoServiciosDisponibles === "function") {
@@ -1276,32 +1302,80 @@ async function cargarDatosModalVerValet() {
       elemDestino.textContent =
         reserva.direccion_entrega || "Sin dirección registrada";
 
-    // 4. LÓGICA PRECIO VS COMPENSACIÓN
+    // --- DENTRO DE cargarDatosModalVerValet ---
+
     const elemLabelMonto = document.getElementById("valet-monto-label");
     const elemSubtituloMonto = document.getElementById("valet-monto-subtitulo");
     const elemPrecio = document.getElementById("valet-precio");
 
-    // Verificamos si el usuario actual es el asignado como valet (usuario_valet_id)
-    const esPrestador =
-      window.usuarioLogueadoId &&
-      Number(reserva.usuario_valet_id) === Number(window.usuarioLogueadoId);
-
-    // Si es el prestador dice "Compensación", si es el cliente dice "Precio"
+    // En la vista del cliente que solicita el servicio, SIEMPRE se muestra como Precio
     if (elemLabelMonto) {
-      elemLabelMonto.textContent = esPrestador ? "Compensación" : "Precio";
+      elemLabelMonto.textContent = "Precio";
     }
 
     if (elemSubtituloMonto) {
-      elemSubtituloMonto.textContent = esPrestador
-        ? "Monto a recibir por el traslado"
-        : "Por el servicio de traslado";
+      elemSubtituloMonto.textContent = "Por el servicio de traslado";
     }
 
     if (elemPrecio) {
-      const precio = reserva.precio_final ?? catalogoPrecios[2] ?? 5000;
+      const precio = reserva
+        ? (reserva.precio_final ?? catalogoPrecios[VALET_SERVICIO_ID] ?? 5000)
+        : 0;
+
       elemPrecio.textContent = `$${Number(precio).toLocaleString("es-AR")}`;
     }
   } catch (error) {
     console.error("Error al cargar datos en modal ver valet:", error);
+  }
+}
+
+function actualizarEstadoBotonesAccion(hayServicioEnCurso) {
+  // Seleccionamos todos los botones de acción rápida (por clase o ID)
+  const botones = document.querySelectorAll(
+    ".btn-accion-rapida, #solicitar-valet, #reservar-lavado",
+  );
+
+  botones.forEach((btn) => {
+    btn.disabled = hayServicioEnCurso;
+
+    if (hayServicioEnCurso) {
+      btn.classList.add("disabled", "is-disabled");
+    } else {
+      btn.classList.remove("disabled", "is-disabled");
+      btn.removeAttribute("title");
+    }
+  });
+}
+
+async function verificarEstadoServiciosYBloquear() {
+  if (!vehiculoId) return;
+
+  try {
+    const res = await fetch(`${API_URL}/servicios`, { credentials: "include" });
+    if (!res.ok) return;
+
+    const data = await res.json();
+    const lista = Array.isArray(data) ? data : [];
+
+    // Buscamos si existe CUALQUIER servicio activo para este auto
+    const servicioEnCurso = lista.find((s) => {
+      const mismoVehiculo = Number(s.vehiculo_id) === Number(vehiculoId);
+
+      // Normalizamos el string limpiando espacios y pasándolo a minúsculas
+      const estadoLimpio = String(s.estado || "")
+        .trim()
+        .toLowerCase();
+
+      // Si NO es ni finalizado ni cancelado, el servicio sigue activo
+      const estaActivo =
+        estadoLimpio !== "finalizado" && estadoLimpio !== "cancelado";
+
+      return mismoVehiculo && estaActivo;
+    });
+
+    // Pasamos true si hay un servicio en curso (bloquea), o false si está todo libre (desbloquea)
+    actualizarEstadoBotonesAccion(Boolean(servicioEnCurso));
+  } catch (error) {
+    console.error("Error al verificar estado de botones:", error);
   }
 }
