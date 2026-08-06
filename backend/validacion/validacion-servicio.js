@@ -39,6 +39,16 @@ const validarCrearServicio = [
     .withMessage("El precio final es obligatorio")
     .isFloat({ min: 0 })
     .withMessage("El precio debe ser un número positivo"),
+  body("usuario_valet_id")
+    .optional({ checkFalsy: true })
+    .isInt({ min: 1 })
+    .withMessage("El ID del usuario valet debe ser un número entero"),
+  body("direccion_entrega")
+    .optional({ checkFalsy: true })
+    .trim()
+    .escape()
+    .isLength({ min: 5 })
+    .withMessage("La dirección de entrega debe tener al menos 5 caracteres"),
   verificarErrores,
 ];
 
@@ -56,6 +66,16 @@ const validarActualizarServicio = [
     .optional({ checkFalsy: true })
     .isNumeric()
     .withMessage("El precio final debe ser un número positivo"),
+  body("usuario_valet_id")
+    .optional({ checkFalsy: true })
+    .isInt({ min: 1 })
+    .withMessage("El ID del usuario valet debe ser un número entero"),
+  body("direccion_entrega")
+    .optional({ checkFalsy: true })
+    .trim()
+    .escape()
+    .isLength({ min: 5 })
+    .withMessage("La dirección de entrega debe tener al menos 5 caracteres"),
   verificarErrores,
 ];
 

@@ -225,14 +225,14 @@
                   <div class="titulo-servicio">
                     <h3>Valet</h3>
                     <p>
-                      Olvidate de buscar lugar. Nosotros estacionamos por vos.
+                      Solicitá el traslado de tu vehículo hasta tu ubicación.
                     </p>
                   </div>
                 </div>
 
                 <div class="servicio-pie">
                   <div class="precio-servicio">
-                    <span class="monto" id="precio-reservar-valet">$2.500</span>
+                    <span class="monto" id="precio-ver-valet">$2.500</span>
                     <span class="etiqueta-precio">base por servicio</span>
                   </div>
                   <button
@@ -741,52 +741,9 @@
             <div>
               <p class="estado-label">ESTADO DEL SERVICIO</p>
 
-              <p id="estado-valet" class="estado-titulo">En camino</p>
+              <p id="estado-valet" class="estado-titulo">Inactivo</p>
 
-              <p id="descripcion-estado-valet" class="estado-descripcion">
-                Tu vehículo está siendo trasladado hasta tu ubicación.
-              </p>
-            </div>
-          </div>
-
-          <!-- PROGRESO -->
-          <div class="progreso-valet">
-            <div class="paso completado">
-              <span class="paso-circulo">
-                <i class="fa-solid fa-check"></i>
-              </span>
-
-              <span>Solicitud</span>
-            </div>
-
-            <div class="linea-progreso"></div>
-
-            <div class="paso completado">
-              <span class="paso-circulo">
-                <i class="fa-solid fa-check"></i>
-              </span>
-
-              <span>Asignado</span>
-            </div>
-
-            <div class="linea-progreso"></div>
-
-            <div class="paso activo">
-              <span class="paso-circulo">
-                <i class="fa-solid fa-car"></i>
-              </span>
-
-              <span>En camino</span>
-            </div>
-
-            <div class="linea-progreso"></div>
-
-            <div class="paso">
-              <span class="paso-circulo">
-                <i class="fa-solid fa-flag-checkered"></i>
-              </span>
-
-              <span>Entregado</span>
+              <p id="descripcion-estado-valet" class="estado-descripcion"></p>
             </div>
           </div>
 
@@ -797,12 +754,12 @@
             <div class="datos-servicio">
               <div class="dato-servicio">
                 <span>Marca y modelo</span>
-                <strong id="valet-vehiculo"> Toyota Corolla </strong>
+                <strong id="valet-vehiculo"> </strong>
               </div>
 
               <div class="dato-servicio">
                 <span>Patente</span>
-                <strong id="valet-patente"> ABC123 </strong>
+                <strong id="valet-patente"> </strong>
               </div>
             </div>
           </div>
@@ -814,24 +771,7 @@
             <div class="destino-valet">
               <i class="fa-solid fa-location-dot"></i>
 
-              <span id="valet-destino"> Av. Corrientes 1234 </span>
-            </div>
-          </div>
-
-          <!-- PERSONA ASIGNADA -->
-          <div id="valet-persona-contenedor" class="informacion-servicio">
-            <h4>Persona asignada</h4>
-
-            <div class="persona-valet">
-              <div class="persona-icono">
-                <i class="fa-solid fa-user"></i>
-              </div>
-
-              <div>
-                <strong id="valet-persona"> Santiago Quintana </strong>
-
-                <p>Realiza el traslado de tu vehículo.</p>
-              </div>
+              <span id="valet-destino"> </span>
             </div>
           </div>
 
@@ -843,13 +783,16 @@
               <small> Por realizar el traslado </small>
             </div>
 
-            <strong id="valet-precio"> $1.500 </strong>
+            <strong id="valet-precio"> </strong>
           </div>
         </section>
 
         <!-- FOOTER -->
         <footer class="modal-card-foot is-justify-content-flex-end">
-          <button id="cerrar-modal-ver-valet-footer" class="button">
+          <button
+            id="cerrar-modal-ver-valet-footer"
+            class="button btn-modal-cancelar"
+          >
             Cerrar
           </button>
         </footer>

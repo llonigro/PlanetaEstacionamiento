@@ -5,6 +5,8 @@ let vehiculoOriginal = null;
 let modoVehiculoFormulario = "editar";
 let catalogoPrecios = {}; // { servicioId: precio } para mostrar en la UI y bloquear servicios reservados
 
+const LAVADO_SERVICIO_ID = 1; // ID del servicio de lavado en la base de datos
+const VALET_SERVICIO_ID = 2; // ID del servicio de valet en la base de datos
 const API_URL = "http://localhost:3000";
 const CAMPOS_VEHICULO = ["marca", "modelo", "color", "patente"];
 
@@ -15,8 +17,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   inicializarModales();
   inicializarModalLavado();
-  // inicializarModalValet();
   inicializarModalVerLavado();
+  inicializarModalValet();
+  inicializarModalVerValet();
   inicializarBloqueoAccionesRapidas();
   inicializarBotonCerrarSesion();
 
@@ -314,9 +317,6 @@ function cargarVehiculoDesdeLocalStorage() {
     }
 
     actualizarSeccionVehiculo(normalizarVehiculo(vehiculo));
-
-    // No desmontamos el bloqueo del contenedor aquí: el bloqueo depende
-    // de si el vehículo está realmente dentro de una cochera (vehiculoEnCochera).
 
     return true;
   } catch (e) {
@@ -914,7 +914,7 @@ function inicializarModalLavado() {
     const precioFinal = catalogoPrecios[1] || 2500;
 
     const datosReserva = {
-      servicio_id: 1,
+      servicio_id: LAVADO_SERVICIO_ID,
       vehiculo_id: vehiculoId,
       precio_final: precioFinal,
     };
@@ -968,18 +968,35 @@ async function cargarCatalogoServicios() {
       const precioLavado = catalogoPrecios[1] || 2500;
       const precioFormateado = `$${precioLavado.toLocaleString("es-AR")}`;
 
+      // Tomamos el precio del valet (ID: 2) o 5000 por defecto
+      const precioValet = catalogoPrecios[2] || 5000;
+      const precioValetFormateado = `$${precioValet.toLocaleString("es-AR")}`;
+
       // Actualizamos el precio en "Ver lavado" (Tarjeta/Modal principal)
       const elemVer = document.getElementById("precio-ver-lavado");
       if (elemVer) elemVer.textContent = precioFormateado;
 
+      // Actualizamos el precio en "Ver valet" (Tarjeta/Modal principal)
+      const elemVerValet = document.getElementById("precio-ver-valet");
+      if (elemVerValet) elemVerValet.textContent = precioValetFormateado;
+
       // Actualizamos el precio en "Reservar lavado" (Modal de confirmación)
       const elemReservar = document.getElementById("precio-reservar-lavado");
       if (elemReservar) elemReservar.textContent = precioFormateado;
+
+      // Actualizamos el precio en "Reservar valet" (Modal de confirmación)
+      const elemReservarValet = document.getElementById(
+        "precio-reservar-valet",
+      );
+      if (elemReservarValet)
+        elemReservarValet.textContent = precioValetFormateado;
     }
   } catch (e) {
     console.warn("Error al cargar catálogo de servicios:", e);
   }
 }
+
+// VER LAVADO
 
 async function abrirModalVerLavado() {
   await cargarDatosModalVerLavado();
@@ -1024,7 +1041,7 @@ async function cargarDatosModalVerLavado() {
     const reserva = lista.find((s) => {
       return (
         Number(s.vehiculo_id) === Number(vehiculoId) &&
-        Number(s.servicio_id) === 1 &&
+        Number(s.servicio_id) === LAVADO_SERVICIO_ID &&
         s.estado !== "Cancelado"
       );
     });
@@ -1050,7 +1067,7 @@ async function cargarDatosModalVerLavado() {
       }
     }
 
-    // 3. DATOS DEL VEHÍCULO (extraídos de los elementos ya presentes en tu HTML/pantalla)
+    // 3. DATOS DEL VEHÍCULO (extraido de los elementos del HTML)
     const vehiculoTexto =
       document.getElementById("modelo-vehiculo")?.textContent ||
       document.getElementById("nombre-vehiculo")?.textContent ||
@@ -1082,5 +1099,209 @@ async function cargarDatosModalVerLavado() {
     }
   } catch (error) {
     console.error("Error al cargar datos en modal ver lavado:", error);
+  }
+}
+// VALET
+
+function abrirModalValet() {
+  const modal = document.getElementById("modal-valet");
+  if (modal) modal.classList.add("is-active");
+}
+
+function cerrarModalValet() {
+  const modal = document.getElementById("modal-valet");
+  if (modal) modal.classList.remove("is-active");
+}
+
+function inicializarModalValet() {
+  const btnAbrir = document.getElementById("solicitar-valet");
+  const btnCerrar = document.getElementById("cerrar-modal-valet");
+  const btnCancelar = document.getElementById("cancelar-valet");
+  const btnConfirmar = document.getElementById("confirmar-valet");
+  const inputDireccion = document.getElementById("ubicacion-valet");
+
+  btnAbrir?.addEventListener("click", () => {
+    if (!vehiculoId) {
+      alert("Debes seleccionar un vehículo primero.");
+      return;
+    }
+    abrirModalValet();
+  });
+
+  btnCerrar?.addEventListener("click", cerrarModalValet);
+  btnCancelar?.addEventListener("click", cerrarModalValet);
+
+  btnConfirmar?.addEventListener("click", async () => {
+    if (!vehiculoId) return;
+
+    // Capturamos la dirección ingresada en el modal (si aplica)
+    const direccion = inputDireccion?.value?.trim() || "";
+
+    if (!direccion) {
+      alert("Por favor, ingresa una dirección de entrega.");
+      return;
+    }
+
+    // Tomamos el precio del catálogo (ID: 2) o fallback a 5000
+    const precioFinal = catalogoPrecios[2] || 5000;
+
+    const datosReserva = {
+      servicio_id: VALET_SERVICIO_ID,
+      vehiculo_id: vehiculoId,
+      usuario_valet_id: window.usuarioLogueadoId,
+      direccion_entrega: direccion,
+      precio_final: precioFinal,
+    };
+
+    try {
+      const res = await fetch(`${API_URL}/servicios`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(datosReserva),
+        credentials: "include",
+      });
+
+      if (res.ok) {
+        alert("¡Solicitud de Valet realizada con éxito!");
+        if (inputDireccion) inputDireccion.value = ""; // Limpia el input
+        cerrarModalValet();
+
+        if (typeof actualizarEstadoServiciosDisponibles === "function") {
+          await actualizarEstadoServiciosDisponibles();
+        }
+      } else {
+        const err = await res.json();
+        const mensajeError = Array.isArray(err)
+          ? err[0]?.msg
+          : err.mensaje || "Error al procesar la solicitud";
+        alert(`Error al solicitar valet: ${mensajeError}`);
+      }
+    } catch (error) {
+      console.error("Error al procesar la reserva de valet:", error);
+    }
+  });
+}
+
+// VER VALET
+async function abrirModalVerValet() {
+  await cargarDatosModalVerValet();
+  const modal = document.getElementById("modal-ver-valet");
+  if (modal) modal.classList.add("is-active");
+}
+
+function cerrarModalVerValet() {
+  const modal = document.getElementById("modal-ver-valet");
+  if (modal) modal.classList.remove("is-active");
+}
+
+function inicializarModalVerValet() {
+  const btnAbrir = document.getElementById("btn-ver-valet");
+
+  // Buscar botones de cierre dentro del mismo modal
+  const modal = document.getElementById("modal-ver-valet");
+  const btnCerrar = modal?.querySelector(".delete, #cerrar-modal-ver-valet");
+  const btnFondo = modal?.querySelector(".modal-background");
+  const btnCancelar = modal?.querySelector(".btn-modal-cancelar");
+
+  // Evento para abrir
+  btnAbrir?.addEventListener("click", abrirModalVerValet);
+
+  // Eventos para cerrar
+  btnCerrar?.addEventListener("click", cerrarModalVerValet);
+  btnFondo?.addEventListener("click", cerrarModalVerValet);
+  btnCancelar?.addEventListener("click", cerrarModalVerValet);
+}
+
+async function cargarDatosModalVerValet() {
+  if (!vehiculoId) return;
+
+  try {
+    const res = await fetch(`${API_URL}/servicios`, { credentials: "include" });
+    if (!res.ok) return;
+
+    const data = await res.json();
+    const lista = Array.isArray(data) ? data : [];
+
+    // 1. Buscamos el servicio activo de Valet para este vehículo
+    const reserva = lista.find((s) => {
+      return (
+        Number(s.vehiculo_id) === Number(vehiculoId) &&
+        Number(s.servicio_id) === VALET_SERVICIO_ID &&
+        s.estado !== "Cancelado"
+      );
+    });
+
+    if (!reserva) return;
+
+    // 2. ESTADO Y DESCRIPCIÓN
+    const estadoTxt = reserva.estado || "En Espera";
+    const elemEstado = document.getElementById("estado-valet");
+    const elemDesc = document.getElementById("descripcion-estado-valet");
+
+    if (elemEstado) elemEstado.textContent = estadoTxt;
+    if (elemDesc) {
+      const estLower = estadoTxt.toLowerCase();
+      if (estLower === "en espera") {
+        elemDesc.textContent =
+          "Tu solicitud de valet fue recibida y está en espera.";
+      } else if (estLower === "en proceso" || estLower === "en camino") {
+        elemDesc.textContent = "Tu vehículo está siendo trasladado.";
+      } else if (estLower === "finalizado") {
+        elemDesc.textContent = "El servicio de traslado fue completado.";
+      } else {
+        elemDesc.textContent = `Estado actual: ${estadoTxt}`;
+      }
+    }
+
+    // 3. DATOS DEL VEHÍCULO Y DESTINO
+    const m = document.getElementById("marca-vehiculo")?.textContent || "";
+    const mod =
+      document.getElementById("modelo-vehiculo-2")?.textContent ||
+      document.getElementById("modelo-vehiculo")?.textContent ||
+      "";
+    const pat =
+      document.getElementById("patente-vehiculo")?.textContent ||
+      document.getElementById("patente-actual")?.textContent ||
+      "---";
+
+    const elemVehiculo = document.getElementById("valet-vehiculo");
+    const elemPatente = document.getElementById("valet-patente");
+    const elemDestino = document.getElementById("valet-destino");
+
+    if (elemVehiculo)
+      elemVehiculo.textContent =
+        `${m} ${mod}`.trim() || "Vehículo seleccionado";
+    if (elemPatente) elemPatente.textContent = pat;
+    if (elemDestino)
+      elemDestino.textContent =
+        reserva.direccion_entrega || "Sin dirección registrada";
+
+    // 4. LÓGICA PRECIO VS COMPENSACIÓN
+    const elemLabelMonto = document.getElementById("valet-monto-label");
+    const elemSubtituloMonto = document.getElementById("valet-monto-subtitulo");
+    const elemPrecio = document.getElementById("valet-precio");
+
+    // Verificamos si el usuario actual es el asignado como valet (usuario_valet_id)
+    const esPrestador =
+      window.usuarioLogueadoId &&
+      Number(reserva.usuario_valet_id) === Number(window.usuarioLogueadoId);
+
+    // Si es el prestador dice "Compensación", si es el cliente dice "Precio"
+    if (elemLabelMonto) {
+      elemLabelMonto.textContent = esPrestador ? "Compensación" : "Precio";
+    }
+
+    if (elemSubtituloMonto) {
+      elemSubtituloMonto.textContent = esPrestador
+        ? "Monto a recibir por el traslado"
+        : "Por el servicio de traslado";
+    }
+
+    if (elemPrecio) {
+      const precio = reserva.precio_final ?? catalogoPrecios[2] ?? 5000;
+      elemPrecio.textContent = `$${Number(precio).toLocaleString("es-AR")}`;
+    }
+  } catch (error) {
+    console.error("Error al cargar datos en modal ver valet:", error);
   }
 }
