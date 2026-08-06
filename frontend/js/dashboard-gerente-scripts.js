@@ -86,7 +86,7 @@ function agregarCochera() {
 
       cargarCocheras();
     } else {
-      alert("Error al agregar la cochera: " + resultado.error);
+      alert("Error al agregar la cochera: " + resultado.message);
     }
   });
 }
@@ -430,11 +430,22 @@ async function verRegistro(id) {
     document.getElementById("detalle-id").textContent =
       `Registro #${registro.id}`;
 
-    document.getElementById("detalle-patente").textContent = registro.patente;
+    // Pedir detalles del vehículo a la API de vehículos
+    const resVehiculo = await fetch(
+      `http://localhost:3000/vehiculos/${registro.vehiculo_id}`,
+      {
+        credentials: "include",
+      },
+    );
 
-    document.getElementById("detalle-marca").textContent = registro.marca;
+    const vehiculo = await resVehiculo.json();
 
-    document.getElementById("detalle-modelo").textContent = registro.modelo;
+    document.getElementById("detalle-patente").textContent =
+      vehiculo.patente || "Error al obtener patente";
+    document.getElementById("detalle-marca").textContent =
+      vehiculo.marca || "Error al obtener marca";
+    document.getElementById("detalle-modelo").textContent =
+      vehiculo.modelo || "Error al obtener modelo";
 
     document.getElementById("detalle-cochera").textContent =
       registro.cochera_id;
@@ -682,10 +693,9 @@ async function cargarTablaSolicitudes() {
         <td>
           <div class="select is-small">
             <select id="estado-${item.id}">
-              <option value="En Espera" ${item.estado === "En Espera" ? "selected" : ""}>En Espera</option>
-              <option value="En Proceso" ${item.estado === "En Proceso" ? "selected" : ""}>En Proceso</option>
-              <option value="Finalizado" ${item.estado === "Finalizado" ? "selected" : ""}>Finalizado</option>
-              <option value="Cancelado" ${item.estado === "Cancelado" ? "selected" : ""}>Cancelado</option>
+              <option value="En Espera" ${item.estado === "en espera" ? "selected" : ""}>En Espera</option>
+              <option value="En Proceso" ${item.estado === "en Proceso" ? "selected" : ""}>En Proceso</option>
+              <option value="Finalizado" ${item.estado === "finalizado" ? "selected" : ""}>Finalizado</option>
             </select>
           </div>
         </td>
@@ -702,6 +712,9 @@ async function cargarTablaSolicitudes() {
             <button class="boton-accion egreso" title="Guardar Cambios" onclick="actualizarServicioCliente(${item.id})">
               <i class="fas fa-check"></i>
             </button>
+            <button class="boton-accion eliminar" title="Eliminar Solicitud" onclick="eliminarServicioCliente(${item.id})">
+              <i class="fas fa-trash"></i>
+            </button>
           </div>
         </td>
       </tr>
@@ -715,6 +728,7 @@ async function cargarTablaSolicitudes() {
 
 // Guardar Modificación de Precio Base en el Catálogo
 async function guardarPrecioBase(id) {
+  const estadoActual = document.getElementById(`estado-${id}`);
   const precioInput = document.getElementById(`precio-base-${id}`);
   const precioBase = Number(precioInput.value);
 
@@ -728,7 +742,10 @@ async function guardarPrecioBase(id) {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
-      body: JSON.stringify({ precio_base: precioBase }),
+      body: JSON.stringify({
+        estado: estadoActual,
+        precio_base: precioBase,
+      }),
     });
 
     if (res.ok) {
@@ -754,6 +771,8 @@ async function actualizarServicioCliente(id) {
     return;
   }
 
+  console.log("Enviando a backend:", { estado, precio_final: precioFinal });
+
   try {
     const res = await fetch(`http://localhost:3000/servicios/${id}`, {
       method: "PATCH",
@@ -774,6 +793,32 @@ async function actualizarServicioCliente(id) {
   } catch (err) {
     console.error(err);
     alert("Ocurrió un error al actualizar la solicitud.");
+  }
+}
+
+async function eliminarServicioCliente(id) {
+  const confirmar = confirm(
+    "¿Estás seguro de que querés eliminar esta solicitud de servicio?",
+  );
+
+  if (!confirmar) return;
+
+  try {
+    const res = await fetch(`http://localhost:3000/servicios/${id}`, {
+      method: "DELETE",
+      credentials: "include",
+    });
+
+    if (res.ok) {
+      alert("Solicitud eliminada correctamente.");
+      await cargarTablaSolicitudes();
+    } else {
+      const err = await res.json();
+      alert("Error al eliminar: " + (err.message || err.error));
+    }
+  } catch (err) {
+    console.error(err);
+    alert("Ocurrió un error al intentar eliminar la solicitud.");
   }
 }
 

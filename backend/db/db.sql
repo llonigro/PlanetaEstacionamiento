@@ -90,6 +90,9 @@ INSERT INTO catalogo_servicios (nombre, descripcion, precio_base)
 VALUES ('Valet', 'Servicio de valet parking', 5000.00),
 ('Lavado', 'Lavado completo del vehículo', 2500.00);
 
+ALTER TABLE servicios
+DROP COLUMN notificado_cliente;
+
 -- ==========================================
 -- DATOS DE PRUEBA (INSERCIONES)
 -- ==========================================

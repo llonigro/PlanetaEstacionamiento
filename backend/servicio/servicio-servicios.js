@@ -29,16 +29,15 @@ const crear = async (datos) => {
 
 // 4. PATCH
 const actualizarParcial = async (id, datos) => {
-  const { estado, notificado_cliente, precio_final } = datos;
+  const { estado, precio_final } = datos;
 
   // Consulta dinámica para actualizar solo lo que se envía (PATCH)
   const result = await pool.query(
     `UPDATE servicios SET 
             estado = COALESCE($1, estado), 
-            notificado_cliente = COALESCE($2, notificado_cliente)
-            precio_final = COALESCE($3, precio_final) 
-         WHERE id = $4 RETURNING *`,
-    [estado, notificado_cliente, precio_final ?? null, id],
+            precio_final = COALESCE($2, precio_final) 
+         WHERE id = $3 RETURNING *`,
+    [estado, precio_final, id],
   );
 
   return result.rows[0];
